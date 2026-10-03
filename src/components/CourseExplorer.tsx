@@ -181,7 +181,7 @@ export function CourseExplorer({
           </label>
           <label>
             Day
-            <select value={dayOptions.includes(day) ? day : "all"} onChange={(event) => setDayFilter(event.target.value)}>
+            <select value={dayOptions.some((name) => name === day) ? day : "all"} onChange={(event) => setDayFilter(event.target.value)}>
               <option value="all">All days</option>
               {dayOptions.map((name) => (
                 <option key={name} value={name}>
