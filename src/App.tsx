@@ -47,7 +47,19 @@ export default function App() {
       <header className="header">
         <div className="brand">
           <p className="eyebrow">University of Siegen · M.Sc. HCI</p>
-          <h1>Timetable Planner</h1>
+          <div className="title-row">
+            <h1>Timetable Planner</h1>
+            <a
+              className="external-link"
+              href="https://unisono.uni-siegen.de/qisserver/pages/startFlow.xhtml?_flowId=studyPlanner-flow&_flowExecutionKey=e2s1"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Planner of studies, opens in a new tab"
+            >
+              Planner of studies
+              <ExternalIcon />
+            </a>
+          </div>
         </div>
         <div className="semester-switch" role="radiogroup" aria-label="Semester">
           {SEMESTERS.map((item) => (
@@ -131,5 +143,15 @@ export default function App() {
         </section>
       </main>
     </div>
+  );
+}
+
+function ExternalIcon() {
+  return (
+    <svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M6.2 3.6H4.1A1.5 1.5 0 0 0 2.6 5.1v6.8a1.5 1.5 0 0 0 1.5 1.5h6.8a1.5 1.5 0 0 0 1.5-1.5V9.8" />
+      <path d="M8.6 2.6h4.8v4.8" />
+      <path d="M13.1 2.9 7.4 8.6" />
+    </svg>
   );
 }

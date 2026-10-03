@@ -146,7 +146,7 @@ export function VersionBar({
           })}
           </div>
           <button type="button" className="version-create" onClick={onCreate}>
-            + Add
+            + New
           </button>
         </div>
         <div className="summary" aria-live="polite">

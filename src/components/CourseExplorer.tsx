@@ -261,13 +261,13 @@ export function CourseExplorer({
                         aria-pressed={selected}
                         onClick={() => onToggle(course.id)}
                       >
-                        <span className="check" aria-hidden="true" />
                         <span className="course-copy">
                           <span className="course-name">{course.name}</span>
                           <span className="course-code">{course.code}</span>
                           <span className="course-meta">{formatModulePreview(course.modules)}</span>
                           <span className="course-time">{formatCourseTimes(course)}</span>
                         </span>
+                        <span className="check" aria-hidden="true" />
                       </button>
                       <button
                         type="button"

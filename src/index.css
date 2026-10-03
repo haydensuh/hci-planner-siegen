@@ -83,6 +83,30 @@ h1 {
   line-height: 1;
 }
 
+.title-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.external-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border: 1px solid var(--accent);
+  border-radius: 999px;
+  background: #fff;
+  color: var(--accent);
+  padding: 7px 12px;
+  font-size: 0.88rem;
+  font-weight: 600;
+  line-height: 1;
+  text-decoration: none;
+}
+
+.external-link svg { display: block; }
+
 .semester-switch {
   display: flex;
   gap: 8px;
@@ -340,7 +364,7 @@ h1 {
   transform: rotate(45deg);
 }
 
-.course-copy { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.course-copy { display: flex; flex: 1; flex-direction: column; gap: 2px; min-width: 0; }
 
 .course-name { font-weight: 600; line-height: 1.3; }
 
@@ -409,7 +433,6 @@ h1 {
   border-radius: 999px;
   padding: 7px 12px;
   white-space: nowrap;
-  font-weight: 600;
 }
 
 .version-tab {
@@ -426,6 +449,7 @@ h1 {
   background: var(--accent);
   color: #fff;
   border-color: var(--accent);
+  font-weight: 600;
 }
 
 .version-tab-label {
