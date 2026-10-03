@@ -119,6 +119,16 @@ export default function App() {
               return next;
             });
           }}
+          onSetDetails={(courseIds, open) => {
+            setOpenIds((current) => {
+              const next = new Set(current);
+              for (const courseId of courseIds) {
+                if (open) next.add(courseId);
+                else next.delete(courseId);
+              }
+              return next;
+            });
+          }}
           onFilteredIdsChange={(ids) => {
             filteredIds.current = new Set(ids);
           }}

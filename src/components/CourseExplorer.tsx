@@ -22,6 +22,7 @@ type CourseExplorerProps = {
   openIds: Set<string>;
   onToggle: (courseId: string) => void;
   onToggleDetails: (courseId: string) => void;
+  onSetDetails: (courseIds: string[], open: boolean) => void;
   onFilteredIdsChange: (ids: string[]) => void;
 };
 
@@ -32,6 +33,7 @@ export function CourseExplorer({
   openIds,
   onToggle,
   onToggleDetails,
+  onSetDetails,
   onFilteredIdsChange,
 }: CourseExplorerProps) {
   const [query, setQuery] = useState("");
@@ -147,6 +149,9 @@ export function CourseExplorer({
     setTime("all");
   }
 
+  const visibleIds = filtered.map((course) => course.id);
+  const allDetailsOpen = visibleIds.length > 0 && visibleIds.every((id) => openIds.has(id));
+
   return (
     <section className="panel explorer" aria-label="Courses">
       <div className="explorer-head">
@@ -165,16 +170,27 @@ export function CourseExplorer({
             type="search"
           />
         </label>
-        <button
-          type="button"
-          className="filters-toggle"
-          aria-expanded={filtersOpen}
-          onClick={() => setFiltersOpen((open) => !open)}
-        >
-          Filters
-          {activeFilterCount > 0 && <span className="filters-count">{activeFilterCount}</span>}
-          <ChevronIcon open={filtersOpen} />
-        </button>
+        <div className="explorer-tools">
+          <button
+            type="button"
+            className="filters-toggle"
+            aria-expanded={filtersOpen}
+            onClick={() => setFiltersOpen((open) => !open)}
+          >
+            Filters
+            {activeFilterCount > 0 && <span className="filters-count">{activeFilterCount}</span>}
+            <ChevronIcon open={filtersOpen} />
+          </button>
+          {visibleIds.length > 0 && (
+            <button
+              type="button"
+              className="details-all"
+              onClick={() => onSetDetails(visibleIds, !allDetailsOpen)}
+            >
+              {allDetailsOpen ? "Hide all details" : "Open all details"}
+            </button>
+          )}
+        </div>
         {filtersOpen && (
           <div className="filters">
           <label>
