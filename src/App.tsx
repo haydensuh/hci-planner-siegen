@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { ComparePanel } from "./components/ComparePanel";
 import { ConflictList } from "./components/ConflictList";
 import { CourseExplorer } from "./components/CourseExplorer";
@@ -17,6 +17,9 @@ export default function App() {
   const semester = semesterById(planner.semesterId) ?? SEMESTERS[0];
   const [compareOpen, setCompareOpen] = useState(false);
   const [openIds, setOpenIds] = useState<Set<string>>(() => new Set());
+  const [toast, setToast] = useState<string | null>(null);
+  const filteredIds = useRef<Set<string> | null>(null);
+  const toastTimer = useRef<number | null>(null);
 
   const semesterCourses = useMemo(
     () => courses.filter((course) => course.semesterId === planner.semesterId),
@@ -31,7 +34,23 @@ export default function App() {
   );
   const conflicts = useMemo(() => findConflicts(selected), [selected]);
 
+  useEffect(() => {
+    return () => {
+      if (toastTimer.current) window.clearTimeout(toastTimer.current);
+    };
+  }, []);
+
+  function showToast(message: string) {
+    setToast(message);
+    if (toastTimer.current) window.clearTimeout(toastTimer.current);
+    toastTimer.current = window.setTimeout(() => setToast(null), 4000);
+  }
+
   function focusCourse(courseId: string) {
+    if (filteredIds.current && !filteredIds.current.has(courseId)) {
+      showToast("A search or filter is applied, so this course’s details can’t be shown.");
+      return;
+    }
     setOpenIds((current) => {
       const next = new Set(current);
       next.add(courseId);
@@ -100,6 +119,9 @@ export default function App() {
               return next;
             });
           }}
+          onFilteredIdsChange={(ids) => {
+            filteredIds.current = new Set(ids);
+          }}
         />
         <section className="panel planner" aria-label={`${semester.label} timetable`}>
           <VersionBar
@@ -145,6 +167,9 @@ export default function App() {
           </div>
         </section>
       </main>
+      <div className="toast-anchor" role="status" aria-live="polite">
+        {toast && <p className="toast">{toast}</p>}
+      </div>
     </div>
   );
 }

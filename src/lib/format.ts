@@ -1,5 +1,9 @@
 import type { Course, CourseModule, ScheduleSlot } from "../types";
 
+export function formatCourseTitle(course: Course): string {
+  return course.variant ? `${course.name} (${course.variant})` : course.name;
+}
+
 export function textOrTba(value: string | null | undefined): string {
   if (!value || !value.trim()) return "TBA";
   return value;
@@ -75,6 +79,15 @@ export function formatSlotCompact(slot: ScheduleSlot): string {
 export function formatSlotDetail(slot: ScheduleSlot): string {
   const compact = formatSlotCompact(slot);
   return slot.note ? `${compact} · ${slot.note}` : compact;
+}
+
+export function formatDatedSession(slot: ScheduleSlot): string {
+  const time = timeRange(slot);
+  if (slot.cadence === "block") {
+    return slot.dateLabel ? `Block · ${slot.dateLabel} · ${time}` : `Block · ${time}`;
+  }
+  const when = [slot.day, slot.dateLabel].filter(Boolean).join(" · ");
+  return when ? `${when} · ${time}` : time;
 }
 
 export function formatCourseTimes(course: Course): string {

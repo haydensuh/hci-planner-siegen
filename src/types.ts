@@ -43,11 +43,13 @@ export type Course = {
   recommendedSemesters: number[];
   offeringFrequency: string | null;
   irregularOffering?: true;
+  datedGrid?: true;
   ects: number | null;
   ectsMax?: number;
   schedule: ScheduleSlot[];
   location: string | null;
   lecturers: string[];
+  variant?: string;
 };
 
 export type Semester = {

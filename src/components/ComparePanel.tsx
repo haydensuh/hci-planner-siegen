@@ -1,5 +1,5 @@
 import { areaRank } from "../data/curriculum";
-import { formatCourseTimes } from "../lib/format";
+import { formatCourseTimes, formatCourseTitle } from "../lib/format";
 import type { Course, Version } from "../types";
 
 type ComparePanelProps = {
@@ -12,7 +12,7 @@ export function ComparePanel({ versions, courses, activeId }: ComparePanelProps)
   const chosen = new Set(versions.flatMap((version) => version.selectedCourseIds));
   const rows = courses
     .filter((course) => chosen.has(course.id))
-    .sort((a, b) => areaRank(a.area) - areaRank(b.area) || a.name.localeCompare(b.name, "en"));
+    .sort((a, b) => areaRank(a.area) - areaRank(b.area) || formatCourseTitle(a).localeCompare(formatCourseTitle(b), "en"));
 
   if (rows.length === 0) {
     return <p className="compare-empty">Add courses to a version to compare combinations.</p>;
@@ -39,7 +39,10 @@ export function ComparePanel({ versions, courses, activeId }: ComparePanelProps)
             return (
               <tr key={course.id} className={mixed ? "is-mixed" : undefined}>
                 <th scope="row">
-                  <span>{course.name}</span>
+                  <span>
+                    {course.name}
+                    {course.variant && <span className="course-variant"> ({course.variant})</span>}
+                  </span>
                   <small>{formatCourseTimes(course)}</small>
                 </th>
                 {versions.map((version, index) => (

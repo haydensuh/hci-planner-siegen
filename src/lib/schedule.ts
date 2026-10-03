@@ -1,4 +1,5 @@
 import type { Course, ScheduleSlot, Weekday } from "../types";
+import { formatCourseTitle } from "./format";
 
 export const GRID_DAYS = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"] as const;
 
@@ -46,6 +47,7 @@ export type GridBlock = {
   meta: string | null;
   location: string | null;
   conflict: boolean;
+  dated: boolean;
   lane: number;
   laneCount: number;
 };
@@ -158,8 +160,8 @@ export function findConflicts(selected: Course[]): Conflict[] {
           seen.add(key);
           conflicts.push({
             id: key,
-            aName: a.name,
-            bName: b.name,
+            aName: formatCourseTitle(a),
+            bName: formatCourseTitle(b),
             aWhen: left.when,
             bWhen: right.when,
           });
@@ -250,6 +252,7 @@ export function layoutGrid(selected: Course[]): Map<GridDay, GridBlock[]> {
           meta: interval.meta,
           location: interval.location,
           conflict,
+          dated: entry.course.datedGrid === true,
         });
       }
     }
@@ -264,7 +267,7 @@ export function outsideLines(course: Course): string[] {
     .filter((interval) => !interval.onGrid)
     .map((interval) => {
       const place = interval.location ?? course.location;
-      return place ? `${course.name} · ${interval.when} · ${place}` : `${course.name} · ${interval.when}`;
+      return place ? `${formatCourseTitle(course)} · ${interval.when} · ${place}` : `${formatCourseTitle(course)} · ${interval.when}`;
     });
 }
 

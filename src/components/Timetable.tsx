@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { areaColor } from "../data/curriculum";
-import { formatBlockLocation } from "../lib/format";
+import { formatBlockLocation, formatCourseTitle, formatDatedSession } from "../lib/format";
 import {
   formatHour,
   GRID_DAYS,
@@ -29,8 +29,27 @@ export function Timetable({ selected, boundsCourses, onFocusCourse, onRemoveCour
   const height = (bounds.endHour - bounds.startHour) * HOUR_PX;
   const hasGrid = GRID_DAYS.some((day) => (layout.get(day)?.length ?? 0) > 0);
   const areas = [...new Set(selected.map((course) => course.area))];
+  const dated = selected.filter((course) => course.datedGrid);
 
   return (
+    <>
+      {dated.length > 0 && (
+        <section className="notice dated-panel" aria-label="Block dates">
+          <h2>Block dates</h2>
+          <ul>
+            {dated.map((course) => (
+              <li key={course.id}>
+                <p className="notice-name">{formatCourseTitle(course)}</p>
+                {course.schedule.map((slot, index) => (
+                  <p className="notice-meta" key={`${course.id}-${index}`}>
+                    {formatDatedSession(slot)}
+                  </p>
+                ))}
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
     <div className="timetable">
       {areas.length > 0 && (
         <ul className="legend">
@@ -97,12 +116,13 @@ export function Timetable({ selected, boundsCourses, onFocusCourse, onRemoveCour
           <h3>No time listed</h3>
           <ul>
             {unscheduled.map((course) => (
-              <li key={course.id}>{course.name}</li>
+              <li key={course.id}>{formatCourseTitle(course)}</li>
             ))}
           </ul>
         </section>
       )}
     </div>
+    </>
   );
 }
 
@@ -121,7 +141,7 @@ function Block({
   const compact = duration <= 75;
   return (
     <div
-      className={block.conflict ? "block is-conflict" : "block"}
+      className={["block", block.conflict && "is-conflict", block.dated && "is-dated"].filter(Boolean).join(" ")}
       style={{
         top: ((block.start - boundsStart * 60) / 60) * HOUR_PX,
         height: (duration / 60) * HOUR_PX - 4,
@@ -133,10 +153,13 @@ function Block({
       <button
         type="button"
         className="block-main"
-        title={`${block.course.name}, ${block.startTime}–${block.endTime}, ${formatBlockLocation(block.course, block.location)}`}
+        title={`${formatCourseTitle(block.course)}, ${block.startTime}–${block.endTime}, ${formatBlockLocation(block.course, block.location)}`}
         onClick={() => onFocus(block.course.id)}
       >
-        <span className="block-name">{block.course.name}</span>
+        <span className="block-name">
+          {block.course.name}
+          {block.course.variant && <span className="course-variant"> ({block.course.variant})</span>}
+        </span>
         <span className="block-time">
           {block.startTime}–{block.endTime}
           {block.meta ? ` · ${block.meta}` : ""}
@@ -147,7 +170,7 @@ function Block({
       <button
         type="button"
         className="block-remove"
-        aria-label={`Remove ${block.course.name}`}
+        aria-label={`Remove ${formatCourseTitle(block.course)}`}
         onClick={() => onRemove(block.course.id)}
       >
         <span aria-hidden="true">×</span>

@@ -236,7 +236,7 @@ export const courses = [
       35
     ],
     "course": "Integration of Organization and Technology Development - Practical Seminar",
-    "location": null
+    "location": "US-F 103"
   },
   {
     "code": "3WULF0021V",
@@ -285,7 +285,7 @@ export const courses = [
       32
     ],
     "course": "Integration of Organization and Technology Development - Theory Seminar",
-    "location": null
+    "location": "US-A 134/1"
   },
   {
     "code": "3PIPEK016V",
@@ -388,7 +388,7 @@ export const courses = [
       36
     ],
     "course": "Introduction to Sociology - reading seminar",
-    "location": null
+    "location": "US-D 109"
   },
   {
     "code": "3SADEG101V",
@@ -489,7 +489,7 @@ export const courses = [
       35
     ],
     "course": "Participatory and Creative Methods for the Application Field Smart Living",
-    "location": null
+    "location": "US-D 321"
   },
   {
     "code": "3WULF0024V",
@@ -542,7 +542,7 @@ export const courses = [
       34
     ],
     "course": "Robotik im realweltlichen Einsatz im Bereich der sozialen Arbeit",
-    "location": null
+    "location": "US-D 109"
   },
   {
     "code": "3WULF0012V",
@@ -594,7 +594,7 @@ export const courses = [
       34
     ],
     "course": "Spezielle Aspekte der Sozio-Informatik",
-    "location": null
+    "location": "US-D 207"
   },
   {
     "code": "1SOWI1406V",
@@ -666,7 +666,10 @@ export const courses = [
       "Winter semester only"
     ],
     "irregularOffering": false,
-    "schedule": [],
+    "datedGrid": true,
+    "schedule": [
+      "block date, 3/15/27 - 3/17/27 from 08:30 until 17:00"
+    ],
     "lecturers": [],
     "sourcePages": [
       140,
@@ -682,7 +685,7 @@ export const courses = [
       180
     ],
     "course": "Language Center: Change Communication",
-    "location": null
+    "location": "F-S 012"
   },
   {
     "code": "999F00167V",
@@ -893,7 +896,7 @@ export const courses = [
       167
     ],
     "course": "Deep Learning",
-    "location": null
+    "location": "H-C 8326"
   },
   {
     "code": "43VSA0132V",
@@ -943,7 +946,7 @@ export const courses = [
       169
     ],
     "course": "Deep Learning",
-    "location": null
+    "location": "H-C 8326"
   },
   {
     "code": "43EMS0030V",
@@ -1000,6 +1003,10 @@ export const courses = [
       "Interdisciplinary Contexts"
     ],
     "modules": [
+      {
+        "code": "3HCIMA013",
+        "name": "Interdisciplinary Contexts in HCI Ia (9 LP)"
+      },
       {
         "code": "3HCIMA014",
         "name": "Interdisciplinary Contexts in HCI IIa (9 LP)"
@@ -1446,7 +1453,7 @@ export const courses = [
       181
     ],
     "course": "Introduction to E-Business / Grundlagen des E-Business",
-    "location": null
+    "location": "US-F 304"
   },
   {
     "code": "43UCO1114V",
@@ -1466,6 +1473,10 @@ export const courses = [
       {
         "code": "3HCIMA022",
         "name": "Interdisciplinary Contexts in HCI IIIa (9 LP)"
+      },
+      {
+        "code": "3HCIMA023",
+        "name": "Interdisciplinary Contexts in HCI IVa (9 LP)"
       }
     ],
     "requirementStatus": [],
@@ -1623,7 +1634,7 @@ export const courses = [
       178
     ],
     "course": "Künstlerisches Gestalten",
-    "location": null
+    "location": "US-A 016"
   },
   {
     "code": "999F00174V",
@@ -1707,7 +1718,7 @@ export const courses = [
       166,
       175
     ],
-    "course": "Language Center: English: Academic Writing - BA dissertation, and academic paper writing (C1 Level)",
+    "course": "Language Center: English: Academic Writing - BA dissertation, MA thesis and academic paper writing (C1 Level)",
     "location": null
   },
   {
@@ -1953,8 +1964,7 @@ export const courses = [
       "Friday, 11/13/26 from 12:00 to 18:00",
       "Friday, 11/6/26 from 12:00 to 18:00",
       "Friday, 12/11/26 from 12:00 to 18:00",
-      "Friday, 12/4/26 from 12:00 to 18:00",
-      "Friday, 12/4/26 from 12:00 to 18:00 DE EN"
+      "Friday, 12/4/26 from 12:00 to 18:00"
     ],
     "lecturers": [
       "Dr. Christoph Borbach"
@@ -2014,6 +2024,14 @@ export const courses = [
     ],
     "modules": [
       {
+        "code": "3HCIMA015",
+        "name": "Interdisciplinary Contexts in HCI Ib (6 LP)"
+      },
+      {
+        "code": "3HCIMA019",
+        "name": "Interdisciplinary Contexts in HCI IIb (6 LP)"
+      },
+      {
         "code": "3HCIMA020",
         "name": "Interdisciplinary Contexts in HCI IIIb (6 LP)"
       },
@@ -2042,7 +2060,7 @@ export const courses = [
       172
     ],
     "course": "Practical Course 3D- modeling and animation Practical Training \"3D Modeling and Animation\"",
-    "location": null
+    "location": "H-A 4111"
   },
   {
     "code": "43CGM1129V",
@@ -2062,6 +2080,10 @@ export const courses = [
       {
         "code": "3HCIMA020",
         "name": "Interdisciplinary Contexts in HCI IIIb (6 LP)"
+      },
+      {
+        "code": "3HCIMA024",
+        "name": "Interdisciplinary Contexts in HCI IVb (6 LP)"
       }
     ],
     "requirementStatus": [],
@@ -2084,7 +2106,7 @@ export const courses = [
       163
     ],
     "course": "Practical Course Computergraphics Computer Graphics Lab",
-    "location": null
+    "location": "H-C 7326"
   },
   {
     "code": "3LUDWI033V",
@@ -2264,6 +2286,7 @@ export const courses = [
   },
   {
     "code": "43ETI0001V",
+    "instance": "concepts-of-programming-languages",
     "semester": "WS26/27",
     "area": [
       "Interdisciplinary Contexts"
@@ -2296,7 +2319,6 @@ export const courses = [
     ],
     "irregularOffering": false,
     "schedule": [
-      "Friday, 10/16/26 from 09:30 to 11:30",
       "Tuesday, 10/20/26 from 13:00 to 14:00"
     ],
     "lecturers": [
@@ -2309,7 +2331,443 @@ export const courses = [
       93,
       119
     ],
-    "course": "Seminar Informatik (Computer Science)",
+    "variant": "Concepts of Programming Languages",
+    "course": "Seminar Informatik",
+    "location": null
+  },
+  {
+    "code": "43ETI0001V",
+    "instance": "embedded-systems",
+    "semester": "WS26/27",
+    "area": [
+      "Interdisciplinary Contexts"
+    ],
+    "modules": [
+      {
+        "code": "3HCIMA013",
+        "name": "Interdisciplinary Contexts in HCI Ia (9 LP)"
+      },
+      {
+        "code": "3HCIMA014",
+        "name": "Interdisciplinary Contexts in HCI IIa (9 LP)"
+      },
+      {
+        "code": "3HCIMA022",
+        "name": "Interdisciplinary Contexts in HCI IIIa (9 LP)"
+      },
+      {
+        "code": "3HCIMA023",
+        "name": "Interdisciplinary Contexts in HCI IVa (9 LP)"
+      }
+    ],
+    "requirementStatus": [],
+    "recommendedSemesters": [
+      1,
+      3
+    ],
+    "offeringFrequency": [
+      "Every semester"
+    ],
+    "irregularOffering": false,
+    "schedule": [
+      "Friday, 10/16/26 from 09:30 to 11:30"
+    ],
+    "lecturers": [],
+    "sourcePages": [
+      42,
+      68,
+      93,
+      119
+    ],
+    "variant": "Embedded Systems",
+    "course": "Seminar Informatik",
+    "location": null
+  },
+  {
+    "code": "43ETI0001V",
+    "instance": "data-science-machine-learning",
+    "semester": "WS26/27",
+    "area": [
+      "Interdisciplinary Contexts"
+    ],
+    "modules": [
+      {
+        "code": "3HCIMA013",
+        "name": "Interdisciplinary Contexts in HCI Ia (9 LP)"
+      },
+      {
+        "code": "3HCIMA014",
+        "name": "Interdisciplinary Contexts in HCI IIa (9 LP)"
+      },
+      {
+        "code": "3HCIMA022",
+        "name": "Interdisciplinary Contexts in HCI IIIa (9 LP)"
+      },
+      {
+        "code": "3HCIMA023",
+        "name": "Interdisciplinary Contexts in HCI IVa (9 LP)"
+      }
+    ],
+    "requirementStatus": [],
+    "recommendedSemesters": [
+      1,
+      3
+    ],
+    "offeringFrequency": [
+      "Every semester"
+    ],
+    "irregularOffering": false,
+    "schedule": [
+      "Tuesday, 10/20/26 from 09:00 to 10:00",
+      "Tuesday, 1/26/27 from 08:00 to 10:00",
+      "Tuesday, 2/2/27 from 08:00 to 10:00"
+    ],
+    "lecturers": [],
+    "sourcePages": [
+      42,
+      68,
+      93,
+      119
+    ],
+    "variant": "Data Science - Machine Learning",
+    "course": "Seminar Informatik",
+    "location": null
+  },
+  {
+    "code": "43ETI0001V",
+    "instance": "theoretical-computer-science",
+    "semester": "WS26/27",
+    "area": [
+      "Interdisciplinary Contexts"
+    ],
+    "modules": [
+      {
+        "code": "3HCIMA013",
+        "name": "Interdisciplinary Contexts in HCI Ia (9 LP)"
+      },
+      {
+        "code": "3HCIMA014",
+        "name": "Interdisciplinary Contexts in HCI IIa (9 LP)"
+      },
+      {
+        "code": "3HCIMA022",
+        "name": "Interdisciplinary Contexts in HCI IIIa (9 LP)"
+      },
+      {
+        "code": "3HCIMA023",
+        "name": "Interdisciplinary Contexts in HCI IVa (9 LP)"
+      }
+    ],
+    "requirementStatus": [],
+    "recommendedSemesters": [
+      1,
+      3
+    ],
+    "offeringFrequency": [
+      "Every semester"
+    ],
+    "irregularOffering": false,
+    "schedule": [
+      "Monday, 10/19/26 from 14:00 to 16:00"
+    ],
+    "lecturers": [],
+    "sourcePages": [
+      42,
+      68,
+      93,
+      119
+    ],
+    "variant": "Theoretical Computer Science",
+    "course": "Seminar Informatik",
+    "location": null
+  },
+  {
+    "code": "43ETI0001V",
+    "instance": "computer-vision",
+    "semester": "WS26/27",
+    "area": [
+      "Interdisciplinary Contexts"
+    ],
+    "modules": [
+      {
+        "code": "3HCIMA013",
+        "name": "Interdisciplinary Contexts in HCI Ia (9 LP)"
+      },
+      {
+        "code": "3HCIMA014",
+        "name": "Interdisciplinary Contexts in HCI IIa (9 LP)"
+      },
+      {
+        "code": "3HCIMA022",
+        "name": "Interdisciplinary Contexts in HCI IIIa (9 LP)"
+      },
+      {
+        "code": "3HCIMA023",
+        "name": "Interdisciplinary Contexts in HCI IVa (9 LP)"
+      }
+    ],
+    "requirementStatus": [],
+    "recommendedSemesters": [
+      1,
+      3
+    ],
+    "offeringFrequency": [
+      "Every semester"
+    ],
+    "irregularOffering": false,
+    "schedule": [
+      "Wednesday, 10/21/26 from 12:00 to 14:00"
+    ],
+    "lecturers": [],
+    "sourcePages": [
+      42,
+      68,
+      93,
+      119
+    ],
+    "variant": "Computer Vision",
+    "course": "Seminar Informatik",
+    "location": null
+  },
+  {
+    "code": "43ETI0001V",
+    "instance": "intelligent-systems",
+    "semester": "WS26/27",
+    "area": [
+      "Interdisciplinary Contexts"
+    ],
+    "modules": [
+      {
+        "code": "3HCIMA013",
+        "name": "Interdisciplinary Contexts in HCI Ia (9 LP)"
+      },
+      {
+        "code": "3HCIMA014",
+        "name": "Interdisciplinary Contexts in HCI IIa (9 LP)"
+      },
+      {
+        "code": "3HCIMA022",
+        "name": "Interdisciplinary Contexts in HCI IIIa (9 LP)"
+      },
+      {
+        "code": "3HCIMA023",
+        "name": "Interdisciplinary Contexts in HCI IVa (9 LP)"
+      }
+    ],
+    "requirementStatus": [],
+    "recommendedSemesters": [
+      1,
+      3
+    ],
+    "offeringFrequency": [
+      "Every semester"
+    ],
+    "irregularOffering": false,
+    "schedule": [
+      "weekly, Thursday, 10/15/26 - 2/4/27 from 16:15 until 17:45",
+      "weekly, Friday, 10/16/26 - 2/5/27 from 08:15 until 09:45"
+    ],
+    "lecturers": [],
+    "sourcePages": [
+      42,
+      68,
+      93,
+      119
+    ],
+    "variant": "Intelligent Systems",
+    "course": "Seminar Informatik",
+    "location": null
+  },
+  {
+    "code": "43ETI0001V",
+    "instance": "reliable-and-trustworthy-ai",
+    "semester": "WS26/27",
+    "area": [
+      "Interdisciplinary Contexts"
+    ],
+    "modules": [
+      {
+        "code": "3HCIMA013",
+        "name": "Interdisciplinary Contexts in HCI Ia (9 LP)"
+      },
+      {
+        "code": "3HCIMA014",
+        "name": "Interdisciplinary Contexts in HCI IIa (9 LP)"
+      },
+      {
+        "code": "3HCIMA022",
+        "name": "Interdisciplinary Contexts in HCI IIIa (9 LP)"
+      },
+      {
+        "code": "3HCIMA023",
+        "name": "Interdisciplinary Contexts in HCI IVa (9 LP)"
+      }
+    ],
+    "requirementStatus": [],
+    "recommendedSemesters": [
+      1,
+      3
+    ],
+    "offeringFrequency": [
+      "Every semester"
+    ],
+    "irregularOffering": false,
+    "schedule": [
+      "weekly, Thursday, 10/15/26 - 2/4/27 from 14:00 until 16:00"
+    ],
+    "lecturers": [],
+    "sourcePages": [
+      42,
+      68,
+      93,
+      119
+    ],
+    "variant": "Reliable and Trustworthy AI",
+    "course": "Seminar Informatik",
+    "location": null
+  },
+  {
+    "code": "43ETI0001V",
+    "instance": "applications-in-ml-generative-ai",
+    "semester": "WS26/27",
+    "area": [
+      "Interdisciplinary Contexts"
+    ],
+    "modules": [
+      {
+        "code": "3HCIMA013",
+        "name": "Interdisciplinary Contexts in HCI Ia (9 LP)"
+      },
+      {
+        "code": "3HCIMA014",
+        "name": "Interdisciplinary Contexts in HCI IIa (9 LP)"
+      },
+      {
+        "code": "3HCIMA022",
+        "name": "Interdisciplinary Contexts in HCI IIIa (9 LP)"
+      },
+      {
+        "code": "3HCIMA023",
+        "name": "Interdisciplinary Contexts in HCI IVa (9 LP)"
+      }
+    ],
+    "requirementStatus": [],
+    "recommendedSemesters": [
+      1,
+      3
+    ],
+    "offeringFrequency": [
+      "Every semester"
+    ],
+    "irregularOffering": false,
+    "schedule": [
+      "Thursday, 11/5/26 from 10:00 to 13:00"
+    ],
+    "lecturers": [],
+    "sourcePages": [
+      42,
+      68,
+      93,
+      119
+    ],
+    "variant": "Applications in ML: Developing Generative AI Systems",
+    "course": "Seminar Informatik",
+    "location": null
+  },
+  {
+    "code": "43ETI0001V",
+    "instance": "applications-in-ml-agentic-coding",
+    "semester": "WS26/27",
+    "area": [
+      "Interdisciplinary Contexts"
+    ],
+    "modules": [
+      {
+        "code": "3HCIMA013",
+        "name": "Interdisciplinary Contexts in HCI Ia (9 LP)"
+      },
+      {
+        "code": "3HCIMA014",
+        "name": "Interdisciplinary Contexts in HCI IIa (9 LP)"
+      },
+      {
+        "code": "3HCIMA022",
+        "name": "Interdisciplinary Contexts in HCI IIIa (9 LP)"
+      },
+      {
+        "code": "3HCIMA023",
+        "name": "Interdisciplinary Contexts in HCI IVa (9 LP)"
+      }
+    ],
+    "requirementStatus": [],
+    "recommendedSemesters": [
+      1,
+      3
+    ],
+    "offeringFrequency": [
+      "Every semester"
+    ],
+    "irregularOffering": false,
+    "schedule": [
+      "Tuesday, 11/10/26 from 10:00 to 13:00"
+    ],
+    "lecturers": [],
+    "sourcePages": [
+      42,
+      68,
+      93,
+      119
+    ],
+    "variant": "Applications in ML: Agentic Coding",
+    "course": "Seminar Informatik",
+    "location": null
+  },
+  {
+    "code": "43ETI0001V",
+    "instance": "visual-computing-foundation-models",
+    "semester": "WS26/27",
+    "area": [
+      "Interdisciplinary Contexts"
+    ],
+    "modules": [
+      {
+        "code": "3HCIMA013",
+        "name": "Interdisciplinary Contexts in HCI Ia (9 LP)"
+      },
+      {
+        "code": "3HCIMA014",
+        "name": "Interdisciplinary Contexts in HCI IIa (9 LP)"
+      },
+      {
+        "code": "3HCIMA022",
+        "name": "Interdisciplinary Contexts in HCI IIIa (9 LP)"
+      },
+      {
+        "code": "3HCIMA023",
+        "name": "Interdisciplinary Contexts in HCI IVa (9 LP)"
+      }
+    ],
+    "requirementStatus": [],
+    "recommendedSemesters": [
+      1,
+      3
+    ],
+    "offeringFrequency": [
+      "Every semester"
+    ],
+    "irregularOffering": false,
+    "schedule": [
+      "Wednesday, 10/21/26 from 13:00 to 14:00"
+    ],
+    "lecturers": [],
+    "sourcePages": [
+      42,
+      68,
+      93,
+      119
+    ],
+    "variant": "Visual Computing: Scaling in the Context of Foundation Models",
+    "course": "Seminar Informatik",
     "location": null
   },
   {
@@ -2431,7 +2889,6 @@ export const courses = [
     "irregularOffering": false,
     "schedule": [
       "Friday, 12/18/26 from 10:00 to 12:00",
-      "Friday, 12/18/26 from 10:00 to 12:00 DE EN",
       "Thursday, 12/17/26 from 10:00 to 12:00",
       "Wednesday, 1/13/27 from 10:30 to 13:30",
       "Wednesday, 1/20/27 from 10:30 to 13:30",
@@ -2466,7 +2923,6 @@ export const courses = [
     ],
     "course": "Sprachenzentrum: Englisch - Zielstufe C1.1",
     "slotLocations": [
-      null,
       null,
       null,
       "F-S 0101",
@@ -2563,6 +3019,10 @@ export const courses = [
         "name": "Interdisciplinary Contexts in HCI IIb (6 LP)"
       },
       {
+        "code": "3HCIMA020",
+        "name": "Interdisciplinary Contexts in HCI IIIb (6 LP)"
+      },
+      {
         "code": "3HCIMA024",
         "name": "Interdisciplinary Contexts in HCI IVb (6 LP)"
       }
@@ -2588,7 +3048,7 @@ export const courses = [
       172
     ],
     "course": "Ubiquitous Systems Lab",
-    "location": null
+    "location": "H-C 7326"
   },
   {
     "code": "1MEWI3842V",
@@ -2644,8 +3104,14 @@ export const courses = [
       "Every 2nd semester"
     ],
     "irregularOffering": false,
+    "datedGrid": true,
     "schedule": [
-      "Tuesday, 11/10/26 from 08:00 to 10:00"
+      "Tuesday, 11/10/26 from 08:00 to 10:00",
+      "Tuesday, 11/24/26 from 08:00 to 10:00",
+      "Tuesday, 12/8/26 from 08:00 to 10:00",
+      "Tuesday, 12/22/26 from 08:00 to 10:00",
+      "Tuesday, 1/12/27 from 08:00 to 10:00",
+      "Tuesday, 1/26/27 from 08:00 to 10:00"
     ],
     "lecturers": [
       "Jessica Knodel M.A."
@@ -2654,7 +3120,7 @@ export const courses = [
       181
     ],
     "course": "Übung zu Introduction to E-Business / Grundlagen des E-Business",
-    "location": null
+    "location": "US-F 304"
   },
   {
     "code": "3WULF0056V",
@@ -2740,7 +3206,7 @@ export const courses = [
       10
     ],
     "course": "Accessibility and workplaces",
-    "location": null
+    "location": "US-F 002"
   },
   {
     "code": "3MUECL031V",
@@ -2784,7 +3250,7 @@ export const courses = [
       10
     ],
     "course": "Community Care and cooperative media: Telemedicine and Telecare in Germany and Japan",
-    "location": null
+    "location": "US-A 134"
   },
   {
     "code": "3MUECL036V",
@@ -2835,6 +3301,10 @@ export const courses = [
       "Practice"
     ],
     "modules": [
+      {
+        "code": "3HCIMA004",
+        "name": "Project A"
+      },
       {
         "code": "3HCIMA005",
         "name": "Project B"
@@ -2926,8 +3396,10 @@ export const courses = [
     ],
     "offeringFrequency": [],
     "irregularOffering": true,
+    "datedGrid": true,
     "schedule": [
-      "Tuesday, 10/13/26 from 16:00 to 17:00"
+      "Tuesday, 10/13/26 from 16:00 to 17:00",
+      "Tuesday, 10/20/26 from 16:00 to 17:00"
     ],
     "lecturers": [
       "Jun.-Prof. Dr.-Ing. Shadan Sadeghian Borojeni"
@@ -2987,6 +3459,10 @@ export const courses = [
       "Practice"
     ],
     "modules": [
+      {
+        "code": "3HCIMA004",
+        "name": "Project A"
+      },
       {
         "code": "3HCIMA005",
         "name": "Project B"

@@ -183,7 +183,9 @@ def convert(raw: dict) -> dict:
 
     ects, ects_max = credits_for(raw["code"], areas[0], raw.get("modules") or [])
     course = {
-        "id": f"{raw['code'].lower()}-{semester_id.lower()}",
+        "id": f"{raw['code'].lower()}-{raw['instance']}-{semester_id.lower()}"
+        if raw.get("instance")
+        else f"{raw['code'].lower()}-{semester_id.lower()}",
         "code": raw["code"],
         "semesterId": semester_id,
         "area": areas[0],
@@ -201,6 +203,10 @@ def convert(raw: dict) -> dict:
         course["ectsMax"] = ects_max
     if raw.get("irregularOffering") is True:
         course["irregularOffering"] = True
+    if raw.get("datedGrid") is True:
+        course["datedGrid"] = True
+    if raw.get("variant"):
+        course["variant"] = raw["variant"]
     return course
 
 
@@ -211,6 +217,9 @@ def main() -> None:
         raise SystemExit("Could not find courses array")
     raw_courses = json.loads(match.group(1))
     courses = [convert(item) for item in raw_courses]
+    ids = [course["id"] for course in courses]
+    if len(ids) != len(set(ids)):
+        raise SystemExit("Duplicate course ids")
     payload = json.dumps(courses, indent=2, ensure_ascii=False)
     OUTPUT.write_text(
         "\n".join(

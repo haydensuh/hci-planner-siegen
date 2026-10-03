@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { AREAS, areaColor, areaRank } from "../data/curriculum";
 import {
   formatCourseTimes,
@@ -23,6 +23,7 @@ type CourseExplorerProps = {
   openIds: Set<string>;
   onToggle: (courseId: string) => void;
   onToggleDetails: (courseId: string) => void;
+  onFilteredIdsChange: (ids: string[]) => void;
 };
 
 export function CourseExplorer({
@@ -32,6 +33,7 @@ export function CourseExplorer({
   openIds,
   onToggle,
   onToggleDetails,
+  onFilteredIdsChange,
 }: CourseExplorerProps) {
   const [query, setQuery] = useState("");
   const [area, setArea] = useState("all");
@@ -86,6 +88,7 @@ export function CourseExplorer({
         if (!needle) return true;
         const haystack = [
           course.name,
+          course.variant ?? "",
           course.code,
           course.area,
           course.requirementStatus ?? "",
@@ -96,8 +99,14 @@ export function CourseExplorer({
           .toLowerCase();
         return haystack.includes(needle);
       })
-      .sort((a, b) => areaRank(a.area) - areaRank(b.area) || a.name.localeCompare(b.name, "en") || a.code.localeCompare(b.code));
+      .sort((a, b) => areaRank(a.area) - areaRank(b.area) || a.name.localeCompare(b.name, "en") || (a.variant ?? "").localeCompare(b.variant ?? "", "en") || a.code.localeCompare(b.code));
   }, [area, courses, day, moduleName, query, time, timeOptions]);
+
+  const onFilteredIdsChangeRef = useRef(onFilteredIdsChange);
+  onFilteredIdsChangeRef.current = onFilteredIdsChange;
+  useEffect(() => {
+    onFilteredIdsChangeRef.current(filtered.map((course) => course.id));
+  }, [filtered]);
 
   const groups = useMemo(() => {
     const known = new Set<string>(AREAS);
@@ -262,7 +271,10 @@ export function CourseExplorer({
                         onClick={() => onToggle(course.id)}
                       >
                         <span className="course-copy">
-                          <span className="course-name">{course.name}</span>
+                          <span className="course-name">
+                            {course.name}
+                            {course.variant && <span className="course-variant"> ({course.variant})</span>}
+                          </span>
                           <span className="course-code">{course.code}</span>
                           <span className="course-meta">{formatModulePreview(course.modules)}</span>
                           <span className="course-time">{formatCourseTimes(course)}</span>
