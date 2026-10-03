@@ -5,8 +5,8 @@
   --ink: #191f28;
   --ink-soft: #6b7684;
   --line: #e5e8eb;
-  --accent: #3182f6;
-  --accent-soft: #e8f3ff;
+  --accent: #003860;
+  --accent-soft: #e7eef4;
   --warn: #f04452;
   --warn-bg: #fff0f1;
   --shadow: 0 2px 8px rgba(0, 27, 55, 0.05);
@@ -67,11 +67,21 @@ button:disabled { cursor: not-allowed; opacity: 0.45; }
 }
 
 .eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 4px;
   margin: 0 0 8px;
   color: var(--accent);
   font-size: 0.78rem;
   font-weight: 600;
   letter-spacing: 0.02em;
+}
+
+.brand-logo {
+  width: 22px;
+  height: 22px;
+  display: block;
+  object-fit: contain;
 }
 
 h1, h2, h3 { font-family: var(--serif); font-weight: 700; }
@@ -323,7 +333,7 @@ h1 {
 }
 
 .course.is-selected {
-  border-color: #c9defe;
+  border-color: #c5d5e2;
   background: var(--accent-soft);
 }
 

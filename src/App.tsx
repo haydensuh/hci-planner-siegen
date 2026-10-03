@@ -46,7 +46,10 @@ export default function App() {
     <div className="app">
       <header className="header">
         <div className="brand">
-          <p className="eyebrow">University of Siegen · M.Sc. HCI</p>
+          <p className="eyebrow">
+            <img className="brand-logo" src="/favicon.png" alt="" />
+            University of Siegen · M.Sc. HCI
+          </p>
           <div className="title-row">
             <h1>Timetable Planner</h1>
             <a
