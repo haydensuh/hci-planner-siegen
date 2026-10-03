@@ -4,8 +4,8 @@ export function formatCourseTitle(course: Course): string {
   return course.variant ? `${course.name} (${course.variant})` : course.name;
 }
 
-export function textOrTba(value: string | null | undefined): string {
-  if (!value || !value.trim()) return "TBA";
+export function textOrEmpty(value: string | null | undefined): string | null {
+  if (!value || !value.trim()) return null;
   return value;
 }
 
@@ -24,24 +24,24 @@ function ordinal(value: number): string {
   }
 }
 
-export function formatRecommended(semesters: number[]): string {
-  if (semesters.length === 0) return "TBA";
+export function formatRecommended(semesters: number[]): string | null {
+  if (semesters.length === 0) return null;
   const labels = [...semesters].sort((a, b) => a - b).map(ordinal);
   return `${labels.join(", ")} semester`;
 }
 
-export function formatModulePreview(modules: CourseModule[]): string {
-  if (modules.length === 0) return "TBA";
+export function formatModulePreview(modules: CourseModule[]): string | null {
+  if (modules.length === 0) return null;
   if (modules.length === 1) return modules[0].name;
   if (modules.length === 2) return `${modules[0].name} · ${modules[1].name}`;
   return `${modules[0].name} · +${modules.length - 1} more`;
 }
 
-export function formatLecturers(course: Course): string {
-  return course.lecturers.length > 0 ? course.lecturers.join(", ") : "TBA";
+export function formatLecturers(course: Course): string | null {
+  return course.lecturers.length > 0 ? course.lecturers.join(", ") : null;
 }
 
-export function formatLocation(course: Course): string {
+export function formatLocation(course: Course): string | null {
   if (course.location) return course.location;
   const ordered: string[] = [];
   for (const slot of course.schedule) {
@@ -49,19 +49,11 @@ export function formatLocation(course: Course): string {
     if (slot.cadence === "weekly") ordered.unshift(slot.location);
     else ordered.push(slot.location);
   }
-  if (ordered.length > 0) return ordered.join(" / ");
-  return "TBA";
+  return ordered.length > 0 ? ordered.join(" / ") : null;
 }
 
-export function formatSessionLocation(course: Course, slot: ScheduleSlot): string | null {
-  if (!course.schedule.some((item) => item.location)) return null;
-  return slot.location ?? "TBA";
-}
-
-export function formatBlockLocation(course: Course, slotLocation: string | null): string {
-  if (slotLocation) return slotLocation;
-  if (course.schedule.some((slot) => slot.location)) return "TBA";
-  return textOrTba(course.location);
+export function formatBlockLocation(course: Course, slotLocation: string | null): string | null {
+  return slotLocation ?? course.location;
 }
 
 function timeRange(slot: ScheduleSlot): string {
@@ -90,8 +82,8 @@ export function formatDatedSession(slot: ScheduleSlot): string {
   return when ? `${when} · ${time}` : time;
 }
 
-export function formatCourseTimes(course: Course): string {
-  if (course.schedule.length === 0) return "Time TBA";
+export function formatCourseTimes(course: Course): string | null {
+  if (course.schedule.length === 0) return null;
   if (course.schedule.length === 1) return formatSlotCompact(course.schedule[0]);
   return `${formatSlotCompact(course.schedule[0])} · +${course.schedule.length - 1} more`;
 }
@@ -102,10 +94,10 @@ export function formatEcts(course: Course): string | null {
   return String(course.ects);
 }
 
-export function ectsSummary(selected: Course[]): string {
+export function ectsSummary(selected: Course[]): string | null {
   if (selected.length === 0) return "0 ECTS";
   const known = selected.filter((course) => course.ects != null);
-  if (known.length === 0) return "ECTS TBA";
+  if (known.length === 0) return null;
   const min = known.reduce((total, course) => total + (course.ects ?? 0), 0);
   const max = known.reduce((total, course) => total + (course.ectsMax ?? course.ects ?? 0), 0);
   const label = min === max ? `${min} ECTS` : `${min}–${max} ECTS`;

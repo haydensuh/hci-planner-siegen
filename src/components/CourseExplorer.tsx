@@ -7,9 +7,8 @@ import {
   formatLocation,
   formatModulePreview,
   formatRecommended,
-  formatSessionLocation,
   formatSlotDetail,
-  textOrTba,
+  textOrEmpty,
 } from "../lib/format";
 import { intervalsFor } from "../lib/schedule";
 import type { Course, Weekday } from "../types";
@@ -276,8 +275,10 @@ export function CourseExplorer({
                             {course.variant && <span className="course-variant"> ({course.variant})</span>}
                           </span>
                           <span className="course-code">{course.code}</span>
-                          <span className="course-meta">{formatModulePreview(course.modules)}</span>
-                          <span className="course-time">{formatCourseTimes(course)}</span>
+                          {formatModulePreview(course.modules) && (
+                            <span className="course-meta">{formatModulePreview(course.modules)}</span>
+                          )}
+                          {formatCourseTimes(course) && <span className="course-time">{formatCourseTimes(course)}</span>}
                         </span>
                         <span className="check" aria-hidden="true" />
                       </button>
@@ -299,7 +300,7 @@ export function CourseExplorer({
         ))}
         {courses.length > 0 && (
           <p className="source-note">
-            Times and lecturers come from the WiSe 2026/27 HCI study planner. Fields without an official value are shown as TBA.
+            Times and lecturers come from the WiSe 2026/27 HCI study planner.
           </p>
         )}
       </div>
@@ -309,18 +310,22 @@ export function CourseExplorer({
 
 function CourseDetails({ course }: { course: Course }) {
   const ects = formatEcts(course);
+  const location = formatLocation(course);
+  const requirement = textOrEmpty(course.requirementStatus);
+  const recommended = formatRecommended(course.recommendedSemesters);
+  const frequency = textOrEmpty(course.offeringFrequency);
+  const lecturers = formatLecturers(course);
+  const times = formatCourseTimes(course);
   return (
     <dl className="detail-grid">
       <div>
         <dt>Area</dt>
         <dd>{course.area}</dd>
       </div>
-      <div>
-        <dt>{course.modules.length > 1 ? "Modules" : "Module"}</dt>
-        <dd>
-          {course.modules.length === 0 ? (
-            "TBA"
-          ) : (
+      {course.modules.length > 0 && (
+        <div>
+          <dt>{course.modules.length > 1 ? "Modules" : "Module"}</dt>
+          <dd>
             <ul className="module-list">
               {course.modules.map((module) => (
                 <li key={module.code}>
@@ -329,55 +334,60 @@ function CourseDetails({ course }: { course: Course }) {
                 </li>
               ))}
             </ul>
-          )}
-        </dd>
-      </div>
-      <div>
-        <dt>Requirement status</dt>
-        <dd>{textOrTba(course.requirementStatus)}</dd>
-      </div>
-      <div>
-        <dt>Recommended semester</dt>
-        <dd>{formatRecommended(course.recommendedSemesters)}</dd>
-      </div>
-      <div>
-        <dt>Offering frequency</dt>
-        <dd>{textOrTba(course.offeringFrequency)}</dd>
-      </div>
+          </dd>
+        </div>
+      )}
+      {requirement && (
+        <div>
+          <dt>Requirement status</dt>
+          <dd>{requirement}</dd>
+        </div>
+      )}
+      {recommended && (
+        <div>
+          <dt>Recommended semester</dt>
+          <dd>{recommended}</dd>
+        </div>
+      )}
+      {frequency && (
+        <div>
+          <dt>Offering frequency</dt>
+          <dd>{frequency}</dd>
+        </div>
+      )}
       {course.irregularOffering && (
         <div>
           <dt>Irregular offering</dt>
           <dd>Irregular offering</dd>
         </div>
       )}
-      <div>
-        <dt>Course time</dt>
-        <dd>
-          {course.schedule.length === 0 ? (
-            "TBA"
-          ) : (
+      {times && (
+        <div>
+          <dt>Course time</dt>
+          <dd>
             <ul className="time-list">
-              {course.schedule.map((slot, index) => {
-                const sessionLocation = formatSessionLocation(course, slot);
-                return (
-                  <li key={`${slot.cadence}-${slot.day ?? "block"}-${slot.startDate}-${slot.startTime}-${index}`}>
-                    {formatSlotDetail(slot)}
-                    {sessionLocation ? ` · ${sessionLocation}` : ""}
-                  </li>
-                );
-              })}
+              {course.schedule.map((slot, index) => (
+                <li key={`${slot.cadence}-${slot.day ?? "block"}-${slot.startDate}-${slot.startTime}-${index}`}>
+                  {formatSlotDetail(slot)}
+                  {slot.location ? ` · ${slot.location}` : ""}
+                </li>
+              ))}
             </ul>
-          )}
-        </dd>
-      </div>
-      <div>
-        <dt>Location</dt>
-        <dd>{formatLocation(course)}</dd>
-      </div>
-      <div>
-        <dt>Lecturer</dt>
-        <dd>{formatLecturers(course)}</dd>
-      </div>
+          </dd>
+        </div>
+      )}
+      {location && (
+        <div>
+          <dt>Location</dt>
+          <dd>{location}</dd>
+        </div>
+      )}
+      {lecturers && (
+        <div>
+          <dt>Lecturer</dt>
+          <dd>{lecturers}</dd>
+        </div>
+      )}
       {ects && (
         <div>
           <dt>ECTS</dt>

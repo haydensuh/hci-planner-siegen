@@ -43,7 +43,7 @@ export function ComparePanel({ versions, courses, activeId }: ComparePanelProps)
                     {course.name}
                     {course.variant && <span className="course-variant"> ({course.variant})</span>}
                   </span>
-                  <small>{formatCourseTimes(course)}</small>
+                  {formatCourseTimes(course) && <small>{formatCourseTimes(course)}</small>}
                 </th>
                 {versions.map((version, index) => (
                   <td key={version.id}>

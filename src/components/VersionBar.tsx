@@ -153,8 +153,7 @@ export function VersionBar({
           <p className="summary-name">{active.name}</p>
           <p>
             {selected.length} {selected.length === 1 ? "Course" : "Courses"}
-            {" · "}
-            {ects}
+            {ects ? ` · ${ects}` : ""}
           </p>
         </div>
       </div>

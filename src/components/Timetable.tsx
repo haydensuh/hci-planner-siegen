@@ -139,6 +139,7 @@ function Block({
 }) {
   const duration = block.end - block.start;
   const compact = duration <= 75;
+  const location = formatBlockLocation(block.course, block.location);
   return (
     <div
       className={["block", block.conflict && "is-conflict", block.dated && "is-dated"].filter(Boolean).join(" ")}
@@ -153,7 +154,9 @@ function Block({
       <button
         type="button"
         className="block-main"
-        title={`${formatCourseTitle(block.course)}, ${block.startTime}–${block.endTime}, ${formatBlockLocation(block.course, block.location)}`}
+        title={[formatCourseTitle(block.course), `${block.startTime}–${block.endTime}`, location]
+          .filter(Boolean)
+          .join(", ")}
         onClick={() => onFocus(block.course.id)}
       >
         <span className="block-name">
@@ -164,7 +167,7 @@ function Block({
           {block.startTime}–{block.endTime}
           {block.meta ? ` · ${block.meta}` : ""}
         </span>
-        {!compact && <span className="block-location">{formatBlockLocation(block.course, block.location)}</span>}
+        {!compact && location && <span className="block-location">{location}</span>}
         {block.conflict && <span className="block-flag">Conflict</span>}
       </button>
       <button
