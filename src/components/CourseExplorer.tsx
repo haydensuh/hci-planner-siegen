@@ -38,6 +38,7 @@ export function CourseExplorer({
   const [moduleName, setModuleName] = useState("all");
   const [day, setDay] = useState("all");
   const [time, setTime] = useState("all");
+  const [filtersOpen, setFiltersOpen] = useState(false);
 
   const moduleOptions = useMemo(() => {
     const names = new Set<string>();
@@ -109,6 +110,12 @@ export function CourseExplorer({
     return grouped;
   }, [filtered]);
 
+  const activeFilterCount = [
+    area !== "all",
+    moduleName !== "all" && moduleOptions.includes(moduleName),
+    dayOptions.some((name) => name === day),
+    timeOptions.includes(time),
+  ].filter(Boolean).length;
   const selectedCount = courses.filter((course) => selectedIds.includes(course.id)).length;
   const hiddenSelected = courses.filter(
     (course) => selectedIds.includes(course.id) && !filtered.some((item) => item.id === course.id),
@@ -150,7 +157,18 @@ export function CourseExplorer({
             type="search"
           />
         </label>
-        <div className="filters">
+        <button
+          type="button"
+          className="filters-toggle"
+          aria-expanded={filtersOpen}
+          onClick={() => setFiltersOpen((open) => !open)}
+        >
+          Filters
+          {activeFilterCount > 0 && <span className="filters-count">{activeFilterCount}</span>}
+          <ChevronIcon open={filtersOpen} />
+        </button>
+        {filtersOpen && (
+          <div className="filters">
           <label>
             Area
             <select value={area} onChange={(event) => setAreaFilter(event.target.value)}>
@@ -201,7 +219,8 @@ export function CourseExplorer({
               ))}
             </select>
           </label>
-        </div>
+          </div>
+        )}
         {hiddenSelected > 0 && (
           <p className="filter-note">
             {hiddenSelected} selected {hiddenSelected === 1 ? "course is" : "courses are"} hidden by these filters.{" "}
@@ -354,5 +373,24 @@ function CourseDetails({ course }: { course: Course }) {
         </div>
       )}
     </dl>
+  );
+}
+
+function ChevronIcon({ open }: { open: boolean }) {
+  return (
+    <svg
+      className={open ? "is-open" : undefined}
+      viewBox="0 0 16 16"
+      width="14"
+      height="14"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.6"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <path d="M4 6.2 8 10.2 12 6.2" />
+    </svg>
   );
 }

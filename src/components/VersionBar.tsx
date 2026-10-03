@@ -14,6 +14,8 @@ type VersionBarProps = {
   onDelete: (versionId: string) => void;
   canUndo: boolean;
   onUndo: () => void;
+  canRedo: boolean;
+  onRedo: () => void;
   onToggleCompare: () => void;
 };
 
@@ -29,6 +31,8 @@ export function VersionBar({
   onDelete,
   canUndo,
   onUndo,
+  canRedo,
+  onRedo,
   onToggleCompare,
 }: VersionBarProps) {
   const [editingId, setEditingId] = useState<string | null>(null);
@@ -142,7 +146,7 @@ export function VersionBar({
           })}
           </div>
           <button type="button" className="version-create" onClick={onCreate}>
-            + New version
+            + Add
           </button>
         </div>
         <div className="summary" aria-live="polite">
@@ -165,16 +169,28 @@ export function VersionBar({
         >
           Compare
         </button>
-        <button
-          type="button"
-          className="undo-button"
-          aria-label="Undo"
-          onClick={onUndo}
-          disabled={!canUndo}
-          title={canUndo ? "Undo the last change" : "Nothing to undo"}
-        >
-          <UndoIcon />
-        </button>
+        <div className="history-actions">
+          <button
+            type="button"
+            className="history-button"
+            aria-label="Undo"
+            onClick={onUndo}
+            disabled={!canUndo}
+            title={canUndo ? "Undo the last change" : "Nothing to undo"}
+          >
+            <UndoIcon />
+          </button>
+          <button
+            type="button"
+            className="history-button"
+            aria-label="Redo"
+            onClick={onRedo}
+            disabled={!canRedo}
+            title={canRedo ? "Redo the last undone change" : "Nothing to redo"}
+          >
+            <RedoIcon />
+          </button>
+        </div>
       </div>
     </div>
   );
@@ -185,6 +201,15 @@ function UndoIcon() {
     <svg viewBox="0 0 16 16" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
       <path d="M6.4 3.7 3.6 6.5l2.8 2.8" />
       <path d="M4 6.5h5.6a2.9 2.9 0 1 1 0 5.8H8.3" />
+    </svg>
+  );
+}
+
+function RedoIcon() {
+  return (
+    <svg viewBox="0 0 16 16" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M9.6 3.7 12.4 6.5l-2.8 2.8" />
+      <path d="M12 6.5H6.4a2.9 2.9 0 1 0 0 5.8H7.7" />
     </svg>
   );
 }

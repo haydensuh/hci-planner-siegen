@@ -12,19 +12,30 @@ const HISTORY_LIMIT = 30;
 type History = {
   present: PlannerState;
   past: PlannerState[];
+  future: PlannerState[];
 };
 
 function remember(history: History, next: PlannerState): History {
   if (next === history.present) return history;
   const past = [...history.past, history.present];
   if (past.length > HISTORY_LIMIT) past.shift();
-  return { present: next, past };
+  return { present: next, past, future: [] };
 }
 
 function undoHistory(history: History): History {
   const previous = history.past.at(-1);
   if (!previous) return history;
-  return { present: previous, past: history.past.slice(0, -1) };
+  const future = [history.present, ...history.future];
+  if (future.length > HISTORY_LIMIT) future.pop();
+  return { present: previous, past: history.past.slice(0, -1), future };
+}
+
+function redoHistory(history: History): History {
+  const next = history.future[0];
+  if (!next) return history;
+  const past = [...history.past, history.present];
+  if (past.length > HISTORY_LIMIT) past.shift();
+  return { present: next, past, future: history.future.slice(1) };
 }
 
 function activeVersion(state: PlannerState): Version {
@@ -42,6 +53,7 @@ export function usePlanner() {
       defaultSemesterId: "WS26-27",
     }),
     past: [],
+    future: [],
   }));
   const state = history.present;
 
@@ -51,7 +63,10 @@ export function usePlanner() {
 
   useEffect(() => {
     function onKeyDown(event: KeyboardEvent) {
-      if (event.key.toLowerCase() !== "z" || event.shiftKey || event.altKey) return;
+      const key = event.key.toLowerCase();
+      const redo = (key === "z" && event.shiftKey) || key === "y";
+      const undoKey = key === "z" && !event.shiftKey;
+      if ((!redo && !undoKey) || event.altKey) return;
       if (!(event.metaKey || event.ctrlKey)) return;
       const target = event.target;
       if (
@@ -61,7 +76,7 @@ export function usePlanner() {
         return;
       }
       event.preventDefault();
-      setHistory(undoHistory);
+      setHistory(redo ? redoHistory : undoHistory);
     }
     window.addEventListener("keydown", onKeyDown);
     return () => window.removeEventListener("keydown", onKeyDown);
@@ -76,6 +91,10 @@ export function usePlanner() {
 
   function undo() {
     setHistory(undoHistory);
+  }
+
+  function redo() {
+    setHistory(redoHistory);
   }
 
   function selectSemester(semesterId: string) {
@@ -188,7 +207,9 @@ export function usePlanner() {
     active,
     semesterVersions,
     canUndo: history.past.length > 0,
+    canRedo: history.future.length > 0,
     undo,
+    redo,
     selectSemester,
     selectVersion,
     toggleCourse,

@@ -105,6 +105,8 @@ export default function App() {
             }}
             canUndo={planner.canUndo}
             onUndo={planner.undo}
+            canRedo={planner.canRedo}
+            onRedo={planner.redo}
             onToggleCompare={() => setCompareOpen((open) => !open)}
           />
           <div className="planner-scroll">
