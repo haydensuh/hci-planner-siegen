@@ -72,7 +72,7 @@ export default function App() {
             <h1>Timetable Planner</h1>
             <a
               className="external-link"
-              href="https://unisono.uni-siegen.de/qisserver/pages/startFlow.xhtml?_flowId=studyPlanner-flow&_flowExecutionKey=e2s1"
+              href="https://unisono.uni-siegen.de/qisserver/pages/startFlow.xhtml?_flowId=studyPlanner-flow"
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Planner of studies, opens in a new tab"
