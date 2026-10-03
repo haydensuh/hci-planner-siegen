@@ -18,6 +18,7 @@ export default function App() {
   const [compareOpen, setCompareOpen] = useState(false);
   const [openIds, setOpenIds] = useState<Set<string>>(() => new Set());
   const [toast, setToast] = useState<string | null>(null);
+  const [reveal, setReveal] = useState<{ id: string; nonce: number } | null>(null);
   const filteredIds = useRef<Set<string> | null>(null);
   const toastTimer = useRef<number | null>(null);
 
@@ -56,9 +57,7 @@ export default function App() {
       next.add(courseId);
       return next;
     });
-    requestAnimationFrame(() => {
-      document.getElementById(`course-${courseId}`)?.scrollIntoView({ block: "nearest", behavior: "smooth" });
-    });
+    setReveal({ id: courseId, nonce: Date.now() });
   }
 
   return (
@@ -132,6 +131,7 @@ export default function App() {
           onFilteredIdsChange={(ids) => {
             filteredIds.current = new Set(ids);
           }}
+          reveal={reveal}
         />
         <section className="panel planner" aria-label={`${semester.label} timetable`}>
           <VersionBar

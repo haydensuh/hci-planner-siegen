@@ -302,25 +302,55 @@ h1 {
   flex: 1;
   padding: 8px 12px 16px;
 }
-.area-heading {
+.area-heading, .module-heading {
   position: sticky;
-  top: 0;
-  z-index: 10;
+  z-index: 2;
+  margin: 0;
+  background: rgba(255, 255, 255, 0.92);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+}
 
+.area-heading { top: 0; z-index: 3; }
+
+.area-heading button, .module-heading button {
+  width: 100%;
   display: flex;
   align-items: center;
   gap: 8px;
+  border: 0;
+  background: transparent;
+  text-align: left;
+  color: var(--ink);
+  font-weight: 700;
+}
 
-  margin: 8px 0;
+.area-heading button {
   padding: 10px 6px 8px;
-
-  background: rgba(255, 255, 255, 0.7);
-
-  -webkit-backdrop-filter: blur(8px);
-  backdrop-filter: blur(8px);
-
   font-size: 1.12rem;
 }
+
+.module-group { margin: 0 0 4px 14px; }
+
+.module-heading { top: 44px; }
+
+.module-heading button {
+  padding: 8px 6px;
+  font-size: 0.95rem;
+}
+
+.group-title { min-width: 0; }
+
+.group-count {
+  margin-left: auto;
+  color: var(--ink-soft);
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+
+.area-heading svg, .module-heading svg { display: block; flex: none; }
+
+.area-heading svg.is-open, .module-heading svg.is-open { transform: rotate(180deg); }
 
 .area-dot, .legend span {
   width: 10px;
@@ -341,7 +371,7 @@ h1 {
   margin-bottom: 8px;
   background: #fff;
   overflow: hidden;
-  scroll-margin-top: 56px;
+  scroll-margin-top: 96px;
 }
 
 .course.is-selected {

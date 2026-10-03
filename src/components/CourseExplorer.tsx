@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { AREAS, areaColor, areaRank } from "../data/curriculum";
 import {
   formatCourseTimes,
@@ -24,6 +24,7 @@ type CourseExplorerProps = {
   onToggleDetails: (courseId: string) => void;
   onSetDetails: (courseIds: string[], open: boolean) => void;
   onFilteredIdsChange: (ids: string[]) => void;
+  reveal: { id: string; nonce: number } | null;
 };
 
 export function CourseExplorer({
@@ -35,6 +36,7 @@ export function CourseExplorer({
   onToggleDetails,
   onSetDetails,
   onFilteredIdsChange,
+  reveal,
 }: CourseExplorerProps) {
   const [query, setQuery] = useState("");
   const [area, setArea] = useState("all");
@@ -42,6 +44,8 @@ export function CourseExplorer({
   const [day, setDay] = useState("all");
   const [time, setTime] = useState("all");
   const [filtersOpen, setFiltersOpen] = useState(false);
+  const [collapsedAreas, setCollapsedAreas] = useState<Set<string>>(() => new Set());
+  const [collapsedModules, setCollapsedModules] = useState<Set<string>>(() => new Set());
 
   const moduleOptions = useMemo(() => {
     const names = new Set<string>();
@@ -110,14 +114,33 @@ export function CourseExplorer({
   }, [filtered]);
 
   const groups = useMemo(() => {
-    const known = new Set<string>(AREAS);
-    const grouped: { area: string; courses: Course[] }[] = AREAS.map((name) => ({
-      area: name,
-      courses: filtered.filter((course) => course.area === name),
-    })).filter((group) => group.courses.length > 0);
-    const extras = filtered.filter((course) => !known.has(course.area));
-    if (extras.length > 0) grouped.push({ area: "Other", courses: extras });
-    return grouped;
+    const byArea = new Map<string, Map<string, { code: string; name: string; courses: Course[] }>>();
+    for (const course of filtered) {
+      let modules = byArea.get(course.area);
+      if (!modules) {
+        modules = new Map();
+        byArea.set(course.area, modules);
+      }
+      const memberships = course.modules.length > 0 ? course.modules : [{ code: "", name: "No module" }];
+      for (const membership of memberships) {
+        const key = membership.code || membership.name;
+        let bucket = modules.get(key);
+        if (!bucket) {
+          bucket = { code: membership.code, name: membership.name, courses: [] };
+          modules.set(key, bucket);
+        }
+        bucket.courses.push(course);
+      }
+    }
+    return [...byArea.keys()]
+      .sort((a, b) => areaRank(a) - areaRank(b) || a.localeCompare(b, "en"))
+      .map((areaName) => ({
+        area: areaName,
+        courses: filtered.filter((course) => course.area === areaName),
+        modules: [...byArea.get(areaName)!.values()].sort(
+          (a, b) => a.code.localeCompare(b.code, "en") || a.name.localeCompare(b.name, "en"),
+        ),
+      }));
   }, [filtered]);
 
   const activeFilterCount = [
@@ -151,6 +174,56 @@ export function CourseExplorer({
 
   const visibleIds = filtered.map((course) => course.id);
   const allDetailsOpen = visibleIds.length > 0 && visibleIds.every((id) => openIds.has(id));
+  const moduleKeys = groups.flatMap((group) =>
+    group.modules.map((module) => `${group.area}::${module.code || module.name}`),
+  );
+  const allGroupsOpen =
+    groups.length > 0 &&
+    groups.every((group) => !collapsedAreas.has(group.area)) &&
+    moduleKeys.every((key) => !collapsedModules.has(key));
+
+  function toggleAllGroups() {
+    if (allGroupsOpen) {
+      setCollapsedAreas(new Set(groups.map((group) => group.area)));
+      setCollapsedModules(new Set(moduleKeys));
+      return;
+    }
+    setCollapsedAreas((current) => {
+      const next = new Set(current);
+      for (const group of groups) next.delete(group.area);
+      return next;
+    });
+    setCollapsedModules((current) => {
+      const next = new Set(current);
+      for (const key of moduleKeys) next.delete(key);
+      return next;
+    });
+  }
+
+  const revealedNonce = useRef<number | null>(null);
+
+  useEffect(() => {
+    setCollapsedAreas(new Set());
+    setCollapsedModules(new Set());
+  }, [query, area, moduleName, day, time]);
+
+  useLayoutEffect(() => {
+    if (!reveal) return;
+    const course = filtered.find((item) => item.id === reveal.id);
+    if (!course) return;
+    const moduleKey = firstModuleKey(course);
+    if (collapsedAreas.has(course.area) || collapsedModules.has(moduleKey)) {
+      if (revealedNonce.current === reveal.nonce) return;
+      setCollapsedAreas((current) => (current.has(course.area) ? without(current, course.area) : current));
+      setCollapsedModules((current) => (current.has(moduleKey) ? without(current, moduleKey) : current));
+      return;
+    }
+    if (revealedNonce.current === reveal.nonce) return;
+    const node = document.getElementById(`course-${reveal.id}`);
+    if (!node) return;
+    revealedNonce.current = reveal.nonce;
+    node.scrollIntoView({ block: "nearest", behavior: "smooth" });
+  }, [collapsedAreas, collapsedModules, filtered, reveal]);
 
   return (
     <section className="panel explorer" aria-label="Courses">
@@ -181,6 +254,11 @@ export function CourseExplorer({
             {activeFilterCount > 0 && <span className="filters-count">{activeFilterCount}</span>}
             <ChevronIcon open={filtersOpen} />
           </button>
+          {groups.length > 0 && (
+            <button type="button" className="details-all" onClick={toggleAllGroups}>
+              {allGroupsOpen ? "Collapse all" : "Expand all"}
+            </button>
+          )}
           {visibleIds.length > 0 && (
             <button
               type="button"
@@ -266,54 +344,97 @@ export function CourseExplorer({
             <p>No courses match these filters.</p>
           </div>
         )}
-        {groups.map((group) => (
-          <section key={group.area} className="area-group">
-            <h3 className="area-heading">
-              <span className="area-dot" style={{ background: areaColor(group.area) }} />
-              {group.area}
-            </h3>
-            <ul className="course-list">
-              {group.courses.map((course) => {
-                const selected = selectedIds.includes(course.id);
-                const open = openIds.has(course.id);
-                return (
-                  <li key={course.id} id={`course-${course.id}`}>
-                    <article className={selected ? "course is-selected" : "course"}>
-                      <button
-                        type="button"
-                        className="course-select"
-                        aria-pressed={selected}
-                        onClick={() => onToggle(course.id)}
-                      >
-                        <span className="course-copy">
-                          <span className="course-name">
-                            {course.name}
-                            {course.variant && <span className="course-variant"> ({course.variant})</span>}
-                          </span>
-                          <span className="course-code">{course.code}</span>
-                          {formatModulePreview(course.modules) && (
-                            <span className="course-meta">{formatModulePreview(course.modules)}</span>
-                          )}
-                          {formatCourseTimes(course) && <span className="course-time">{formatCourseTimes(course)}</span>}
-                        </span>
-                        <span className="check" aria-hidden="true" />
-                      </button>
-                      <button
-                        type="button"
-                        className="details-toggle"
-                        aria-expanded={open}
-                        onClick={() => onToggleDetails(course.id)}
-                      >
-                        {open ? "Hide details" : "Details"}
-                      </button>
-                      {open && <CourseDetails course={course} />}
-                    </article>
-                  </li>
-                );
-              })}
-            </ul>
-          </section>
-        ))}
+        {groups.map((group) => {
+          const areaOpen = !collapsedAreas.has(group.area);
+          const areaPanelId = panelId("area", group.area);
+          return (
+            <section key={group.area} className="area-group">
+              <h3 className="area-heading">
+                <button
+                  type="button"
+                  aria-expanded={areaOpen}
+                  aria-controls={areaPanelId}
+                  onClick={() => setCollapsedAreas((current) => toggleMember(current, group.area))}
+                >
+                  <span className="area-dot" style={{ background: areaColor(group.area) }} />
+                  <span className="group-title">{group.area}</span>
+                  <span className="group-count">{group.courses.length}</span>
+                  <ChevronIcon open={areaOpen} />
+                </button>
+              </h3>
+              {areaOpen && (
+                <div id={areaPanelId}>
+                  {group.modules.map((module) => {
+                    const moduleKey = `${group.area}::${module.code || module.name}`;
+                    const moduleOpen = !collapsedModules.has(moduleKey);
+                    const modulePanelId = panelId("module", moduleKey);
+                    return (
+                      <section key={moduleKey} className="module-group">
+                        <h4 className="module-heading">
+                          <button
+                            type="button"
+                            aria-expanded={moduleOpen}
+                            aria-controls={modulePanelId}
+                            onClick={() => setCollapsedModules((current) => toggleMember(current, moduleKey))}
+                          >
+                            <span className="group-title">{module.name}</span>
+                            <span className="group-count">{module.courses.length}</span>
+                            <ChevronIcon open={moduleOpen} />
+                          </button>
+                        </h4>
+                        {moduleOpen && (
+                          <ul id={modulePanelId} className="course-list">
+                            {module.courses.map((course) => {
+                              const selected = selectedIds.includes(course.id);
+                              const open = openIds.has(course.id);
+                              const anchor = moduleKey === firstModuleKey(course);
+                              return (
+                                <li key={`${moduleKey}-${course.id}`} id={anchor ? `course-${course.id}` : undefined}>
+                                  <article className={selected ? "course is-selected" : "course"}>
+                                    <button
+                                      type="button"
+                                      className="course-select"
+                                      aria-pressed={selected}
+                                      onClick={() => onToggle(course.id)}
+                                    >
+                                      <span className="course-copy">
+                                        <span className="course-name">
+                                          {course.name}
+                                          {course.variant && <span className="course-variant"> ({course.variant})</span>}
+                                        </span>
+                                        <span className="course-code">{course.code}</span>
+                                        {formatModulePreview(course.modules) && (
+                                          <span className="course-meta">{formatModulePreview(course.modules)}</span>
+                                        )}
+                                        {formatCourseTimes(course) && (
+                                          <span className="course-time">{formatCourseTimes(course)}</span>
+                                        )}
+                                      </span>
+                                      <span className="check" aria-hidden="true" />
+                                    </button>
+                                    <button
+                                      type="button"
+                                      className="details-toggle"
+                                      aria-expanded={open}
+                                      onClick={() => onToggleDetails(course.id)}
+                                    >
+                                      {open ? "Hide details" : "Details"}
+                                    </button>
+                                    {open && <CourseDetails course={course} />}
+                                  </article>
+                                </li>
+                              );
+                            })}
+                          </ul>
+                        )}
+                      </section>
+                    );
+                  })}
+                </div>
+              )}
+            </section>
+          );
+        })}
         {courses.length > 0 && (
           <p className="source-note">
             Times and lecturers come from the WiSe 2026/27 HCI study planner.
@@ -412,6 +533,31 @@ function CourseDetails({ course }: { course: Course }) {
       )}
     </dl>
   );
+}
+
+function panelId(prefix: string, key: string): string {
+  return `${prefix}-${key.replace(/[^a-zA-Z0-9]+/g, "-")}`;
+}
+
+function firstModuleKey(course: Course): string {
+  const memberships = course.modules.length > 0 ? course.modules : [{ code: "", name: "No module" }];
+  const first = [...memberships].sort(
+    (a, b) => a.code.localeCompare(b.code, "en") || a.name.localeCompare(b.name, "en"),
+  )[0];
+  return `${course.area}::${first.code || first.name}`;
+}
+
+function toggleMember(current: Set<string>, key: string): Set<string> {
+  const next = new Set(current);
+  if (next.has(key)) next.delete(key);
+  else next.add(key);
+  return next;
+}
+
+function without(current: Set<string>, key: string): Set<string> {
+  const next = new Set(current);
+  next.delete(key);
+  return next;
 }
 
 function ChevronIcon({ open }: { open: boolean }) {
