@@ -18,6 +18,7 @@ import {
   formatLocation,
   formatModulePreview,
   formatRecommended,
+  moduleSemester,
   formatSeason,
   formatSlotDetail,
   isSummerOnly,
@@ -492,10 +493,13 @@ export function CourseExplorer({
                       onToggle={onToggle}
                       onToggleDetails={onToggleDetails}
                     />
-                  ) : group.modules.map((module) => {
+                  ) : (
+                    <>
+                      {group.modules.map((module) => {
                     const moduleKey = `${group.area}::${module.code || module.name}`;
                     const moduleOpen = !collapsedModules.has(moduleKey);
                     const modulePanelId = panelId("module", moduleKey);
+                    const semester = moduleSemester(module.name);
                     return (
                       <section key={moduleKey} className="module-group">
                         <h4 className="module-heading">
@@ -506,6 +510,9 @@ export function CourseExplorer({
                             onClick={() => setCollapsedModules((current) => toggleMember(current, moduleKey))}
                           >
                             <span className="group-title">{module.name}</span>
+                            {semester !== null && (
+                              <span className="group-note">For {semester} semester</span>
+                            )}
                             <span className="group-count">{module.courses.length}</span>
                             <ChevronIcon open={moduleOpen} />
                           </button>
@@ -549,7 +556,7 @@ export function CourseExplorer({
                                     >
                                       {open ? "Hide details" : "Details"}
                                     </button>
-                                    {open && <CourseDetails course={course} />}
+                                    {open && <CourseDetails course={course} moduleName={module.name} />}
                                   </article>
                                 </li>
                               );
@@ -559,6 +566,18 @@ export function CourseExplorer({
                       </section>
                     );
                   })}
+                      {group.area === "Current Research" && (
+                        <section className="module-group">
+                          <h4 className="module-heading">
+                            <span className="internship-heading">
+                              <span className="group-title">Internship</span>
+                            </span>
+                          </h4>
+                          <p className="catalog-empty">No timetable entry for Winter 2026/27. The module is 6 ECTS.</p>
+                        </section>
+                      )}
+                    </>
+                  )}
                 </div>
               )}
             </section>
@@ -861,11 +880,23 @@ function revealKeys(course: Course, shown: "9" | "6"): string[] {
   return keys;
 }
 
-function CourseDetails({ course }: { course: Course }) {
+function CourseDetails({ course, moduleName }: { course: Course; moduleName?: string }) {
   const ects = formatEcts(course);
   const location = formatLocation(course);
   const requirement = textOrEmpty(course.requirementStatus);
-  const recommended = formatRecommended(course.recommendedSemesters);
+  const inProject = moduleName ? moduleSemester(moduleName) : null;
+  const projects = course.modules.flatMap((module) => {
+    const semester = moduleSemester(module.name);
+    return semester === null ? [] : [{ name: module.name, label: formatRecommended([semester]) }];
+  });
+  const recommended =
+    inProject !== null
+      ? formatRecommended([inProject])
+      : projects.length === 1
+        ? projects[0].label
+        : projects.length === 0
+          ? formatRecommended(course.recommendedSemesters)
+          : null;
   const frequency = textOrEmpty(course.offeringFrequency);
   const lecturers = formatLecturers(course);
   const times = formatCourseTimes(course);
@@ -900,6 +931,21 @@ function CourseDetails({ course }: { course: Course }) {
         <div>
           <dt>Recommended semester</dt>
           <dd>{recommended}</dd>
+        </div>
+      )}
+      {!recommended && projects.length > 1 && (
+        <div>
+          <dt>Recommended semester</dt>
+          <dd>
+            <ul className="module-list">
+              {projects.map((project) => (
+                <li key={project.name}>
+                  {project.name}
+                  <span>{project.label}</span>
+                </li>
+              ))}
+            </ul>
+          </dd>
         </div>
       )}
       {frequency && (

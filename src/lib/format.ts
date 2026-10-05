@@ -30,6 +30,20 @@ export function formatRecommended(semesters: number[]): string | null {
   return `${labels.join(", ")} semester`;
 }
 
+const MODULE_SEMESTER: Record<string, number> = {
+  "Project A": 1,
+  "Project B": 2,
+  "Project C": 3,
+  "Current Research in HCI I": 1,
+  "Current Research in HCI II": 2,
+  "Current Research in HCI III": 3,
+  "Current Research in HCI IV": 3,
+};
+
+export function moduleSemester(moduleName: string): number | null {
+  return MODULE_SEMESTER[moduleName] ?? null;
+}
+
 export function formatModulePreview(modules: CourseModule[]): string | null {
   if (modules.length === 0) return null;
   if (modules.length === 1) return modules[0].name;
@@ -132,7 +146,13 @@ export function ectsSummary(selected: Course[]): string | null {
   let min = 0;
   let max = 0;
   let known = 0;
+  let research = false;
   for (const course of selected) {
+    if (course.area === "Current Research") {
+      research = true;
+      known += 1;
+      continue;
+    }
     if (course.creditGroup) {
       const current = groups.get(course.creditGroup.id) ?? {
         ects: course.creditGroup.ects,
@@ -154,6 +174,10 @@ export function ectsSummary(selected: Course[]): string | null {
       min += group.ects;
       max += group.ects;
     }
+  }
+  if (research) {
+    min += 6;
+    max += 6;
   }
   if (known === 0) return null;
   const label = min === max ? `${formatAmount(min)} ECTS` : `${formatAmount(min)}–${formatAmount(max)} ECTS`;

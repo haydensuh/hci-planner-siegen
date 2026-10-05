@@ -72,9 +72,11 @@ MODULE_NOTES = {
 AREA_ECTS = {
     "Basics of HCI": 4.5,
     "Consolidation": 4.5,
-    "Current Research": 6,
     "Practice": 9,
 }
+CURRENT_RESEARCH_NOTE = (
+    "Each seminar exam is 3 ECTS. The module is 6 ECTS. Alternative seminars are not added together."
+)
 CONTEXT_9LP = {"3HCIMA013", "3HCIMA014", "3HCIMA022", "3HCIMA023"}
 CONTEXT_6LP = {"3HCIMA015", "3HCIMA019", "3HCIMA020", "3HCIMA024", "3HCIMA025"}
 
@@ -259,6 +261,8 @@ def convert(raw: dict) -> dict:
     if exam:
         course["examCredit"] = {"groupId": exam["id"], "label": exam["label"], "ects": EXAM_ECTS}
     note = MODULE_NOTES.get(raw["code"])
+    if areas[0] == "Current Research":
+        note = CURRENT_RESEARCH_NOTE
     if note:
         course["moduleCreditNote"] = note
     return course
