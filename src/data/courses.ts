@@ -73,7 +73,8 @@ export const courses: Course[] = [
     "location": "US-C 114",
     "lecturers": [
       "Jun.-Prof. Dr.-Ing. Shadan Sadeghian Borojeni"
-    ]
+    ],
+    "lectureGroupFrequency": "Every semester"
   },
   {
     "id": "43uco1111v-ws26-27",
@@ -339,6 +340,7 @@ export const courses: Course[] = [
     "lecturers": [
       "Marios Mouratidis M.Sc."
     ],
+    "lectureGroupFrequency": "Every semester",
     "irregularOffering": true
   },
   {
@@ -389,6 +391,7 @@ export const courses: Course[] = [
     "lecturers": [
       "Leonie Antonia Jahn"
     ],
+    "lectureGroupFrequency": "Every semester",
     "irregularOffering": true
   },
   {
@@ -437,6 +440,7 @@ export const courses: Course[] = [
     ],
     "location": null,
     "lecturers": [],
+    "lectureGroupFrequency": "Every semester",
     "irregularOffering": true
   },
   {
@@ -488,6 +492,7 @@ export const courses: Course[] = [
       "Sourav Bhattacharjee",
       "Univ.-Prof. Dr. Claudia Müller"
     ],
+    "lectureGroupFrequency": "Every semester",
     "irregularOffering": true
   },
   {
@@ -537,7 +542,8 @@ export const courses: Course[] = [
     "location": "US-D 109",
     "lecturers": [
       "Dr. Rainer Wieching"
-    ]
+    ],
+    "lectureGroupFrequency": "Every semester"
   },
   {
     "id": "3wulf0012v-ws26-27",
@@ -586,7 +592,8 @@ export const courses: Course[] = [
     "location": "US-D 207",
     "lecturers": [
       "apl. Prof. Dr. Markus Rohde"
-    ]
+    ],
+    "lectureGroupFrequency": "Every semester"
   },
   {
     "id": "1sowi1406v-ws26-27",
@@ -623,6 +630,7 @@ export const courses: Course[] = [
     "lecturers": [
       "Dr. Jennifer Bosen"
     ],
+    "lectureGroupFrequency": "Summer semester only",
     "irregularOffering": true
   },
   {
@@ -798,6 +806,7 @@ export const courses: Course[] = [
     "lecturers": [
       "Univ.-Prof. Dr. Daniela Wentz"
     ],
+    "lectureGroupFrequency": "Winter semester only",
     "irregularOffering": true
   },
   {
@@ -844,7 +853,8 @@ export const courses: Course[] = [
     "location": "US-F 304",
     "lecturers": [
       "Univ.-Prof. Dr. Erwin Pesch"
-    ]
+    ],
+    "lectureGroupFrequency": "Every semester"
   },
   {
     "id": "43vsa0131v-ws26-27",
@@ -1073,6 +1083,7 @@ export const courses: Course[] = [
     "lecturers": [
       "Univ.-Prof. Dr. Jörg Potthast"
     ],
+    "lectureGroupFrequency": "Summer semester only",
     "irregularOffering": true
   },
   {
@@ -1110,6 +1121,7 @@ export const courses: Course[] = [
     "lecturers": [
       "Prof. Dr. Mine Gencel Bek"
     ],
+    "lectureGroupFrequency": "Summer semester only",
     "irregularOffering": true
   },
   {
@@ -1147,6 +1159,7 @@ export const courses: Course[] = [
     "lecturers": [
       "Univ.-Prof. Dr. Götz Bachmann"
     ],
+    "lectureGroupFrequency": "Summer semester only",
     "irregularOffering": true
   },
   {
@@ -1182,6 +1195,7 @@ export const courses: Course[] = [
     ],
     "location": "AH-A 036/039",
     "lecturers": [],
+    "lectureGroupFrequency": "Summer semester only",
     "irregularOffering": true
   },
   {
@@ -1219,6 +1233,7 @@ export const courses: Course[] = [
     "lecturers": [
       "Dr. Martin Siegler"
     ],
+    "lectureGroupFrequency": "Summer semester only",
     "irregularOffering": true
   },
   {
@@ -1256,6 +1271,7 @@ export const courses: Course[] = [
     "lecturers": [
       "PD Dr. Sandra Nuy"
     ],
+    "lectureGroupFrequency": "Winter semester only",
     "irregularOffering": true
   },
   {
@@ -1293,6 +1309,7 @@ export const courses: Course[] = [
     "lecturers": [
       "PD Dr. Sebastian Gießmann"
     ],
+    "lectureGroupFrequency": "Winter semester only",
     "irregularOffering": true
   },
   {
@@ -1330,6 +1347,7 @@ export const courses: Course[] = [
     "lecturers": [
       "Dr. Christoph Borbach"
     ],
+    "lectureGroupFrequency": "Winter semester only",
     "irregularOffering": true
   },
   {
@@ -1473,7 +1491,8 @@ export const courses: Course[] = [
     "location": "US-F 304",
     "lecturers": [
       "Univ.-Prof. Dr. Joachim Eigler"
-    ]
+    ],
+    "lectureGroupFrequency": "Every semester"
   },
   {
     "id": "43uco1114v-ws26-27",
@@ -1606,6 +1625,7 @@ export const courses: Course[] = [
     "lecturers": [
       "PD Dr. Bernd Bösel"
     ],
+    "lectureGroupFrequency": "Winter semester only",
     "irregularOffering": true
   },
   {
@@ -1839,6 +1859,7 @@ export const courses: Course[] = [
     "lecturers": [
       "Univ.-Prof. Dr. Götz Bachmann"
     ],
+    "lectureGroupFrequency": "Winter semester only",
     "irregularOffering": true
   },
   {
@@ -1876,6 +1897,7 @@ export const courses: Course[] = [
     "lecturers": [
       "Prof. Dr. Mine Gencel Bek"
     ],
+    "lectureGroupFrequency": "Summer semester only",
     "irregularOffering": true
   },
   {
@@ -1913,6 +1935,7 @@ export const courses: Course[] = [
     "lecturers": [
       "Univ.-Prof. Dr. Tristan Thielmann"
     ],
+    "lectureGroupFrequency": "Winter semester only",
     "irregularOffering": true
   },
   {
@@ -1950,6 +1973,7 @@ export const courses: Course[] = [
     "lecturers": [
       "Univ.-Prof. Dr. Dagmar Hoffmann"
     ],
+    "lectureGroupFrequency": "Winter semester only",
     "irregularOffering": true
   },
   {
@@ -2027,6 +2051,7 @@ export const courses: Course[] = [
     "lecturers": [
       "Dr. Christoph Borbach"
     ],
+    "lectureGroupFrequency": "Summer semester only",
     "irregularOffering": true
   },
   {
@@ -2068,6 +2093,7 @@ export const courses: Course[] = [
     "lecturers": [
       "Univ.-Prof. Dr. Matthias Pollmann-Schult"
     ],
+    "lectureGroupFrequency": "Every semester",
     "irregularOffering": true
   },
   {
@@ -2270,6 +2296,7 @@ export const courses: Course[] = [
     ],
     "location": "AH-A 036/039",
     "lecturers": [],
+    "lectureGroupFrequency": "Summer semester only",
     "irregularOffering": true
   },
   {
@@ -2307,6 +2334,7 @@ export const courses: Course[] = [
     "lecturers": [
       "Dr. Elena Pilipets"
     ],
+    "lectureGroupFrequency": "Winter semester only",
     "irregularOffering": true
   },
   {
@@ -2348,6 +2376,7 @@ export const courses: Course[] = [
     "lecturers": [
       "Univ.-Prof. Dr. Matthias Pollmann-Schult"
     ],
+    "lectureGroupFrequency": "Every semester",
     "irregularOffering": true
   },
   {
@@ -2962,6 +2991,7 @@ export const courses: Course[] = [
     ],
     "location": null,
     "lecturers": [],
+    "lectureGroupFrequency": "Every semester",
     "irregularOffering": true
   },
   {
@@ -3145,6 +3175,7 @@ export const courses: Course[] = [
     "lecturers": [
       "Sergei Pashakhin"
     ],
+    "lectureGroupFrequency": "Winter semester only",
     "irregularOffering": true
   },
   {
@@ -3230,6 +3261,7 @@ export const courses: Course[] = [
     "lecturers": [
       "PD Dr. Bernd Bösel"
     ],
+    "lectureGroupFrequency": "Summer semester only",
     "irregularOffering": true
   },
   {
@@ -3316,6 +3348,7 @@ export const courses: Course[] = [
     "lecturers": [
       "Jessica Knodel M.A."
     ],
+    "lectureGroupFrequency": "Every semester",
     "datedGrid": true
   },
   {
@@ -3362,6 +3395,7 @@ export const courses: Course[] = [
     "lecturers": [
       "Dr. Felix Bernhard Carros"
     ],
+    "lectureGroupFrequency": "Every semester",
     "irregularOffering": true
   },
   {
@@ -3408,6 +3442,7 @@ export const courses: Course[] = [
     "lecturers": [
       "Dipl.-Wirt.-Inform. Sven Bittenbinder"
     ],
+    "lectureGroupFrequency": "Every semester",
     "irregularOffering": true
   },
   {
@@ -3454,6 +3489,7 @@ export const courses: Course[] = [
     "lecturers": [
       "Dennis Kirschsieper"
     ],
+    "lectureGroupFrequency": "Every semester",
     "irregularOffering": true
   },
   {
@@ -3500,6 +3536,7 @@ export const courses: Course[] = [
     "lecturers": [
       "Sourav Bhattacharjee"
     ],
+    "lectureGroupFrequency": "Every semester",
     "irregularOffering": true
   },
   {
@@ -3545,6 +3582,7 @@ export const courses: Course[] = [
     "lecturers": [
       "Kyra Malinda Dunkel"
     ],
+    "lectureGroupFrequency": "Every semester",
     "irregularOffering": true
   },
   {
@@ -3591,6 +3629,7 @@ export const courses: Course[] = [
     "lecturers": [
       "Parvin Ghadamighalandari"
     ],
+    "lectureGroupFrequency": "Every semester",
     "irregularOffering": true
   },
   {
@@ -3637,6 +3676,7 @@ export const courses: Course[] = [
     "lecturers": [
       "Jun.-Prof. Dr.-Ing. Shadan Sadeghian Borojeni"
     ],
+    "lectureGroupFrequency": "Every semester",
     "irregularOffering": true,
     "datedGrid": true
   },
@@ -3684,6 +3724,7 @@ export const courses: Course[] = [
     "lecturers": [
       "Kyra Malinda Dunkel"
     ],
+    "lectureGroupFrequency": "Every semester",
     "irregularOffering": true
   },
   {
@@ -3730,6 +3771,7 @@ export const courses: Course[] = [
       "Christian Joachim Spengler M.Sc.",
       "Univ.-Prof. Dr. Marc Hassenzahl"
     ],
+    "lectureGroupFrequency": "Every semester",
     "irregularOffering": true
   }
 ] satisfies Course[];

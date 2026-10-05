@@ -82,8 +82,19 @@ export function formatDatedSession(slot: ScheduleSlot): string {
   return when ? `${when} · ${time}` : time;
 }
 
+function hasSeasonTerm(frequency: string): boolean {
+  return frequency.includes("every semester") || frequency.includes("winter") || frequency.includes("summer");
+}
+
+/** Lecture term when it names a season, otherwise the parent lecture group's term. */
+function seasonText(course: Course): string {
+  const own = course.offeringFrequency?.toLowerCase() ?? "";
+  if (hasSeasonTerm(own)) return own;
+  return course.lectureGroupFrequency?.toLowerCase() || own;
+}
+
 export function formatSeason(course: Course): string | null {
-  const frequency = course.offeringFrequency?.toLowerCase() ?? "";
+  const frequency = seasonText(course);
   if (frequency.includes("every semester")) return "Winter · Summer";
   if (frequency.includes("summer") && !frequency.includes("winter")) return "Summer";
   if (frequency.includes("winter") || course.semesterId.startsWith("WS")) return "Winter";
@@ -92,7 +103,7 @@ export function formatSeason(course: Course): string | null {
 }
 
 export function isSummerOnly(course: Course): boolean {
-  const frequency = course.offeringFrequency?.toLowerCase() ?? "";
+  const frequency = seasonText(course);
   if (frequency.includes("every")) return false;
   if (frequency.includes("summer") && !frequency.includes("winter")) return true;
   return course.semesterId.startsWith("SS");

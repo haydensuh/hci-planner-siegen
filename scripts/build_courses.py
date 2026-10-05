@@ -201,6 +201,8 @@ def convert(raw: dict) -> dict:
     }
     if ects_max is not None:
         course["ectsMax"] = ects_max
+    if raw.get("lectureGroupFrequency"):
+        course["lectureGroupFrequency"] = raw["lectureGroupFrequency"]
     if raw.get("irregularOffering") is True:
         course["irregularOffering"] = True
     if raw.get("datedGrid") is True:

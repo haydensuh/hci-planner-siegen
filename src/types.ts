@@ -42,6 +42,8 @@ export type Course = {
   requirementStatus: string | null;
   recommendedSemesters: number[];
   offeringFrequency: string | null;
+  /** Planner lecture-group term, used when the lecture itself has no winter/summer term. */
+  lectureGroupFrequency?: string;
   irregularOffering?: true;
   datedGrid?: true;
   ects: number | null;

@@ -833,6 +833,12 @@ function CourseDetails({ course }: { course: Course }) {
           <dd>{frequency}</dd>
         </div>
       )}
+      {course.lectureGroupFrequency && (
+        <div>
+          <dt>Lecture group</dt>
+          <dd>{course.lectureGroupFrequency}</dd>
+        </div>
+      )}
       {course.irregularOffering && (
         <div>
           <dt>Irregular offering</dt>

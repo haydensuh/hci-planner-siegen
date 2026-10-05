@@ -1,6 +1,8 @@
 // Extracted from the uploaded unisono M.Sc. HCI study planner (WiSe 2026/27).
 // Unknown/unexposed values are kept as null. Locations are copied only from the
 // WS 2026/27 location list; rooms that list does not name stay null.
+// lectureGroupFrequency is the planner lecture group's term when that lecture
+// does not itself state a winter term, a summer term, or every semester.
 
 export const courses = [
   {
@@ -58,6 +60,7 @@ export const courses = [
     "offeringFrequency": [
       "Every 2nd semester"
     ],
+    "lectureGroupFrequency": "Every semester",
     "irregularOffering": false,
     "schedule": [
       "weekly, Monday, 10/12/26 - 2/1/27 from 16:00 until 18:00"
@@ -320,6 +323,7 @@ export const courses = [
       3
     ],
     "offeringFrequency": [],
+    "lectureGroupFrequency": "Every semester",
     "irregularOffering": true,
     "schedule": [
       "weekly, Monday, 10/12/26 - 2/1/27 from 10:00 until 12:00"
@@ -370,6 +374,7 @@ export const courses = [
       3
     ],
     "offeringFrequency": [],
+    "lectureGroupFrequency": "Every semester",
     "irregularOffering": true,
     "schedule": [
       "weekly, Friday, 10/16/26 - 2/5/27 from 12:00 until 14:00"
@@ -423,6 +428,7 @@ export const courses = [
       3
     ],
     "offeringFrequency": [],
+    "lectureGroupFrequency": "Every semester",
     "irregularOffering": true,
     "schedule": [
       "weekly, Tuesday, 10/13/26 - 2/2/27 from 14:00 until 16:00"
@@ -471,6 +477,7 @@ export const courses = [
       3
     ],
     "offeringFrequency": [],
+    "lectureGroupFrequency": "Every semester",
     "irregularOffering": true,
     "schedule": [
       "weekly, Tuesday, 10/13/26 - 2/2/27 from 14:00 until 16:00"
@@ -524,6 +531,7 @@ export const courses = [
     "offeringFrequency": [
       "Every 2nd semester"
     ],
+    "lectureGroupFrequency": "Every semester",
     "irregularOffering": false,
     "schedule": [
       "weekly, Thursday, 10/15/26 - 2/4/27 from 14:00 until 16:00"
@@ -577,6 +585,7 @@ export const courses = [
     "offeringFrequency": [
       "Every 2nd semester"
     ],
+    "lectureGroupFrequency": "Every semester",
     "irregularOffering": false,
     "schedule": [
       "fortnightly, Tuesday, 10/13/26 - 2/2/27 from 12:00 until 14:00"
@@ -614,6 +623,7 @@ export const courses = [
       3
     ],
     "offeringFrequency": [],
+    "lectureGroupFrequency": "Summer semester only",
     "irregularOffering": true,
     "schedule": [
       "weekly, Thursday, 10/15/26 - 2/4/27 from 12:00 until 14:00"
@@ -797,6 +807,7 @@ export const courses = [
       3
     ],
     "offeringFrequency": [],
+    "lectureGroupFrequency": "Winter semester only",
     "irregularOffering": true,
     "schedule": [
       "weekly, Thursday, 10/15/26 - 2/4/27 from 08:00 until 10:00"
@@ -832,6 +843,7 @@ export const courses = [
     "offeringFrequency": [
       "Every 2nd semester"
     ],
+    "lectureGroupFrequency": "Every semester",
     "irregularOffering": false,
     "schedule": [
       "weekly, Monday, 10/12/26 - 2/1/27 from 16:00 until 18:00",
@@ -1061,6 +1073,7 @@ export const courses = [
       3
     ],
     "offeringFrequency": [],
+    "lectureGroupFrequency": "Summer semester only",
     "irregularOffering": true,
     "schedule": [
       "weekly, Friday, 10/16/26 - 2/5/27 from 10:00 until 12:00"
@@ -1095,6 +1108,7 @@ export const courses = [
       3
     ],
     "offeringFrequency": [],
+    "lectureGroupFrequency": "Summer semester only",
     "irregularOffering": true,
     "schedule": [
       "weekly, Monday, 10/12/26 - 2/1/27 from 14:00 until 16:00"
@@ -1127,6 +1141,7 @@ export const courses = [
       3
     ],
     "offeringFrequency": [],
+    "lectureGroupFrequency": "Summer semester only",
     "irregularOffering": true,
     "schedule": [
       "fortnightly, Wednesday, 10/21/26 - 2/3/27 from 14:00 until 18:00"
@@ -1161,6 +1176,7 @@ export const courses = [
       3
     ],
     "offeringFrequency": [],
+    "lectureGroupFrequency": "Summer semester only",
     "irregularOffering": true,
     "schedule": [
       "weekly, Thursday, 10/15/26 - 2/4/27 from 16:00 until 18:00"
@@ -1193,6 +1209,7 @@ export const courses = [
       3
     ],
     "offeringFrequency": [],
+    "lectureGroupFrequency": "Summer semester only",
     "irregularOffering": true,
     "schedule": [
       "weekly, Friday, 10/16/26 - 2/5/27 from 10:00 until 12:00"
@@ -1227,6 +1244,7 @@ export const courses = [
       3
     ],
     "offeringFrequency": [],
+    "lectureGroupFrequency": "Winter semester only",
     "irregularOffering": true,
     "schedule": [
       "weekly, Tuesday, 10/13/26 - 2/2/27 from 14:00 until 16:00"
@@ -1261,6 +1279,7 @@ export const courses = [
       3
     ],
     "offeringFrequency": [],
+    "lectureGroupFrequency": "Winter semester only",
     "irregularOffering": true,
     "schedule": [
       "weekly, Thursday, 10/15/26 - 2/4/27 from 10:00 until 12:00"
@@ -1295,6 +1314,7 @@ export const courses = [
       3
     ],
     "offeringFrequency": [],
+    "lectureGroupFrequency": "Winter semester only",
     "irregularOffering": true,
     "schedule": [
       "weekly, Thursday, 10/15/26 - 2/4/27 from 12:00 until 14:00"
@@ -1442,6 +1462,7 @@ export const courses = [
     "offeringFrequency": [
       "Every 2nd semester"
     ],
+    "lectureGroupFrequency": "Every semester",
     "irregularOffering": false,
     "schedule": [
       "weekly, Wednesday, 10/14/26 - 2/3/27 from 10:00 until 12:00"
@@ -1568,6 +1589,7 @@ export const courses = [
       3
     ],
     "offeringFrequency": [],
+    "lectureGroupFrequency": "Winter semester only",
     "irregularOffering": true,
     "schedule": [
       "weekly, Tuesday, 10/13/26 - 2/2/27 from 16:00 until 18:00"
@@ -1823,6 +1845,7 @@ export const courses = [
       3
     ],
     "offeringFrequency": [],
+    "lectureGroupFrequency": "Winter semester only",
     "irregularOffering": true,
     "schedule": [
       "weekly, Tuesday, 10/13/26 - 2/2/27 from 16:00 until 18:00"
@@ -1857,6 +1880,7 @@ export const courses = [
       3
     ],
     "offeringFrequency": [],
+    "lectureGroupFrequency": "Summer semester only",
     "irregularOffering": true,
     "schedule": [
       "weekly, Monday, 10/12/26 - 2/1/27 from 12:00 until 14:00"
@@ -1891,6 +1915,7 @@ export const courses = [
       3
     ],
     "offeringFrequency": [],
+    "lectureGroupFrequency": "Winter semester only",
     "irregularOffering": true,
     "schedule": [
       "weekly, Tuesday, 10/13/26 - 2/2/27 from 10:00 until 12:00"
@@ -1924,6 +1949,7 @@ export const courses = [
       3
     ],
     "offeringFrequency": [],
+    "lectureGroupFrequency": "Winter semester only",
     "irregularOffering": true,
     "schedule": [
       "weekly, Wednesday, 10/14/26 - 2/3/27 from 16:00 until 18:00"
@@ -1958,6 +1984,7 @@ export const courses = [
       3
     ],
     "offeringFrequency": [],
+    "lectureGroupFrequency": "Summer semester only",
     "irregularOffering": true,
     "schedule": [
       "Friday, 10/23/26 from 12:00 to 14:00",
@@ -2000,6 +2027,7 @@ export const courses = [
       3
     ],
     "offeringFrequency": [],
+    "lectureGroupFrequency": "Every semester",
     "irregularOffering": true,
     "schedule": [
       "weekly, Thursday, 10/15/26 - 2/4/27 from 12:00 until 14:00"
@@ -2200,6 +2228,7 @@ export const courses = [
       3
     ],
     "offeringFrequency": [],
+    "lectureGroupFrequency": "Summer semester only",
     "irregularOffering": true,
     "schedule": [
       "weekly, Thursday, 10/15/26 - 2/4/27 from 14:00 until 16:00"
@@ -2231,6 +2260,7 @@ export const courses = [
       3
     ],
     "offeringFrequency": [],
+    "lectureGroupFrequency": "Winter semester only",
     "irregularOffering": true,
     "schedule": [
       "weekly, Tuesday, 10/13/26 - 2/2/27 from 14:00 until 16:00"
@@ -2269,6 +2299,7 @@ export const courses = [
       3
     ],
     "offeringFrequency": [],
+    "lectureGroupFrequency": "Every semester",
     "irregularOffering": true,
     "schedule": [
       "weekly, Tuesday, 10/13/26 - 2/2/27 from 14:00 until 16:00"
@@ -2804,6 +2835,7 @@ export const courses = [
       3
     ],
     "offeringFrequency": [],
+    "lectureGroupFrequency": "Every semester",
     "irregularOffering": true,
     "schedule": [
       "Saturday, 11/7/26 from 10:00 to 14:30",
@@ -2987,6 +3019,7 @@ export const courses = [
       3
     ],
     "offeringFrequency": [],
+    "lectureGroupFrequency": "Winter semester only",
     "irregularOffering": true,
     "schedule": [
       "weekly, Monday, 10/12/26 - 2/1/27 from 16:00 until 18:00"
@@ -3068,6 +3101,7 @@ export const courses = [
       3
     ],
     "offeringFrequency": [],
+    "lectureGroupFrequency": "Summer semester only",
     "irregularOffering": true,
     "schedule": [
       "weekly, Tuesday, 10/13/26 - 2/2/27 from 10:00 until 12:00"
@@ -3103,6 +3137,7 @@ export const courses = [
     "offeringFrequency": [
       "Every 2nd semester"
     ],
+    "lectureGroupFrequency": "Every semester",
     "irregularOffering": false,
     "datedGrid": true,
     "schedule": [
@@ -3149,6 +3184,7 @@ export const courses = [
       3
     ],
     "offeringFrequency": [],
+    "lectureGroupFrequency": "Every semester",
     "irregularOffering": true,
     "schedule": [
       "Friday, 10/16/26 from 10:00 to 12:00"
@@ -3193,6 +3229,7 @@ export const courses = [
       3
     ],
     "offeringFrequency": [],
+    "lectureGroupFrequency": "Every semester",
     "irregularOffering": true,
     "schedule": [
       "Thursday, 10/15/26 from 10:00 to 12:00"
@@ -3237,6 +3274,7 @@ export const courses = [
       3
     ],
     "offeringFrequency": [],
+    "lectureGroupFrequency": "Every semester",
     "irregularOffering": true,
     "schedule": [
       "Thursday, 10/15/26 from 10:00 to 12:00"
@@ -3279,6 +3317,7 @@ export const courses = [
       3
     ],
     "offeringFrequency": [],
+    "lectureGroupFrequency": "Every semester",
     "irregularOffering": true,
     "schedule": [
       "fortnightly, Tuesday, 10/13/26 - 2/2/27 from 16:00 until 18:00"
@@ -3320,6 +3359,7 @@ export const courses = [
       3
     ],
     "offeringFrequency": [],
+    "lectureGroupFrequency": "Every semester",
     "irregularOffering": true,
     "schedule": [
       "Monday, 10/12/26 from 12:00 to 14:00"
@@ -3361,6 +3401,7 @@ export const courses = [
       3
     ],
     "offeringFrequency": [],
+    "lectureGroupFrequency": "Every semester",
     "irregularOffering": true,
     "schedule": [
       "weekly, Monday, 10/12/26 - 2/1/27 from 08:00 until 10:00"
@@ -3395,6 +3436,7 @@ export const courses = [
       3
     ],
     "offeringFrequency": [],
+    "lectureGroupFrequency": "Every semester",
     "irregularOffering": true,
     "datedGrid": true,
     "schedule": [
@@ -3437,6 +3479,7 @@ export const courses = [
       3
     ],
     "offeringFrequency": [],
+    "lectureGroupFrequency": "Every semester",
     "irregularOffering": true,
     "schedule": [
       "Monday, 10/12/26 from 12:00 to 14:00"
@@ -3478,6 +3521,7 @@ export const courses = [
       3
     ],
     "offeringFrequency": [],
+    "lectureGroupFrequency": "Every semester",
     "irregularOffering": true,
     "schedule": [
       "weekly, Wednesday, 10/14/26 - 2/3/27 from 09:00 until 12:00"
