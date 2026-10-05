@@ -19,8 +19,6 @@ export default function App() {
   const [compareOpen, setCompareOpen] = useState(false);
   const [openIds, setOpenIds] = useState<Set<string>>(() => new Set());
   const [toast, setToast] = useState<string | null>(null);
-  const [notesOpen, setNotesOpen] = useState(false);
-  const notesRef = useRef<HTMLDivElement>(null);
   const [reveal, setReveal] = useState<{ id: string; nonce: number } | null>(null);
   const filteredIds = useRef<Set<string> | null>(null);
   const browseFiltered = useRef(false);
