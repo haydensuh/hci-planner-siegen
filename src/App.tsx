@@ -6,6 +6,7 @@ import { Timetable } from "./components/Timetable";
 import { VersionBar } from "./components/VersionBar";
 import { courses } from "./data/courses";
 import { semesterById, SEMESTERS } from "./data/semesters";
+import { isSummerOnly } from "./lib/format";
 import { findConflicts } from "./lib/schedule";
 import { usePlanner } from "./lib/usePlanner";
 import type { Course } from "./types";
@@ -20,6 +21,7 @@ export default function App() {
   const [toast, setToast] = useState<string | null>(null);
   const [reveal, setReveal] = useState<{ id: string; nonce: number } | null>(null);
   const filteredIds = useRef<Set<string> | null>(null);
+  const browseFiltered = useRef(false);
   const toastTimer = useRef<number | null>(null);
 
   const semesterCourses = useMemo(
@@ -48,7 +50,13 @@ export default function App() {
   }
 
   function focusCourse(courseId: string) {
-    if (filteredIds.current && !filteredIds.current.has(courseId)) {
+    const course = coursesById.get(courseId);
+    const listed = filteredIds.current?.has(courseId) ?? true;
+    if (!listed && browseFiltered.current) {
+      showToast("A search or filter is applied, so this course’s details can’t be shown.");
+      return;
+    }
+    if (!listed && course && !isSummerOnly(course)) {
       showToast("A search or filter is applied, so this course’s details can’t be shown.");
       return;
     }
@@ -128,8 +136,9 @@ export default function App() {
               return next;
             });
           }}
-          onFilteredIdsChange={(ids) => {
+          onFilteredIdsChange={(ids, filtersActive) => {
             filteredIds.current = new Set(ids);
+            browseFiltered.current = filtersActive;
           }}
           reveal={reveal}
         />

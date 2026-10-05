@@ -36,7 +36,7 @@ type CourseExplorerProps = {
   onToggle: (courseId: string) => void;
   onToggleDetails: (courseId: string) => void;
   onSetDetails: (courseIds: string[], open: boolean) => void;
-  onFilteredIdsChange: (ids: string[]) => void;
+  onFilteredIdsChange: (ids: string[], browseFiltered: boolean) => void;
   reveal: { id: string; nonce: number } | null;
 };
 
@@ -97,7 +97,7 @@ export function CourseExplorer({
     const needle = query.trim().toLowerCase();
     return courses
       .filter((course) => {
-        if (isSummerOnly(course)) return false;
+        if (isSummerOnly(course) && course.id !== reveal?.id) return false;
         if (area !== "all" && course.area !== area) return false;
         if (activeModule !== "all" && !course.modules.some((module) => module.name === activeModule)) return false;
         if (activeDay !== "all" || activeTime !== "all") {
@@ -123,13 +123,17 @@ export function CourseExplorer({
         return haystack.includes(needle);
       })
       .sort((a, b) => areaRank(a.area) - areaRank(b.area) || a.name.localeCompare(b.name, "en") || (a.variant ?? "").localeCompare(b.variant ?? "", "en") || a.code.localeCompare(b.code));
-  }, [activeDay, activeModule, activeTime, area, courses, query]);
+  }, [activeDay, activeModule, activeTime, area, courses, query, reveal]);
 
+  const browseFiltered = query.trim() !== "" || area !== "all" || activeModule !== "all" || activeDay !== "all" || activeTime !== "all";
   const onFilteredIdsChangeRef = useRef(onFilteredIdsChange);
   onFilteredIdsChangeRef.current = onFilteredIdsChange;
   useEffect(() => {
-    onFilteredIdsChangeRef.current(filtered.map((course) => course.id));
-  }, [filtered]);
+    onFilteredIdsChangeRef.current(
+      filtered.map((course) => course.id),
+      browseFiltered,
+    );
+  }, [browseFiltered, filtered]);
 
   const groups = useMemo(() => {
     const byArea = new Map<string, Map<string, { code: string; name: string; courses: Course[] }>>();
@@ -192,7 +196,6 @@ export function CourseExplorer({
   }, [activeDay, activeModule, activeTime, area, groups, query]);
 
   const activeFilterCount = [area !== "all", activeModule !== "all", activeDay !== "all", activeTime !== "all"].filter(Boolean).length;
-  const browseFiltered = query.trim() !== "" || activeFilterCount > 0;
   const selectedCount = courses.filter((course) => selectedIds.includes(course.id)).length;
   const hiddenSelected = browseFiltered
     ? courses.filter(
