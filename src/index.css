@@ -376,6 +376,36 @@ h1 {
   color: var(--ink);
 }
 
+.track-switch.is-locked {
+  position: relative;
+  z-index: 4;
+  cursor: not-allowed;
+}
+
+.track-switch.is-locked button { pointer-events: none; }
+
+.track-tooltip {
+  display: none;
+  position: absolute;
+  z-index: 5;
+  top: calc(100% + 8px);
+  left: 0;
+  width: max-content;
+  max-width: 280px;
+  margin: 0;
+  padding: 8px 10px;
+  border-radius: 10px;
+  background: var(--ink);
+  color: #fff;
+  font-size: 0.8rem;
+  font-weight: 500;
+  line-height: 1.4;
+  box-shadow: 0 8px 24px rgba(25, 31, 40, 0.18);
+  white-space: normal;
+}
+
+.track-switch.is-locked:hover .track-tooltip { display: block; }
+
 .track-note,
 .track-semester,
 .catalog-empty {
@@ -466,6 +496,13 @@ h1 {
   border-color: #c5d5e2;
   background: var(--accent-soft);
 }
+
+.course-lock {
+  display: block;
+  cursor: not-allowed;
+}
+
+.course-lock .course-select { pointer-events: none; }
 
 .course-select {
   width: 100%;

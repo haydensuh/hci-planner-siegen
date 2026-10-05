@@ -28,6 +28,35 @@ import type { Course, Weekday } from "../types";
 
 const WEEKDAYS: Weekday[] = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
 
+const NINE_LP_LOCK = "9 LP is already selected in this version, so a 6 LP course can’t be selected.";
+const SIX_LP_LOCK = "6 LP is already selected in this version, so a 9 LP course can’t be selected.";
+const MIX_LP_LOCK = "6 LP and 9 LP courses can’t be mixed in this version.";
+
+function isSixLpCourse(courseId: string) {
+  return lp6Course(courseId) !== null;
+}
+
+function isNineLpCourse(courseId: string) {
+  return lp9Placement(courseId) !== null && !isSixLpCourse(courseId);
+}
+
+function interdisciplinaryChoice(selectedIds: string[]): "9" | "6" | "mix" | null {
+  const six = selectedIds.some(isSixLpCourse);
+  const nine = selectedIds.some(isNineLpCourse);
+  if (six && nine) return "mix";
+  if (six) return "6";
+  if (nine) return "9";
+  return null;
+}
+
+function selectionLock(courseId: string, selectedIds: string[]): string | null {
+  if (selectedIds.includes(courseId)) return null;
+  const choice = interdisciplinaryChoice(selectedIds);
+  if ((choice === "9" || choice === "mix") && isSixLpCourse(courseId)) return NINE_LP_LOCK;
+  if ((choice === "6" || choice === "mix") && isNineLpCourse(courseId)) return SIX_LP_LOCK;
+  return null;
+}
+
 type CourseExplorerProps = {
   courses: Course[];
   selectedIds: string[];
@@ -167,8 +196,19 @@ export function CourseExplorer({
 
   const visible9 = filtered.filter((course) => lp9Placement(course.id)).length;
   const visible6 = filtered.filter((course) => lp6Course(course.id)).length;
+  const trackChoice = interdisciplinaryChoice(selectedIds);
+  const trackLockReason =
+    trackChoice === "9" ? NINE_LP_LOCK : trackChoice === "6" ? SIX_LP_LOCK : trackChoice === "mix" ? MIX_LP_LOCK : null;
   const shownTrack: "9" | "6" =
-    track === "9" && visible9 === 0 && visible6 > 0 ? "6" : track === "6" && visible6 === 0 && visible9 > 0 ? "9" : track;
+    trackChoice === "9"
+      ? "9"
+      : trackChoice === "6"
+        ? "6"
+        : track === "9" && visible9 === 0 && visible6 > 0
+          ? "6"
+          : track === "6" && visible6 === 0 && visible9 > 0
+            ? "9"
+            : track;
 
   const listedGroups = useMemo(() => {
     const needle = query.trim().toLowerCase();
@@ -440,6 +480,7 @@ export function CourseExplorer({
                     <InterdisciplinaryCatalog
                       courses={courses}
                       shownTrack={shownTrack}
+                      trackLockReason={trackLockReason}
                       onTrack={setTrack}
                       filteredIds={visibleIds}
                       query={query}
@@ -539,6 +580,7 @@ function CourseArticle({
   open,
   extra,
   showModules,
+  lockReason,
   onToggle,
   onToggleDetails,
 }: {
@@ -547,12 +589,23 @@ function CourseArticle({
   open: boolean;
   extra?: string;
   showModules: boolean;
+  lockReason?: string | null;
   onToggle: (courseId: string) => void;
   onToggleDetails: (courseId: string) => void;
 }) {
   return (
     <article className={selected ? "course is-selected" : "course"}>
-      <button type="button" className="course-select" aria-pressed={selected} onClick={() => onToggle(course.id)}>
+      <span className={lockReason ? "course-lock" : undefined} title={lockReason ?? undefined}>
+      <button
+        type="button"
+        className="course-select"
+        aria-pressed={selected}
+        disabled={Boolean(lockReason)}
+        onClick={() => {
+          if (lockReason) return;
+          onToggle(course.id);
+        }}
+      >
         <span className="course-copy">
           <span className="course-name">
             {course.name}
@@ -568,6 +621,7 @@ function CourseArticle({
         </span>
         <span className="check" aria-hidden="true" />
       </button>
+      </span>
       <button type="button" className="details-toggle" aria-expanded={open} onClick={() => onToggleDetails(course.id)}>
         {open ? "Hide details" : "Details"}
       </button>
@@ -579,6 +633,7 @@ function CourseArticle({
 function InterdisciplinaryCatalog({
   courses,
   shownTrack,
+  trackLockReason,
   onTrack,
   filteredIds,
   query,
@@ -592,6 +647,7 @@ function InterdisciplinaryCatalog({
 }: {
   courses: Course[];
   shownTrack: "9" | "6";
+  trackLockReason: string | null;
   onTrack: (track: "9" | "6") => void;
   filteredIds: string[];
   query: string;
@@ -607,6 +663,7 @@ function InterdisciplinaryCatalog({
   const needle = query.trim().toLowerCase();
 
   function renderCourse(course: Course, extra?: string) {
+    const lockReason = selectionLock(course.id, selectedIds);
     return (
       <li key={course.id} id={`course-${course.id}`}>
         <CourseArticle
@@ -615,6 +672,7 @@ function InterdisciplinaryCatalog({
           open={openIds.has(course.id)}
           extra={extra}
           showModules={false}
+          lockReason={lockReason}
           onToggle={onToggle}
           onToggleDetails={onToggleDetails}
         />
@@ -636,13 +694,23 @@ function InterdisciplinaryCatalog({
   return (
     <div className="track-wrap">
       <div className="track-bar">
-        <div className="track-switch" role="group" aria-label="Credit track">
-          <button type="button" aria-pressed={shownTrack === "9"} onClick={() => onTrack("9")}>
+        <div
+          className={trackLockReason ? "track-switch is-locked" : "track-switch"}
+          role="group"
+          aria-label="Credit track"
+          aria-describedby={trackLockReason ? "track-lock-reason" : undefined}
+        >
+          <button type="button" aria-pressed={shownTrack === "9"} disabled={trackLockReason !== null} onClick={() => onTrack("9")}>
             9 LP
           </button>
-          <button type="button" aria-pressed={shownTrack === "6"} onClick={() => onTrack("6")}>
+          <button type="button" aria-pressed={shownTrack === "6"} disabled={trackLockReason !== null} onClick={() => onTrack("6")}>
             6 LP
           </button>
+          {trackLockReason && (
+            <p id="track-lock-reason" className="track-tooltip" role="tooltip">
+              {trackLockReason}
+            </p>
+          )}
         </div>
         <p className="track-note">{TRACK_RULE}</p>
       </div>
