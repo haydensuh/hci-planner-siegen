@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 """Turn the Unisono study-planner extract into typed course data.
 
-Unknown values stay null. ECTS comes from an explicit course credit, then a
-fixed area credit, then an interdisciplinary module rule, and otherwise only
-when every module name lists the same LP figure. Future semesters are never
-inferred.
+Unknown values stay null. Interdisciplinary credits follow the 17.09.2026
+overview: a stated course credit, otherwise a module total shared by every
+required course. Other ECTS comes from a fixed area credit, then only when
+every module name lists the same LP figure. Future semesters are never inferred.
 """
 
 from __future__ import annotations
@@ -32,8 +32,42 @@ BLOCK = re.compile(
     r"^block date,\s+(.+?)\s+from\s+(\d{1,2}:\d{2})\s+until\s+(\d{1,2}:\d{2})$"
 )
 LP = re.compile(r"\((\d+)\s*LP\)")
-COURSE_ECTS = {
-    "1MEWI3830V": 9,  # Ethnographies of AI
+# 17.09.2026 interdisciplinary overview. A course figure is set only when that
+# document states it. A module total with no per-course split stays on the group.
+EXPLICIT_ECTS = {
+    "999F00173V": 3,  # Introduction to Academic Writing
+    "999F00174V": 3,  # Academic Writing
+    "999F00165V": 3,  # English C1.1
+    "999F00167V": 3,  # English C1.2
+    "999F5AA98V": 3,  # SiegMUN
+    "999K25005V": 3,  # Change Communication
+}
+BUNDLES = (
+    {"id": "deep-learning", "label": "Deep Learning", "ects": 6, "codes": ("43VSA0131V", "43VSA0132V")},
+    {"id": "embedded-control", "label": "Embedded Control", "ects": 9, "codes": ("43EMS0030V", "43EMS0031V")},
+    {"id": "intro-programming", "label": "Introduction to Programming", "ects": 9, "codes": ("43UCO1114V", "43UCO1115V")},
+    {"id": "nuts-and-bolts", "label": "Nuts and Bolts of Business Plan", "ects": 9, "codes": ("3MOOG0023V", "3MOOG0021V")},
+    {"id": "statistics", "label": "Statistics", "ects": 9, "codes": ("1SOWI1002V", "1SOWI1003V")},
+)
+BUNDLE_BY_CODE = {code: bundle for bundle in BUNDLES for code in bundle["codes"]}
+# One study performance is 3 ECTS. One exam worth 3 ECTS belongs to one seminar.
+EXAM_MODULES = (
+    {"id": "media-cultural-theory", "label": "Media and Cultural Theory", "codes": ("1MEWI3837V", "1MEWI3842V", "1MEWI3858V")},
+    {"id": "media-aesthetics", "label": "Media Aesthetics", "codes": ("1MEWI3835V", "1MEWI3829V")},
+    {"id": "media-history", "label": "Media History and Media Historiography", "codes": ("1MEWI3828V", "1MEWI3832V")},
+    {"id": "cultural-sociology", "label": "Cultural Sociology", "codes": ("1MEWI3834V", "1SOWI1404V", "1MEWI3825V")},
+    {"id": "data-platforms", "label": "Data, Platforms and Digital Methods", "codes": ("1MEWI3838V", "1MEWI3856V")},
+    {"id": "science-technology-media", "label": "Science, Technology and Media Studies", "codes": ("1MEWI3809V", "1SOWI1406V", "1MEWI3826V")},
+    {"id": "digital-anthropology", "label": "Digital Anthropology", "codes": ("1MEWI3831V", "1MEWI3843V", "1MEWI3830V")},
+    {"id": "digital-explorations", "label": "Digital Explorations Lab", "codes": ("1MEWI3853V", "1MEWI3840V")},
+)
+EXAM_BY_CODE = {code: module for module in EXAM_MODULES for code in module["codes"]}
+EXAM_ECTS = 3
+MODULE_NOTES = {
+    "3EIGLE108V": "New Media Management is 9 ECTS. All courses in the module have to be completed before the credits count.",
+    "3EIGLE109V": "New Media Management is 9 ECTS. All courses in the module have to be completed before the credits count.",
+    "3PESCH101V": "Decision Support is 9 ECTS. All courses in the module have to be completed before the credits count.",
+    "3NIEHA001V": "Operational Information Systems is 9 ECTS. All courses in the module have to be completed before the credits count.",
 }
 AREA_ECTS = {
     "Basics of HCI": 4.5,
@@ -129,8 +163,12 @@ def context_ects(modules: list[dict]) -> tuple[int | None, int | None]:
 
 
 def credits_for(code: str, area: str, modules: list[dict]) -> tuple[float | None, int | None]:
-    if code in COURSE_ECTS:
-        return COURSE_ECTS[code], None
+    if code in EXPLICIT_ECTS:
+        return EXPLICIT_ECTS[code], None
+    if code in BUNDLE_BY_CODE or code in MODULE_NOTES:
+        return None, None
+    if code in EXAM_BY_CODE:
+        return EXAM_ECTS, None
     if area in AREA_ECTS:
         return AREA_ECTS[area], None
     low, high = context_ects(modules)
@@ -209,6 +247,20 @@ def convert(raw: dict) -> dict:
         course["datedGrid"] = True
     if raw.get("variant"):
         course["variant"] = raw["variant"]
+    bundle = BUNDLE_BY_CODE.get(raw["code"])
+    if bundle:
+        course["creditGroup"] = {
+            "id": bundle["id"],
+            "label": bundle["label"],
+            "ects": bundle["ects"],
+            "parts": len(bundle["codes"]),
+        }
+    exam = EXAM_BY_CODE.get(raw["code"])
+    if exam:
+        course["examCredit"] = {"groupId": exam["id"], "label": exam["label"], "ects": EXAM_ECTS}
+    note = MODULE_NOTES.get(raw["code"])
+    if note:
+        course["moduleCreditNote"] = note
     return course
 
 

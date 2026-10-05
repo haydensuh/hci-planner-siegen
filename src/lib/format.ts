@@ -121,13 +121,81 @@ export function formatEcts(course: Course): string | null {
   return String(course.ects);
 }
 
+function formatAmount(value: number): string {
+  const rounded = Math.round(value * 10) / 10;
+  return Number.isInteger(rounded) ? String(rounded) : String(rounded);
+}
+
 export function ectsSummary(selected: Course[]): string | null {
   if (selected.length === 0) return "0 ECTS";
-  const known = selected.filter((course) => course.ects != null);
-  if (known.length === 0) return null;
-  const min = known.reduce((total, course) => total + (course.ects ?? 0), 0);
-  const max = known.reduce((total, course) => total + (course.ectsMax ?? course.ects ?? 0), 0);
-  const label = min === max ? `${min} ECTS` : `${min}–${max} ECTS`;
-  if (known.length === selected.length) return label;
-  return `${label} from ${known.length} of ${selected.length}`;
+  const groups = new Map<string, { ects: number; parts: number; count: number }>();
+  let min = 0;
+  let max = 0;
+  let known = 0;
+  for (const course of selected) {
+    if (course.creditGroup) {
+      const current = groups.get(course.creditGroup.id) ?? {
+        ects: course.creditGroup.ects,
+        parts: course.creditGroup.parts,
+        count: 0,
+      };
+      current.count += 1;
+      groups.set(course.creditGroup.id, current);
+      known += 1;
+      continue;
+    }
+    if (course.ects == null) continue;
+    known += 1;
+    min += course.ects;
+    max += course.ectsMax ?? course.ects;
+  }
+  for (const group of groups.values()) {
+    if (group.count === group.parts) {
+      min += group.ects;
+      max += group.ects;
+    }
+  }
+  if (known === 0) return null;
+  const label = min === max ? `${formatAmount(min)} ECTS` : `${formatAmount(min)}–${formatAmount(max)} ECTS`;
+  if (known === selected.length) return label;
+  return `${label} from ${known} of ${selected.length}`;
+}
+
+export type CreditNotice = { id: string; title: string; body: string };
+
+export function creditNotices(selected: Course[]): CreditNotice[] {
+  const notices: CreditNotice[] = [];
+  const groups = new Map<string, { label: string; ects: number; parts: number; count: number }>();
+  const exams = new Map<string, { label: string; ects: number }>();
+  for (const course of selected) {
+    if (course.creditGroup) {
+      const current = groups.get(course.creditGroup.id) ?? {
+        label: course.creditGroup.label,
+        ects: course.creditGroup.ects,
+        parts: course.creditGroup.parts,
+        count: 0,
+      };
+      current.count += 1;
+      groups.set(course.creditGroup.id, current);
+    }
+    if (course.examCredit && !exams.has(course.examCredit.groupId)) {
+      exams.set(course.examCredit.groupId, { label: course.examCredit.label, ects: course.examCredit.ects });
+    }
+  }
+  for (const [id, group] of groups) {
+    if (group.count >= group.parts) continue;
+    notices.push({
+      id: `group-${id}`,
+      title: group.label,
+      body: `${group.ects} ECTS once all ${group.parts} courses are selected. ${group.count} of ${group.parts} selected.`,
+    });
+  }
+  for (const [id, exam] of exams) {
+    notices.push({
+      id: `exam-${id}`,
+      title: exam.label,
+      body: `Credits are recognized only when you also take the exam (${exam.ects} ECTS). You choose which seminar the exam belongs to.`,
+    });
+  }
+  return notices;
 }

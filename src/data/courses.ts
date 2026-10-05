@@ -613,7 +613,7 @@ export const courses: Course[] = [
       3
     ],
     "offeringFrequency": null,
-    "ects": null,
+    "ects": 3,
     "schedule": [
       {
         "day": "Thursday",
@@ -631,7 +631,12 @@ export const courses: Course[] = [
       "Dr. Jennifer Bosen"
     ],
     "lectureGroupFrequency": "Summer semester only",
-    "irregularOffering": true
+    "irregularOffering": true,
+    "examCredit": {
+      "groupId": "science-technology-media",
+      "label": "Science, Technology and Media Studies",
+      "ects": 3
+    }
   },
   {
     "id": "999k25005v-ws26-27",
@@ -667,7 +672,7 @@ export const courses: Course[] = [
       3
     ],
     "offeringFrequency": "Winter semester only",
-    "ects": 6,
+    "ects": 3,
     "schedule": [
       {
         "day": null,
@@ -734,7 +739,7 @@ export const courses: Course[] = [
       3
     ],
     "offeringFrequency": "Every semester",
-    "ects": 6,
+    "ects": 3,
     "schedule": [
       {
         "day": "Friday",
@@ -768,8 +773,7 @@ export const courses: Course[] = [
       }
     ],
     "location": "F-S 011",
-    "lecturers": [],
-    "ectsMax": 9
+    "lecturers": []
   },
   {
     "id": "1mewi3828v-ws26-27",
@@ -789,7 +793,7 @@ export const courses: Course[] = [
       3
     ],
     "offeringFrequency": null,
-    "ects": null,
+    "ects": 3,
     "schedule": [
       {
         "day": "Thursday",
@@ -807,7 +811,12 @@ export const courses: Course[] = [
       "Univ.-Prof. Dr. Daniela Wentz"
     ],
     "lectureGroupFrequency": "Winter semester only",
-    "irregularOffering": true
+    "irregularOffering": true,
+    "examCredit": {
+      "groupId": "media-history",
+      "label": "Media History and Media Historiography",
+      "ects": 3
+    }
   },
   {
     "id": "3pesch101v-ws26-27",
@@ -854,7 +863,8 @@ export const courses: Course[] = [
     "lecturers": [
       "Univ.-Prof. Dr. Erwin Pesch"
     ],
-    "lectureGroupFrequency": "Every semester"
+    "lectureGroupFrequency": "Every semester",
+    "moduleCreditNote": "Decision Support is 9 ECTS. All courses in the module have to be completed before the credits count."
   },
   {
     "id": "43vsa0131v-ws26-27",
@@ -886,7 +896,7 @@ export const courses: Course[] = [
       3
     ],
     "offeringFrequency": "Winter semester only",
-    "ects": 6,
+    "ects": null,
     "schedule": [
       {
         "day": "Thursday",
@@ -902,7 +912,13 @@ export const courses: Course[] = [
     "location": "H-C 8326",
     "lecturers": [
       "Univ.-Prof. Dr. rer. nat. Michael Möller"
-    ]
+    ],
+    "creditGroup": {
+      "id": "deep-learning",
+      "label": "Deep Learning",
+      "ects": 6,
+      "parts": 2
+    }
   },
   {
     "id": "43vsa0132v-ws26-27",
@@ -934,7 +950,7 @@ export const courses: Course[] = [
       3
     ],
     "offeringFrequency": "Winter semester only",
-    "ects": 6,
+    "ects": null,
     "schedule": [
       {
         "day": "Wednesday",
@@ -950,7 +966,13 @@ export const courses: Course[] = [
     "location": "H-C 8326",
     "lecturers": [
       "Jan Philipp Schneider M.Sc."
-    ]
+    ],
+    "creditGroup": {
+      "id": "deep-learning",
+      "label": "Deep Learning",
+      "ects": 6,
+      "parts": 2
+    }
   },
   {
     "id": "43ems0030v-ws26-27",
@@ -982,7 +1004,7 @@ export const courses: Course[] = [
       3
     ],
     "offeringFrequency": "Winter semester only",
-    "ects": 9,
+    "ects": null,
     "schedule": [
       {
         "day": "Thursday",
@@ -998,7 +1020,13 @@ export const courses: Course[] = [
     "location": "H-C 6321",
     "lecturers": [
       "Lehrende des Faches"
-    ]
+    ],
+    "creditGroup": {
+      "id": "embedded-control",
+      "label": "Embedded Control",
+      "ects": 9,
+      "parts": 2
+    }
   },
   {
     "id": "43ems0031v-ws26-27",
@@ -1030,7 +1058,7 @@ export const courses: Course[] = [
       3
     ],
     "offeringFrequency": "Winter semester only",
-    "ects": 9,
+    "ects": null,
     "schedule": [
       {
         "day": "Tuesday",
@@ -1046,7 +1074,13 @@ export const courses: Course[] = [
     "location": "H-C 6321",
     "lecturers": [
       "Utkarsh Raj M.Sc."
-    ]
+    ],
+    "creditGroup": {
+      "id": "embedded-control",
+      "label": "Embedded Control",
+      "ects": 9,
+      "parts": 2
+    }
   },
   {
     "id": "1sowi1404v-ws26-27",
@@ -1066,7 +1100,7 @@ export const courses: Course[] = [
       3
     ],
     "offeringFrequency": null,
-    "ects": null,
+    "ects": 3,
     "schedule": [
       {
         "day": "Friday",
@@ -1084,7 +1118,12 @@ export const courses: Course[] = [
       "Univ.-Prof. Dr. Jörg Potthast"
     ],
     "lectureGroupFrequency": "Summer semester only",
-    "irregularOffering": true
+    "irregularOffering": true,
+    "examCredit": {
+      "groupId": "cultural-sociology",
+      "label": "Cultural Sociology",
+      "ects": 3
+    }
   },
   {
     "id": "1mewi3826v-ws26-27",
@@ -1104,7 +1143,7 @@ export const courses: Course[] = [
       3
     ],
     "offeringFrequency": null,
-    "ects": null,
+    "ects": 3,
     "schedule": [
       {
         "day": "Monday",
@@ -1122,7 +1161,12 @@ export const courses: Course[] = [
       "Prof. Dr. Mine Gencel Bek"
     ],
     "lectureGroupFrequency": "Summer semester only",
-    "irregularOffering": true
+    "irregularOffering": true,
+    "examCredit": {
+      "groupId": "science-technology-media",
+      "label": "Science, Technology and Media Studies",
+      "ects": 3
+    }
   },
   {
     "id": "1mewi3830v-ws26-27",
@@ -1142,7 +1186,7 @@ export const courses: Course[] = [
       3
     ],
     "offeringFrequency": null,
-    "ects": 9,
+    "ects": 3,
     "schedule": [
       {
         "day": "Wednesday",
@@ -1160,7 +1204,12 @@ export const courses: Course[] = [
       "Univ.-Prof. Dr. Götz Bachmann"
     ],
     "lectureGroupFrequency": "Summer semester only",
-    "irregularOffering": true
+    "irregularOffering": true,
+    "examCredit": {
+      "groupId": "digital-anthropology",
+      "label": "Digital Anthropology",
+      "ects": 3
+    }
   },
   {
     "id": "1mewi3832v-ws26-27",
@@ -1180,7 +1229,7 @@ export const courses: Course[] = [
       3
     ],
     "offeringFrequency": null,
-    "ects": null,
+    "ects": 3,
     "schedule": [
       {
         "day": "Thursday",
@@ -1196,7 +1245,12 @@ export const courses: Course[] = [
     "location": "AH-A 036/039",
     "lecturers": [],
     "lectureGroupFrequency": "Summer semester only",
-    "irregularOffering": true
+    "irregularOffering": true,
+    "examCredit": {
+      "groupId": "media-history",
+      "label": "Media History and Media Historiography",
+      "ects": 3
+    }
   },
   {
     "id": "1mewi3829v-ws26-27",
@@ -1216,7 +1270,7 @@ export const courses: Course[] = [
       3
     ],
     "offeringFrequency": null,
-    "ects": null,
+    "ects": 3,
     "schedule": [
       {
         "day": "Friday",
@@ -1234,7 +1288,12 @@ export const courses: Course[] = [
       "Dr. Martin Siegler"
     ],
     "lectureGroupFrequency": "Summer semester only",
-    "irregularOffering": true
+    "irregularOffering": true,
+    "examCredit": {
+      "groupId": "media-aesthetics",
+      "label": "Media Aesthetics",
+      "ects": 3
+    }
   },
   {
     "id": "1mewi3835v-ws26-27",
@@ -1254,7 +1313,7 @@ export const courses: Course[] = [
       3
     ],
     "offeringFrequency": null,
-    "ects": null,
+    "ects": 3,
     "schedule": [
       {
         "day": "Tuesday",
@@ -1272,7 +1331,12 @@ export const courses: Course[] = [
       "PD Dr. Sandra Nuy"
     ],
     "lectureGroupFrequency": "Winter semester only",
-    "irregularOffering": true
+    "irregularOffering": true,
+    "examCredit": {
+      "groupId": "media-aesthetics",
+      "label": "Media Aesthetics",
+      "ects": 3
+    }
   },
   {
     "id": "1mewi3837v-ws26-27",
@@ -1292,7 +1356,7 @@ export const courses: Course[] = [
       3
     ],
     "offeringFrequency": null,
-    "ects": null,
+    "ects": 3,
     "schedule": [
       {
         "day": "Thursday",
@@ -1310,7 +1374,12 @@ export const courses: Course[] = [
       "PD Dr. Sebastian Gießmann"
     ],
     "lectureGroupFrequency": "Winter semester only",
-    "irregularOffering": true
+    "irregularOffering": true,
+    "examCredit": {
+      "groupId": "media-cultural-theory",
+      "label": "Media and Cultural Theory",
+      "ects": 3
+    }
   },
   {
     "id": "1mewi3838v-ws26-27",
@@ -1330,7 +1399,7 @@ export const courses: Course[] = [
       3
     ],
     "offeringFrequency": null,
-    "ects": null,
+    "ects": 3,
     "schedule": [
       {
         "day": "Thursday",
@@ -1348,7 +1417,12 @@ export const courses: Course[] = [
       "Dr. Christoph Borbach"
     ],
     "lectureGroupFrequency": "Winter semester only",
-    "irregularOffering": true
+    "irregularOffering": true,
+    "examCredit": {
+      "groupId": "data-platforms",
+      "label": "Data, Platforms and Digital Methods",
+      "ects": 3
+    }
   },
   {
     "id": "3moog0021v-ws26-27",
@@ -1384,7 +1458,13 @@ export const courses: Course[] = [
     "location": "US-A 234",
     "lecturers": [
       "Univ.-Prof. Dr. Giuseppe Strina"
-    ]
+    ],
+    "creditGroup": {
+      "id": "nuts-and-bolts",
+      "label": "Nuts and Bolts of Business Plan",
+      "ects": 9,
+      "parts": 2
+    }
   },
   {
     "id": "3nieha001v-ws26-27",
@@ -1420,7 +1500,8 @@ export const courses: Course[] = [
     "location": "US-F 103",
     "lecturers": [
       "Prof. Dr. Dirk Schreiber"
-    ]
+    ],
+    "moduleCreditNote": "Operational Information Systems is 9 ECTS. All courses in the module have to be completed before the credits count."
   },
   {
     "id": "3nieha028v-ws26-27",
@@ -1475,7 +1556,7 @@ export const courses: Course[] = [
       3
     ],
     "offeringFrequency": "Every 2nd semester",
-    "ects": 6,
+    "ects": null,
     "schedule": [
       {
         "day": "Wednesday",
@@ -1492,7 +1573,8 @@ export const courses: Course[] = [
     "lecturers": [
       "Univ.-Prof. Dr. Joachim Eigler"
     ],
-    "lectureGroupFrequency": "Every semester"
+    "lectureGroupFrequency": "Every semester",
+    "moduleCreditNote": "New Media Management is 9 ECTS. All courses in the module have to be completed before the credits count."
   },
   {
     "id": "43uco1114v-ws26-27",
@@ -1524,7 +1606,7 @@ export const courses: Course[] = [
       3
     ],
     "offeringFrequency": "Winter semester only",
-    "ects": 9,
+    "ects": null,
     "schedule": [
       {
         "day": "Thursday",
@@ -1540,7 +1622,13 @@ export const courses: Course[] = [
     "location": "H-C 3305",
     "lecturers": [
       "Univ.-Prof. Dr. Kristof Van Laerhoven"
-    ]
+    ],
+    "creditGroup": {
+      "id": "intro-programming",
+      "label": "Introduction to Programming",
+      "ects": 9,
+      "parts": 2
+    }
   },
   {
     "id": "43uco1115v-ws26-27",
@@ -1572,7 +1660,7 @@ export const courses: Course[] = [
       3
     ],
     "offeringFrequency": "Winter semester only",
-    "ects": 9,
+    "ects": null,
     "schedule": [
       {
         "day": "Friday",
@@ -1588,7 +1676,13 @@ export const courses: Course[] = [
     "location": "H-C 3305",
     "lecturers": [
       "Univ.-Prof. Dr. Kristof Van Laerhoven"
-    ]
+    ],
+    "creditGroup": {
+      "id": "intro-programming",
+      "label": "Introduction to Programming",
+      "ects": 9,
+      "parts": 2
+    }
   },
   {
     "id": "1mewi3843v-ws26-27",
@@ -1608,7 +1702,7 @@ export const courses: Course[] = [
       3
     ],
     "offeringFrequency": null,
-    "ects": null,
+    "ects": 3,
     "schedule": [
       {
         "day": "Tuesday",
@@ -1626,7 +1720,12 @@ export const courses: Course[] = [
       "PD Dr. Bernd Bösel"
     ],
     "lectureGroupFrequency": "Winter semester only",
-    "irregularOffering": true
+    "irregularOffering": true,
+    "examCredit": {
+      "groupId": "digital-anthropology",
+      "label": "Digital Anthropology",
+      "ects": 3
+    }
   },
   {
     "id": "3wulf0009v-ws26-27",
@@ -1740,7 +1839,7 @@ export const courses: Course[] = [
       3
     ],
     "offeringFrequency": "Every semester",
-    "ects": 6,
+    "ects": 3,
     "schedule": [
       {
         "day": "Tuesday",
@@ -1754,8 +1853,7 @@ export const courses: Course[] = [
       }
     ],
     "location": null,
-    "lecturers": [],
-    "ectsMax": 9
+    "lecturers": []
   },
   {
     "id": "999f00173v-ws26-27",
@@ -1807,7 +1905,7 @@ export const courses: Course[] = [
       3
     ],
     "offeringFrequency": "Every semester",
-    "ects": 6,
+    "ects": 3,
     "schedule": [
       {
         "day": "Monday",
@@ -1821,8 +1919,7 @@ export const courses: Course[] = [
       }
     ],
     "location": null,
-    "lecturers": [],
-    "ectsMax": 9
+    "lecturers": []
   },
   {
     "id": "1mewi3831v-ws26-27",
@@ -1842,7 +1939,7 @@ export const courses: Course[] = [
       3
     ],
     "offeringFrequency": null,
-    "ects": null,
+    "ects": 3,
     "schedule": [
       {
         "day": "Tuesday",
@@ -1860,7 +1957,12 @@ export const courses: Course[] = [
       "Univ.-Prof. Dr. Götz Bachmann"
     ],
     "lectureGroupFrequency": "Winter semester only",
-    "irregularOffering": true
+    "irregularOffering": true,
+    "examCredit": {
+      "groupId": "digital-anthropology",
+      "label": "Digital Anthropology",
+      "ects": 3
+    }
   },
   {
     "id": "1mewi3825v-ws26-27",
@@ -1880,7 +1982,7 @@ export const courses: Course[] = [
       3
     ],
     "offeringFrequency": null,
-    "ects": null,
+    "ects": 3,
     "schedule": [
       {
         "day": "Monday",
@@ -1898,7 +2000,12 @@ export const courses: Course[] = [
       "Prof. Dr. Mine Gencel Bek"
     ],
     "lectureGroupFrequency": "Summer semester only",
-    "irregularOffering": true
+    "irregularOffering": true,
+    "examCredit": {
+      "groupId": "cultural-sociology",
+      "label": "Cultural Sociology",
+      "ects": 3
+    }
   },
   {
     "id": "1mewi3809v-ws26-27",
@@ -1918,7 +2025,7 @@ export const courses: Course[] = [
       3
     ],
     "offeringFrequency": null,
-    "ects": null,
+    "ects": 3,
     "schedule": [
       {
         "day": "Tuesday",
@@ -1936,7 +2043,12 @@ export const courses: Course[] = [
       "Univ.-Prof. Dr. Tristan Thielmann"
     ],
     "lectureGroupFrequency": "Winter semester only",
-    "irregularOffering": true
+    "irregularOffering": true,
+    "examCredit": {
+      "groupId": "science-technology-media",
+      "label": "Science, Technology and Media Studies",
+      "ects": 3
+    }
   },
   {
     "id": "1mewi3834v-ws26-27",
@@ -1956,7 +2068,7 @@ export const courses: Course[] = [
       3
     ],
     "offeringFrequency": null,
-    "ects": null,
+    "ects": 3,
     "schedule": [
       {
         "day": "Wednesday",
@@ -1974,7 +2086,12 @@ export const courses: Course[] = [
       "Univ.-Prof. Dr. Dagmar Hoffmann"
     ],
     "lectureGroupFrequency": "Winter semester only",
-    "irregularOffering": true
+    "irregularOffering": true,
+    "examCredit": {
+      "groupId": "cultural-sociology",
+      "label": "Cultural Sociology",
+      "ects": 3
+    }
   },
   {
     "id": "1mewi3856v-ws26-27",
@@ -1994,7 +2111,7 @@ export const courses: Course[] = [
       3
     ],
     "offeringFrequency": null,
-    "ects": null,
+    "ects": 3,
     "schedule": [
       {
         "day": "Friday",
@@ -2052,7 +2169,12 @@ export const courses: Course[] = [
       "Dr. Christoph Borbach"
     ],
     "lectureGroupFrequency": "Summer semester only",
-    "irregularOffering": true
+    "irregularOffering": true,
+    "examCredit": {
+      "groupId": "data-platforms",
+      "label": "Data, Platforms and Digital Methods",
+      "ects": 3
+    }
   },
   {
     "id": "1sowi1003v-ws26-27",
@@ -2094,7 +2216,13 @@ export const courses: Course[] = [
       "Univ.-Prof. Dr. Matthias Pollmann-Schult"
     ],
     "lectureGroupFrequency": "Every semester",
-    "irregularOffering": true
+    "irregularOffering": true,
+    "creditGroup": {
+      "id": "statistics",
+      "label": "Statistics",
+      "ects": 9,
+      "parts": 2
+    }
   },
   {
     "id": "43cgm1116v-ws26-27",
@@ -2281,7 +2409,7 @@ export const courses: Course[] = [
       3
     ],
     "offeringFrequency": null,
-    "ects": null,
+    "ects": 3,
     "schedule": [
       {
         "day": "Thursday",
@@ -2297,7 +2425,12 @@ export const courses: Course[] = [
     "location": "AH-A 036/039",
     "lecturers": [],
     "lectureGroupFrequency": "Summer semester only",
-    "irregularOffering": true
+    "irregularOffering": true,
+    "examCredit": {
+      "groupId": "media-cultural-theory",
+      "label": "Media and Cultural Theory",
+      "ects": 3
+    }
   },
   {
     "id": "1mewi3840v-ws26-27",
@@ -2317,7 +2450,7 @@ export const courses: Course[] = [
       3
     ],
     "offeringFrequency": null,
-    "ects": null,
+    "ects": 3,
     "schedule": [
       {
         "day": "Tuesday",
@@ -2335,7 +2468,12 @@ export const courses: Course[] = [
       "Dr. Elena Pilipets"
     ],
     "lectureGroupFrequency": "Winter semester only",
-    "irregularOffering": true
+    "irregularOffering": true,
+    "examCredit": {
+      "groupId": "digital-explorations",
+      "label": "Digital Explorations Lab",
+      "ects": 3
+    }
   },
   {
     "id": "1sowi1002v-ws26-27",
@@ -2377,7 +2515,13 @@ export const courses: Course[] = [
       "Univ.-Prof. Dr. Matthias Pollmann-Schult"
     ],
     "lectureGroupFrequency": "Every semester",
-    "irregularOffering": true
+    "irregularOffering": true,
+    "creditGroup": {
+      "id": "statistics",
+      "label": "Statistics",
+      "ects": 9,
+      "parts": 2
+    }
   },
   {
     "id": "43eti0001v-concepts-of-programming-languages-ws26-27",
@@ -2916,7 +3060,7 @@ export const courses: Course[] = [
       3
     ],
     "offeringFrequency": null,
-    "ects": 6,
+    "ects": 3,
     "schedule": [
       {
         "day": "Saturday",
@@ -3044,7 +3188,7 @@ export const courses: Course[] = [
       3
     ],
     "offeringFrequency": "Every semester",
-    "ects": 6,
+    "ects": 3,
     "schedule": [
       {
         "day": "Friday",
@@ -3101,8 +3245,7 @@ export const courses: Course[] = [
       }
     ],
     "location": null,
-    "lecturers": [],
-    "ectsMax": 9
+    "lecturers": []
   },
   {
     "id": "3moog0023v-ws26-27",
@@ -3138,7 +3281,13 @@ export const courses: Course[] = [
     "location": "US-A 234",
     "lecturers": [
       "Univ.-Prof. Dr. Giuseppe Strina"
-    ]
+    ],
+    "creditGroup": {
+      "id": "nuts-and-bolts",
+      "label": "Nuts and Bolts of Business Plan",
+      "ects": 9,
+      "parts": 2
+    }
   },
   {
     "id": "1mewi3853v-ws26-27",
@@ -3158,7 +3307,7 @@ export const courses: Course[] = [
       3
     ],
     "offeringFrequency": null,
-    "ects": null,
+    "ects": 3,
     "schedule": [
       {
         "day": "Monday",
@@ -3176,7 +3325,12 @@ export const courses: Course[] = [
       "Sergei Pashakhin"
     ],
     "lectureGroupFrequency": "Winter semester only",
-    "irregularOffering": true
+    "irregularOffering": true,
+    "examCredit": {
+      "groupId": "digital-explorations",
+      "label": "Digital Explorations Lab",
+      "ects": 3
+    }
   },
   {
     "id": "43uco1113v-ws26-27",
@@ -3244,7 +3398,7 @@ export const courses: Course[] = [
       3
     ],
     "offeringFrequency": null,
-    "ects": null,
+    "ects": 3,
     "schedule": [
       {
         "day": "Tuesday",
@@ -3262,7 +3416,12 @@ export const courses: Course[] = [
       "PD Dr. Bernd Bösel"
     ],
     "lectureGroupFrequency": "Summer semester only",
-    "irregularOffering": true
+    "irregularOffering": true,
+    "examCredit": {
+      "groupId": "media-cultural-theory",
+      "label": "Media and Cultural Theory",
+      "ects": 3
+    }
   },
   {
     "id": "3eigle109v-ws26-27",
@@ -3281,7 +3440,7 @@ export const courses: Course[] = [
       3
     ],
     "offeringFrequency": "Every 2nd semester",
-    "ects": 6,
+    "ects": null,
     "schedule": [
       {
         "day": "Tuesday",
@@ -3349,7 +3508,8 @@ export const courses: Course[] = [
       "Jessica Knodel M.A."
     ],
     "lectureGroupFrequency": "Every semester",
-    "datedGrid": true
+    "datedGrid": true,
+    "moduleCreditNote": "New Media Management is 9 ECTS. All courses in the module have to be completed before the credits count."
   },
   {
     "id": "3wulf0056v-ws26-27",

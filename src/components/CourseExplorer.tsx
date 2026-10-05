@@ -89,17 +89,20 @@ export function CourseExplorer({
     return [...ranges].sort((a, b) => a.localeCompare(b, "en"));
   }, [courses, day]);
 
+  const activeDay = dayOptions.some((name) => name === day) ? day : "all";
+  const activeTime = timeOptions.includes(time) ? time : "all";
+  const activeModule = moduleOptions.includes(moduleName) ? moduleName : "all";
+
   const filtered = useMemo(() => {
     const needle = query.trim().toLowerCase();
-    const activeTime = timeOptions.includes(time) ? time : "all";
     return courses
       .filter((course) => {
         if (isSummerOnly(course)) return false;
         if (area !== "all" && course.area !== area) return false;
-        if (moduleName !== "all" && !course.modules.some((module) => module.name === moduleName)) return false;
-        if (day !== "all" || activeTime !== "all") {
+        if (activeModule !== "all" && !course.modules.some((module) => module.name === activeModule)) return false;
+        if (activeDay !== "all" || activeTime !== "all") {
           const matchesWhen = intervalsFor(course).some((interval) => {
-            if (day !== "all" && interval.day !== day) return false;
+            if (activeDay !== "all" && interval.day !== activeDay) return false;
             if (activeTime !== "all" && `${interval.startTime}–${interval.endTime}` !== activeTime) return false;
             return true;
           });
@@ -120,7 +123,7 @@ export function CourseExplorer({
         return haystack.includes(needle);
       })
       .sort((a, b) => areaRank(a.area) - areaRank(b.area) || a.name.localeCompare(b.name, "en") || (a.variant ?? "").localeCompare(b.variant ?? "", "en") || a.code.localeCompare(b.code));
-  }, [area, courses, day, moduleName, query, time, timeOptions]);
+  }, [activeDay, activeModule, activeTime, area, courses, query]);
 
   const onFilteredIdsChangeRef = useRef(onFilteredIdsChange);
   onFilteredIdsChangeRef.current = onFilteredIdsChange;
@@ -166,7 +169,7 @@ export function CourseExplorer({
   const listedGroups = useMemo(() => {
     const needle = query.trim().toLowerCase();
     const hasArea = groups.some((group) => group.area === "Interdisciplinary Contexts");
-    const openBrowse = moduleName === "all" && day === "all" && !timeOptions.includes(time);
+    const openBrowse = activeModule === "all" && activeDay === "all" && activeTime === "all";
     const catalogHit =
       needle.length > 0 &&
       lp9Sections.some((section) => {
@@ -186,18 +189,19 @@ export function CourseExplorer({
       );
     }
     return groups;
-  }, [area, day, groups, moduleName, query, time, timeOptions]);
+  }, [activeDay, activeModule, activeTime, area, groups, query]);
 
-  const activeFilterCount = [
-    area !== "all",
-    moduleName !== "all" && moduleOptions.includes(moduleName),
-    dayOptions.some((name) => name === day),
-    timeOptions.includes(time),
-  ].filter(Boolean).length;
+  const activeFilterCount = [area !== "all", activeModule !== "all", activeDay !== "all", activeTime !== "all"].filter(Boolean).length;
+  const browseFiltered = query.trim() !== "" || activeFilterCount > 0;
   const selectedCount = courses.filter((course) => selectedIds.includes(course.id)).length;
-  const hiddenSelected = courses.filter(
-    (course) => selectedIds.includes(course.id) && !filtered.some((item) => item.id === course.id),
-  ).length;
+  const hiddenSelected = browseFiltered
+    ? courses.filter(
+        (course) =>
+          selectedIds.includes(course.id) &&
+          !isSummerOnly(course) &&
+          !filtered.some((item) => item.id === course.id),
+      ).length
+    : 0;
 
   function setAreaFilter(next: string) {
     setArea(next);
@@ -872,10 +876,24 @@ function CourseDetails({ course }: { course: Course }) {
           <dd>{lecturers}</dd>
         </div>
       )}
-      {ects && (
+      {(ects || course.creditGroup || course.moduleCreditNote) && (
         <div>
           <dt>ECTS</dt>
-          <dd>{ects}</dd>
+          <dd>
+            {course.creditGroup
+              ? `${course.creditGroup.ects} ECTS once all ${course.creditGroup.parts} ${course.creditGroup.label} courses are completed.`
+              : ects}
+            {course.moduleCreditNote && <span className="detail-note">{course.moduleCreditNote}</span>}
+          </dd>
+        </div>
+      )}
+      {course.examCredit && (
+        <div>
+          <dt>Exam</dt>
+          <dd>
+            Credits are recognized only when you also take the exam ({course.examCredit.ects} ECTS). You choose which
+            seminar in {course.examCredit.label} the exam belongs to.
+          </dd>
         </div>
       )}
     </dl>

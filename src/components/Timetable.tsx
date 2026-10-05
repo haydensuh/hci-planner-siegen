@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { areaColor } from "../data/curriculum";
-import { formatBlockLocation, formatCourseTitle, formatDatedSession } from "../lib/format";
+import { creditNotices, formatBlockLocation, formatCourseTitle, formatDatedSession } from "../lib/format";
 import {
   formatHour,
   GRID_DAYS,
@@ -30,9 +30,23 @@ export function Timetable({ selected, boundsCourses, onFocusCourse, onRemoveCour
   const hasGrid = GRID_DAYS.some((day) => (layout.get(day)?.length ?? 0) > 0);
   const areas = [...new Set(selected.map((course) => course.area))];
   const dated = selected.filter((course) => course.datedGrid);
+  const notices = creditNotices(selected);
 
   return (
     <>
+      {notices.length > 0 && (
+        <section className="notice exam-panel" aria-label="Credit requirements">
+          <h2>Credit requirements</h2>
+          <ul>
+            {notices.map((notice) => (
+              <li key={notice.id}>
+                <p className="notice-name">{notice.title}</p>
+                <p className="notice-meta">{notice.body}</p>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
       {dated.length > 0 && (
         <section className="notice dated-panel" aria-label="Block dates">
           <h2>Block dates</h2>

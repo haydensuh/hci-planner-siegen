@@ -734,7 +734,7 @@ h1 {
 
 .conflicts { background: var(--warn-bg); }
 
-.dated-panel { background: var(--accent-soft); }
+.dated-panel, .exam-panel { background: var(--accent-soft); }
 
 .notice ul {
   list-style: none;
@@ -749,7 +749,9 @@ h1 {
 
 .conflicts li + li { border-top: 1px solid #ffd4d6; }
 
-.dated-panel li + li { border-top: 1px solid #c5d5e2; }
+.dated-panel li + li, .exam-panel li + li { border-top: 1px solid #c5d5e2; }
+
+.detail-note { display: block; margin-top: 4px; }
 
 .notice-name { margin: 0; font-weight: 600; }
 

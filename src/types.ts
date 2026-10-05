@@ -48,6 +48,12 @@ export type Course = {
   datedGrid?: true;
   ects: number | null;
   ectsMax?: number;
+  /** Module total earned once every part in the group is selected. */
+  creditGroup?: { id: string; label: string; ects: number; parts: number };
+  /** Exam credits that are not included in the course total. */
+  examCredit?: { groupId: string; label: string; ects: number };
+  /** Module total when this timetable does not include every required course. */
+  moduleCreditNote?: string;
   schedule: ScheduleSlot[];
   location: string | null;
   lecturers: string[];
