@@ -1,13 +1,26 @@
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { AREAS, areaColor, areaRank } from "../data/curriculum";
 import {
+  LP6_NOTE,
+  LP9_NOTE,
+  TRACK_RULE,
+  lp6Course,
+  lp6Courses,
+  lp9Placement,
+  lp9Sections,
+  type CatalogGroup,
+  type CatalogSection,
+} from "../data/interdisciplinaryCatalog";
+import {
   formatCourseTimes,
   formatEcts,
   formatLecturers,
   formatLocation,
   formatModulePreview,
   formatRecommended,
+  formatSeason,
   formatSlotDetail,
+  isSummerOnly,
   textOrEmpty,
 } from "../lib/format";
 import { intervalsFor } from "../lib/schedule";
@@ -46,6 +59,7 @@ export function CourseExplorer({
   const [filtersOpen, setFiltersOpen] = useState(false);
   const [collapsedAreas, setCollapsedAreas] = useState<Set<string>>(() => new Set());
   const [collapsedModules, setCollapsedModules] = useState<Set<string>>(() => new Set());
+  const [track, setTrack] = useState<"9" | "6">("9");
 
   const moduleOptions = useMemo(() => {
     const names = new Set<string>();
@@ -80,6 +94,7 @@ export function CourseExplorer({
     const activeTime = timeOptions.includes(time) ? time : "all";
     return courses
       .filter((course) => {
+        if (isSummerOnly(course)) return false;
         if (area !== "all" && course.area !== area) return false;
         if (moduleName !== "all" && !course.modules.some((module) => module.name === moduleName)) return false;
         if (day !== "all" || activeTime !== "all") {
@@ -143,6 +158,36 @@ export function CourseExplorer({
       }));
   }, [filtered]);
 
+  const visible9 = filtered.filter((course) => lp9Placement(course.id)).length;
+  const visible6 = filtered.filter((course) => lp6Course(course.id)).length;
+  const shownTrack: "9" | "6" =
+    track === "9" && visible9 === 0 && visible6 > 0 ? "6" : track === "6" && visible6 === 0 && visible9 > 0 ? "9" : track;
+
+  const listedGroups = useMemo(() => {
+    const needle = query.trim().toLowerCase();
+    const hasArea = groups.some((group) => group.area === "Interdisciplinary Contexts");
+    const openBrowse = moduleName === "all" && day === "all" && !timeOptions.includes(time);
+    const catalogHit =
+      needle.length > 0 &&
+      lp9Sections.some((section) => {
+        const offered = section.groups.some((group) => group.entries.length > 0);
+        if (!offered) return false;
+        if (section.name.toLowerCase().includes(needle)) return true;
+        return section.groups.some(
+          (group) =>
+            group.entries.length > 0 &&
+            (group.name.toLowerCase().includes(needle) ||
+              group.entries.some((entry) => "title" in entry && entry.title.toLowerCase().includes(needle))),
+        );
+      });
+    if (!hasArea && (area === "all" || area === "Interdisciplinary Contexts") && openBrowse && catalogHit) {
+      return [...groups, { area: "Interdisciplinary Contexts", courses: [], modules: [] }].sort(
+        (a, b) => areaRank(a.area) - areaRank(b.area),
+      );
+    }
+    return groups;
+  }, [area, day, groups, moduleName, query, time, timeOptions]);
+
   const activeFilterCount = [
     area !== "all",
     moduleName !== "all" && moduleOptions.includes(moduleName),
@@ -174,23 +219,25 @@ export function CourseExplorer({
 
   const visibleIds = filtered.map((course) => course.id);
   const allDetailsOpen = visibleIds.length > 0 && visibleIds.every((id) => openIds.has(id));
-  const moduleKeys = groups.flatMap((group) =>
-    group.modules.map((module) => `${group.area}::${module.code || module.name}`),
+  const moduleKeys = listedGroups.flatMap((group) =>
+    group.area === "Interdisciplinary Contexts"
+      ? catalogKeysFor(shownTrack)
+      : group.modules.map((module) => `${group.area}::${module.code || module.name}`),
   );
   const allGroupsOpen =
-    groups.length > 0 &&
-    groups.every((group) => !collapsedAreas.has(group.area)) &&
+    listedGroups.length > 0 &&
+    listedGroups.every((group) => !collapsedAreas.has(group.area)) &&
     moduleKeys.every((key) => !collapsedModules.has(key));
 
   function toggleAllGroups() {
     if (allGroupsOpen) {
-      setCollapsedAreas(new Set(groups.map((group) => group.area)));
+      setCollapsedAreas(new Set(listedGroups.map((group) => group.area)));
       setCollapsedModules(new Set(moduleKeys));
       return;
     }
     setCollapsedAreas((current) => {
       const next = new Set(current);
-      for (const group of groups) next.delete(group.area);
+      for (const group of listedGroups) next.delete(group.area);
       return next;
     });
     setCollapsedModules((current) => {
@@ -211,11 +258,21 @@ export function CourseExplorer({
     if (!reveal) return;
     const course = filtered.find((item) => item.id === reveal.id);
     if (!course) return;
-    const moduleKey = firstModuleKey(course);
-    if (collapsedAreas.has(course.area) || collapsedModules.has(moduleKey)) {
+    const desiredTrack = revealTrack(course.id, shownTrack);
+    if (desiredTrack && desiredTrack !== track) {
+      setTrack(desiredTrack);
+      return;
+    }
+    const keys = revealKeys(course, desiredTrack ?? shownTrack);
+    const hidden = collapsedAreas.has(course.area) || keys.some((key) => collapsedModules.has(key));
+    if (hidden) {
       if (revealedNonce.current === reveal.nonce) return;
       setCollapsedAreas((current) => (current.has(course.area) ? without(current, course.area) : current));
-      setCollapsedModules((current) => (current.has(moduleKey) ? without(current, moduleKey) : current));
+      setCollapsedModules((current) => {
+        const next = new Set(current);
+        for (const key of keys) next.delete(key);
+        return next;
+      });
       return;
     }
     if (revealedNonce.current === reveal.nonce) return;
@@ -223,7 +280,7 @@ export function CourseExplorer({
     if (!node) return;
     revealedNonce.current = reveal.nonce;
     node.scrollIntoView({ block: "nearest", behavior: "smooth" });
-  }, [collapsedAreas, collapsedModules, filtered, reveal]);
+  }, [collapsedAreas, collapsedModules, filtered, reveal, shownTrack, track]);
 
   return (
     <section className="panel explorer" aria-label="Courses">
@@ -254,7 +311,7 @@ export function CourseExplorer({
             {activeFilterCount > 0 && <span className="filters-count">{activeFilterCount}</span>}
             <ChevronIcon open={filtersOpen} />
           </button>
-          {groups.length > 0 && (
+          {listedGroups.length > 0 && (
             <button type="button" className="details-all" onClick={toggleAllGroups}>
               {allGroupsOpen ? "Collapse all" : "Expand all"}
             </button>
@@ -276,7 +333,7 @@ export function CourseExplorer({
             <select value={area} onChange={(event) => setAreaFilter(event.target.value)}>
               <option value="all">All areas</option>
               {AREAS.map((name) => {
-                const count = courses.filter((course) => course.area === name).length;
+                const count = courses.filter((course) => course.area === name && !isSummerOnly(course)).length;
                 return (
                   <option key={name} value={name}>
                     {name} ({count})
@@ -344,7 +401,7 @@ export function CourseExplorer({
             <p>No courses match these filters.</p>
           </div>
         )}
-        {groups.map((group) => {
+        {listedGroups.map((group) => {
           const areaOpen = !collapsedAreas.has(group.area);
           const areaPanelId = panelId("area", group.area);
           return (
@@ -358,13 +415,36 @@ export function CourseExplorer({
                 >
                   <span className="area-dot" style={{ background: areaColor(group.area) }} />
                   <span className="group-title">{group.area}</span>
-                  <span className="group-count">{group.courses.length}</span>
+                  <span className="group-count">
+                    {group.area === "Interdisciplinary Contexts"
+                      ? filtered.filter(
+                          (course) =>
+                            course.area === group.area &&
+                            (shownTrack === "9" ? lp9Placement(course.id) : lp6Course(course.id)),
+                        ).length
+                      : group.courses.length}
+                  </span>
                   <ChevronIcon open={areaOpen} />
                 </button>
               </h3>
               {areaOpen && (
                 <div id={areaPanelId}>
-                  {group.modules.map((module) => {
+                  {group.area === "Interdisciplinary Contexts" ? (
+                    <InterdisciplinaryCatalog
+                      courses={courses}
+                      shownTrack={shownTrack}
+                      onTrack={setTrack}
+                      filteredIds={visibleIds}
+                      query={query}
+                      narrowing={moduleName !== "all" || day !== "all" || timeOptions.includes(time) || query.trim().length > 0}
+                      selectedIds={selectedIds}
+                      openIds={openIds}
+                      collapsed={collapsedModules}
+                      onToggleKey={(key) => setCollapsedModules((current) => toggleMember(current, key))}
+                      onToggle={onToggle}
+                      onToggleDetails={onToggleDetails}
+                    />
+                  ) : group.modules.map((module) => {
                     const moduleKey = `${group.area}::${module.code || module.name}`;
                     const moduleOpen = !collapsedModules.has(moduleKey);
                     const modulePanelId = panelId("module", moduleKey);
@@ -406,6 +486,7 @@ export function CourseExplorer({
                                         {formatModulePreview(course.modules) && (
                                           <span className="course-meta">{formatModulePreview(course.modules)}</span>
                                         )}
+                                        {formatSeason(course) && <span className="course-season">{formatSeason(course)}</span>}
                                         {formatCourseTimes(course) && (
                                           <span className="course-time">{formatCourseTimes(course)}</span>
                                         )}
@@ -443,6 +524,266 @@ export function CourseExplorer({
       </div>
     </section>
   );
+}
+
+function CourseArticle({
+  course,
+  selected,
+  open,
+  extra,
+  showModules,
+  onToggle,
+  onToggleDetails,
+}: {
+  course: Course;
+  selected: boolean;
+  open: boolean;
+  extra?: string;
+  showModules: boolean;
+  onToggle: (courseId: string) => void;
+  onToggleDetails: (courseId: string) => void;
+}) {
+  return (
+    <article className={selected ? "course is-selected" : "course"}>
+      <button type="button" className="course-select" aria-pressed={selected} onClick={() => onToggle(course.id)}>
+        <span className="course-copy">
+          <span className="course-name">
+            {course.name}
+            {course.variant && <span className="course-variant"> ({course.variant})</span>}
+          </span>
+          <span className="course-code">{course.code}</span>
+          {showModules && formatModulePreview(course.modules) && (
+            <span className="course-meta">{formatModulePreview(course.modules)}</span>
+          )}
+          {extra && <span className="course-meta">{extra}</span>}
+          {formatSeason(course) && <span className="course-season">{formatSeason(course)}</span>}
+          {formatCourseTimes(course) && <span className="course-time">{formatCourseTimes(course)}</span>}
+        </span>
+        <span className="check" aria-hidden="true" />
+      </button>
+      <button type="button" className="details-toggle" aria-expanded={open} onClick={() => onToggleDetails(course.id)}>
+        {open ? "Hide details" : "Details"}
+      </button>
+      {open && <CourseDetails course={course} />}
+    </article>
+  );
+}
+
+function InterdisciplinaryCatalog({
+  courses,
+  shownTrack,
+  onTrack,
+  filteredIds,
+  query,
+  narrowing,
+  selectedIds,
+  openIds,
+  collapsed,
+  onToggleKey,
+  onToggle,
+  onToggleDetails,
+}: {
+  courses: Course[];
+  shownTrack: "9" | "6";
+  onTrack: (track: "9" | "6") => void;
+  filteredIds: string[];
+  query: string;
+  narrowing: boolean;
+  selectedIds: string[];
+  openIds: Set<string>;
+  collapsed: Set<string>;
+  onToggleKey: (key: string) => void;
+  onToggle: (courseId: string) => void;
+  onToggleDetails: (courseId: string) => void;
+}) {
+  const byId = new Map(courses.map((course) => [course.id, course]));
+  const needle = query.trim().toLowerCase();
+
+  function renderCourse(course: Course, extra?: string) {
+    return (
+      <li key={course.id} id={`course-${course.id}`}>
+        <CourseArticle
+          course={course}
+          selected={selectedIds.includes(course.id)}
+          open={openIds.has(course.id)}
+          extra={extra}
+          showModules={false}
+          onToggle={onToggle}
+          onToggleDetails={onToggleDetails}
+        />
+      </li>
+    );
+  }
+
+  const lp6Visible = lp6Courses.flatMap((item) => {
+    const course = byId.get(item.courseId);
+    if (!course || !filteredIds.includes(course.id)) return [];
+    return [{ course, notInVb: item.notInVb }];
+  });
+
+  const lp9Visible = lp9Sections.flatMap((section) => {
+    const groups = section.groups.filter((group) => catalogGroupVisible(section, group, filteredIds, needle, narrowing));
+    return groups.length > 0 ? [{ section, groups }] : [];
+  });
+
+  return (
+    <div className="track-wrap">
+      <div className="track-bar">
+        <div className="track-switch" role="group" aria-label="Credit track">
+          <button type="button" aria-pressed={shownTrack === "9"} onClick={() => onTrack("9")}>
+            9 LP
+          </button>
+          <button type="button" aria-pressed={shownTrack === "6"} onClick={() => onTrack("6")}>
+            6 LP
+          </button>
+        </div>
+        <p className="track-note">{TRACK_RULE}</p>
+      </div>
+      <p className="track-semester">{shownTrack === "9" ? LP9_NOTE : LP6_NOTE}</p>
+      {shownTrack === "6" ? (
+        lp6Visible.length > 0 ? (
+          <ul className="course-list track-courses">
+            {lp6Visible.map(({ course, notInVb }) => renderCourse(course, notInVb ? "Not in Vb" : undefined))}
+          </ul>
+        ) : (
+          <p className="catalog-empty">No courses on this track match these filters.</p>
+        )
+      ) : lp9Visible.length > 0 ? (
+        lp9Visible.map(({ section, groups }) => {
+          const key = catalogSectionKey(section.name);
+          const open = !collapsed.has(key);
+          const count = groups.reduce(
+            (sum, group) =>
+              sum + group.entries.filter((entry) => "courseId" in entry && filteredIds.includes(entry.courseId)).length,
+            0,
+          );
+          return (
+            <section key={key} className="module-group">
+              <h4 className="module-heading">
+                <button type="button" aria-expanded={open} aria-controls={panelId("module", key)} onClick={() => onToggleKey(key)}>
+                  <span className="group-title">{section.name}</span>
+                  <span className="group-count">{count}</span>
+                  <ChevronIcon open={open} />
+                </button>
+              </h4>
+              {open && (
+                <div id={panelId("module", key)}>
+                  {groups.map((group) => {
+                    const coursesInGroup = group.entries.flatMap((entry) => {
+                      if (!("courseId" in entry) || !filteredIds.includes(entry.courseId)) return [];
+                      const course = byId.get(entry.courseId);
+                      return course ? [course] : [];
+                    });
+                    const titles = group.entries.flatMap((entry) => ("title" in entry ? [entry.title] : []));
+                    const showTitles = titles.length > 0 && (!narrowing || titles.some((title) => title.toLowerCase().includes(needle)) || nameHit(section, group, needle));
+                    if (!group.name) {
+                      return (
+                        <ul key="courses" className="course-list">
+                          {coursesInGroup.map((course) => renderCourse(course))}
+                          {showTitles && titles.map((title) => <CatalogTitle key={title} title={title} />)}
+                        </ul>
+                      );
+                    }
+                    const groupKey = catalogGroupKey(section.name, group.name);
+                    const groupOpen = !collapsed.has(groupKey);
+                    return (
+                      <section key={group.name} className="lecture-group">
+                        <h5 className="module-heading lecture-heading">
+                          <button
+                            type="button"
+                            aria-expanded={groupOpen}
+                            aria-controls={panelId("module", groupKey)}
+                            onClick={() => onToggleKey(groupKey)}
+                          >
+                            <span className="group-title">{group.name}</span>
+                            <span className="group-count">{coursesInGroup.length}</span>
+                            <ChevronIcon open={groupOpen} />
+                          </button>
+                        </h5>
+                        {groupOpen && (
+                          <ul id={panelId("module", groupKey)} className="course-list">
+                            {coursesInGroup.map((course) => renderCourse(course))}
+                            {showTitles && titles.map((title) => <CatalogTitle key={title} title={title} />)}
+                          </ul>
+                        )}
+                      </section>
+                    );
+                  })}
+                </div>
+              )}
+            </section>
+          );
+        })
+      ) : (
+        <p className="catalog-empty">No courses on this track match these filters.</p>
+      )}
+    </div>
+  );
+}
+
+function CatalogTitle({ title }: { title: string }) {
+  return (
+    <li className="catalog-title">
+      <span>{title}</span>
+      <span>No timetable entry</span>
+    </li>
+  );
+}
+
+function catalogGroupVisible(
+  section: CatalogSection,
+  group: CatalogGroup,
+  filteredIds: string[],
+  needle: string,
+  narrowing: boolean,
+): boolean {
+  if (group.entries.some((entry) => "courseId" in entry && filteredIds.includes(entry.courseId))) return true;
+  if (!group.entries.some((entry) => "title" in entry)) return false;
+  const hit = nameHit(section, group, needle) || group.entries.some((entry) => "title" in entry && entry.title.toLowerCase().includes(needle));
+  return !narrowing || hit;
+}
+
+function nameHit(section: CatalogSection, group: CatalogGroup, needle: string): boolean {
+  if (!needle) return false;
+  return section.name.toLowerCase().includes(needle) || group.name.toLowerCase().includes(needle);
+}
+
+function catalogSectionKey(name: string): string {
+  return `Interdisciplinary Contexts::9::${name}`;
+}
+
+function catalogGroupKey(section: string, group: string): string {
+  return `${catalogSectionKey(section)}::${group}`;
+}
+
+function catalogKeysFor(track: "9" | "6"): string[] {
+  if (track !== "9") return [];
+  return lp9Sections.flatMap((section) => {
+    const key = catalogSectionKey(section.name);
+    const groups = section.groups
+      .filter((group) => group.name && group.entries.some((entry) => "courseId" in entry))
+      .map((group) => catalogGroupKey(section.name, group.name));
+    return [key, ...groups];
+  });
+}
+
+function revealTrack(courseId: string, shown: "9" | "6"): "9" | "6" | null {
+  const on9 = lp9Placement(courseId) !== null;
+  const on6 = lp6Course(courseId) !== null;
+  if (!on9 && !on6) return null;
+  if (shown === "9" && on9) return "9";
+  if (shown === "6" && on6) return "6";
+  return on9 ? "9" : "6";
+}
+
+function revealKeys(course: Course, shown: "9" | "6"): string[] {
+  if (course.area !== "Interdisciplinary Contexts") return [firstModuleKey(course)];
+  if (shown !== "9") return [];
+  const place = lp9Placement(course.id);
+  if (!place) return [];
+  const keys = [catalogSectionKey(place.section)];
+  if (place.group) keys.push(catalogGroupKey(place.section, place.group));
+  return keys;
 }
 
 function CourseDetails({ course }: { course: Course }) {

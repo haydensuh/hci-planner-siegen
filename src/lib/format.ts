@@ -82,6 +82,22 @@ export function formatDatedSession(slot: ScheduleSlot): string {
   return when ? `${when} · ${time}` : time;
 }
 
+export function formatSeason(course: Course): string | null {
+  const frequency = course.offeringFrequency?.toLowerCase() ?? "";
+  if (frequency.includes("every semester")) return "Winter · Summer";
+  if (frequency.includes("summer") && !frequency.includes("winter")) return "Summer";
+  if (frequency.includes("winter") || course.semesterId.startsWith("WS")) return "Winter";
+  if (frequency.includes("summer")) return "Summer";
+  return null;
+}
+
+export function isSummerOnly(course: Course): boolean {
+  const frequency = course.offeringFrequency?.toLowerCase() ?? "";
+  if (frequency.includes("every")) return false;
+  if (frequency.includes("summer") && !frequency.includes("winter")) return true;
+  return course.semesterId.startsWith("SS");
+}
+
 export function formatCourseTimes(course: Course): string | null {
   if (course.schedule.length === 0) return null;
   if (course.schedule.length === 1) return formatSlotCompact(course.schedule[0]);

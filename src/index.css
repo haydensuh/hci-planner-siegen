@@ -330,7 +330,91 @@ h1 {
   font-size: 1.12rem;
 }
 
-.module-group { margin: 0 0 4px 14px; }
+.module-group { margin: 4px 0 4px 18px; }
+
+.area-group + .area-group {
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid var(--line);
+}
+
+.module-group + .module-group {
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid var(--line);
+}
+
+.track-wrap { margin: 2px 0 8px; }
+
+.track-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 12px;
+  margin: 0 0 4px 24px;
+}
+
+.track-switch {
+  display: inline-flex;
+  gap: 2px;
+  padding: 3px;
+  border-radius: 999px;
+  background: var(--bg-deep);
+}
+
+.track-switch button {
+  border: 0;
+  background: transparent;
+  border-radius: 999px;
+  padding: 6px 12px;
+  color: var(--ink-soft);
+  font-weight: 600;
+}
+
+.track-switch button[aria-pressed="true"] {
+  background: #fff;
+  color: var(--ink);
+}
+
+.track-note,
+.track-semester,
+.catalog-empty {
+  margin: 0;
+  color: var(--ink-soft);
+  font-size: 0.8rem;
+}
+
+.track-semester { margin: 0 0 8px 24px; }
+
+.catalog-empty { margin: 0 0 6px 14px; }
+
+.lecture-group { font-weight: 500; }
+
+.lecture-heading { position: static; }
+
+.lecture-heading button {
+  font-size: 0.88rem;
+  font-weight: 500;
+}
+
+.catalog-title {
+  display: flex;
+  gap: 8px;
+  align-items: baseline;
+  margin-bottom: 8px;
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: #fff;
+  color: var(--ink);
+}
+
+.catalog-title span:last-child {
+  margin-left: auto;
+  color: var(--ink-soft);
+  font-size: 0.78rem;
+  white-space: nowrap;
+}
 
 .module-heading { top: 39px; }
 
@@ -364,6 +448,10 @@ h1 {
   margin: 0;
   padding: 0;
 }
+
+.course-list { margin-top: 8px; }
+
+.course-list.track-courses { margin-left: 18px; }
 
 .course {
   border: 1px solid var(--line);
@@ -426,12 +514,14 @@ h1 {
   color: var(--ink-soft);
 }
 
-.course-code, .course-meta, .course-time, .module-list span, .compare small {
+.course-code, .course-meta, .course-time, .course-season, .module-list span, .compare small {
   color: var(--ink-soft);
   font-size: 0.82rem;
 }
 
 .course-time { color: var(--ink); }
+
+.course-season { font-weight: 600; }
 
 .details-toggle {
   margin: 0 12px 12px;
