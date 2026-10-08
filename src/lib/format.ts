@@ -146,10 +146,10 @@ export function ectsSummary(selected: Course[]): string | null {
   let min = 0;
   let max = 0;
   let known = 0;
-  let research = false;
+  let research = 0;
   for (const course of selected) {
     if (course.area === "Current Research") {
-      research = true;
+      research += 1;
       known += 1;
       continue;
     }
@@ -175,9 +175,9 @@ export function ectsSummary(selected: Course[]): string | null {
       max += group.ects;
     }
   }
-  if (research) {
-    min += 6;
-    max += 6;
+  if (research > 0) {
+    min += research * 6;
+    max += research * 6;
   }
   if (known === 0) return null;
   const label = min === max ? `${formatAmount(min)} ECTS` : `${formatAmount(min)}–${formatAmount(max)} ECTS`;

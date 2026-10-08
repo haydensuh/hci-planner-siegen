@@ -193,7 +193,7 @@ export const courses: Course[] = [
     "lecturers": [
       "Hon.-Prof. Dr. Roman Englert"
     ],
-    "moduleCreditNote": "Each seminar exam is 3 ECTS. The module is 6 ECTS. Alternative seminars are not added together."
+    "moduleCreditNote": "Each selected seminar counts as 6 ECTS. The seminar exam is 3 ECTS of that module."
   },
   {
     "id": "3wulf0022v-ws26-27",
@@ -243,7 +243,7 @@ export const courses: Course[] = [
     "lecturers": [
       "Sven Christopher Hoffmann"
     ],
-    "moduleCreditNote": "Each seminar exam is 3 ECTS. The module is 6 ECTS. Alternative seminars are not added together."
+    "moduleCreditNote": "Each selected seminar counts as 6 ECTS. The seminar exam is 3 ECTS of that module."
   },
   {
     "id": "3wulf0021v-ws26-27",
@@ -293,7 +293,7 @@ export const courses: Course[] = [
     "lecturers": [
       "apl. Prof. Dr. Markus Rohde"
     ],
-    "moduleCreditNote": "Each seminar exam is 3 ECTS. The module is 6 ECTS. Alternative seminars are not added together."
+    "moduleCreditNote": "Each selected seminar counts as 6 ECTS. The seminar exam is 3 ECTS of that module."
   },
   {
     "id": "3pipek016v-ws26-27",
@@ -345,7 +345,7 @@ export const courses: Course[] = [
     ],
     "lectureGroupFrequency": "Every semester",
     "irregularOffering": true,
-    "moduleCreditNote": "Each seminar exam is 3 ECTS. The module is 6 ECTS. Alternative seminars are not added together."
+    "moduleCreditNote": "Each selected seminar counts as 6 ECTS. The seminar exam is 3 ECTS of that module."
   },
   {
     "id": "3wulf030v-ws26-27",
@@ -397,7 +397,7 @@ export const courses: Course[] = [
     ],
     "lectureGroupFrequency": "Every semester",
     "irregularOffering": true,
-    "moduleCreditNote": "Each seminar exam is 3 ECTS. The module is 6 ECTS. Alternative seminars are not added together."
+    "moduleCreditNote": "Each selected seminar counts as 6 ECTS. The seminar exam is 3 ECTS of that module."
   },
   {
     "id": "3sadeg101v-ws26-27",
@@ -447,7 +447,7 @@ export const courses: Course[] = [
     "lecturers": [],
     "lectureGroupFrequency": "Every semester",
     "irregularOffering": true,
-    "moduleCreditNote": "Each seminar exam is 3 ECTS. The module is 6 ECTS. Alternative seminars are not added together."
+    "moduleCreditNote": "Each selected seminar counts as 6 ECTS. The seminar exam is 3 ECTS of that module."
   },
   {
     "id": "3muecl005v-ws26-27",
@@ -500,7 +500,7 @@ export const courses: Course[] = [
     ],
     "lectureGroupFrequency": "Every semester",
     "irregularOffering": true,
-    "moduleCreditNote": "Each seminar exam is 3 ECTS. The module is 6 ECTS. Alternative seminars are not added together."
+    "moduleCreditNote": "Each selected seminar counts as 6 ECTS. The seminar exam is 3 ECTS of that module."
   },
   {
     "id": "3wulf0024v-ws26-27",
@@ -551,7 +551,7 @@ export const courses: Course[] = [
       "Dr. Rainer Wieching"
     ],
     "lectureGroupFrequency": "Every semester",
-    "moduleCreditNote": "Each seminar exam is 3 ECTS. The module is 6 ECTS. Alternative seminars are not added together."
+    "moduleCreditNote": "Each selected seminar counts as 6 ECTS. The seminar exam is 3 ECTS of that module."
   },
   {
     "id": "3wulf0012v-ws26-27",
@@ -602,7 +602,7 @@ export const courses: Course[] = [
       "apl. Prof. Dr. Markus Rohde"
     ],
     "lectureGroupFrequency": "Every semester",
-    "moduleCreditNote": "Each seminar exam is 3 ECTS. The module is 6 ECTS. Alternative seminars are not added together."
+    "moduleCreditNote": "Each selected seminar counts as 6 ECTS. The seminar exam is 3 ECTS of that module."
   },
   {
     "id": "1sowi1406v-ws26-27",
