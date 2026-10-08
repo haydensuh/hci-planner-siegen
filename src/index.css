@@ -311,7 +311,7 @@ h1 {
   backdrop-filter: blur(8px);
 }
 
-.area-heading { top: 0; z-index: 3; }
+.area-heading { top: 0; z-index: 3; display: flex; align-items: center; }
 
 .area-heading button, .module-heading button {
   width: 100%;
@@ -325,9 +325,76 @@ h1 {
   font-weight: 700;
 }
 
-.area-heading button {
-  padding: 10px 6px 8px;
+.area-heading .area-toggle {
+  width: auto;
+  flex: none;
+  padding: 10px 0 8px 6px;
   font-size: 1.12rem;
+}
+
+.area-rest {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 6px 8px 0;
+  cursor: pointer;
+}
+
+.area-info {
+  position: relative;
+  flex: none;
+  display: flex;
+  align-items: center;
+  margin-left: 4px;
+}
+
+.area-heading .area-info button {
+  width: 22px;
+  height: 22px;
+  padding: 0;
+  border-radius: 999px;
+  color: var(--ink-soft);
+  justify-content: center;
+  gap: 0;
+}
+
+.area-heading .area-info button:hover,
+.area-heading .area-info button:focus-visible {
+  background: var(--bg-deep);
+  color: var(--ink);
+}
+
+.area-tip.is-fixed {
+  display: block;
+  position: fixed;
+  z-index: 20;
+  width: min(280px, calc(100vw - 16px));
+}
+
+.area-tip-card {
+  display: block;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: var(--ink);
+  color: #fff;
+  font-size: 0.8rem;
+  font-weight: 500;
+  line-height: 1.45;
+  box-shadow: 0 8px 24px rgba(25, 31, 40, 0.18);
+}
+
+.area-tip-card ul {
+  margin: 0;
+  padding-left: 1.1em;
+}
+
+.area-tip-card li + li { margin-top: 8px; }
+
+.area-tip-card li span {
+  display: block;
+  margin-top: 6px;
 }
 
 .module-group { margin: 4px 0 4px 18px; }

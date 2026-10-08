@@ -1,4 +1,5 @@
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { AREAS, areaColor, areaRank } from "../data/curriculum";
 import {
   LP6_NOTE,
@@ -452,28 +453,34 @@ export function CourseExplorer({
         {listedGroups.map((group) => {
           const areaOpen = !collapsedAreas.has(group.area);
           const areaPanelId = panelId("area", group.area);
+          const areaCount =
+            group.area === "Interdisciplinary Contexts"
+              ? filtered.filter(
+                  (course) =>
+                    course.area === group.area &&
+                    (shownTrack === "9" ? lp9Placement(course.id) : lp6Course(course.id)),
+                ).length
+              : group.courses.length;
+          const toggleArea = () => setCollapsedAreas((current) => toggleMember(current, group.area));
           return (
             <section key={group.area} className="area-group">
               <h3 className="area-heading">
                 <button
                   type="button"
+                  className="area-toggle"
                   aria-expanded={areaOpen}
                   aria-controls={areaPanelId}
-                  onClick={() => setCollapsedAreas((current) => toggleMember(current, group.area))}
+                  aria-label={`${group.area}, ${areaCount} ${areaCount === 1 ? "course" : "courses"}`}
+                  onClick={toggleArea}
                 >
                   <span className="area-dot" style={{ background: areaColor(group.area) }} />
                   <span className="group-title">{group.area}</span>
-                  <span className="group-count">
-                    {group.area === "Interdisciplinary Contexts"
-                      ? filtered.filter(
-                          (course) =>
-                            course.area === group.area &&
-                            (shownTrack === "9" ? lp9Placement(course.id) : lp6Course(course.id)),
-                        ).length
-                      : group.courses.length}
-                  </span>
-                  <ChevronIcon open={areaOpen} />
                 </button>
+                {group.area === "Practice" && <PracticeInfo />}
+                <div className="area-rest" onClick={toggleArea}>
+                  <span className="group-count">{areaCount}</span>
+                  <ChevronIcon open={areaOpen} />
+                </div>
               </h3>
               {areaOpen && (
                 <div id={areaPanelId}>
@@ -1040,6 +1047,133 @@ function without(current: Set<string>, key: string): Set<string> {
   const next = new Set(current);
   next.delete(key);
   return next;
+}
+
+function PracticeInfo() {
+  const [open, setOpen] = useState(false);
+  const [hover, setHover] = useState(false);
+  const rootRef = useRef<HTMLSpanElement>(null);
+  const tipRef = useRef<HTMLSpanElement>(null);
+  const hoverTimer = useRef<number | null>(null);
+  const [pos, setPos] = useState({ top: 0, left: 0, hidden: false });
+  const shown = open || hover;
+
+  function showTip() {
+    if (hoverTimer.current) window.clearTimeout(hoverTimer.current);
+    setHover(true);
+  }
+
+  function hideTip() {
+    if (hoverTimer.current) window.clearTimeout(hoverTimer.current);
+    hoverTimer.current = window.setTimeout(() => setHover(false), 80);
+  }
+
+  useLayoutEffect(() => {
+    if (!shown) return;
+    function place() {
+      const icon = rootRef.current?.getBoundingClientRect();
+      const tip = tipRef.current?.getBoundingClientRect();
+      if (!icon || !tip) return;
+      const scroll = rootRef.current?.closest(".course-scroll")?.getBoundingClientRect();
+      const hidden = scroll != null && (icon.bottom < scroll.top || icon.top > scroll.bottom);
+      const width = tip.width || 280;
+      const height = tip.height || 0;
+      let left = Math.min(Math.max(8, icon.left - 8), window.innerWidth - width - 8);
+      let top = icon.bottom + 8;
+      if (height > 0 && top + height > window.innerHeight - 8 && icon.top - height - 8 > 8) {
+        top = icon.top - height - 8;
+      }
+      setPos((current) =>
+        current.top === top && current.left === left && current.hidden === hidden ? current : { top, left, hidden },
+      );
+    }
+    place();
+    window.addEventListener("scroll", place, true);
+    window.addEventListener("resize", place);
+    return () => {
+      window.removeEventListener("scroll", place, true);
+      window.removeEventListener("resize", place);
+    };
+  }, [shown]);
+
+  useEffect(() => {
+    return () => {
+      if (hoverTimer.current) window.clearTimeout(hoverTimer.current);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!open) return;
+    function onPointerDown(event: PointerEvent) {
+      const target = event.target as Node;
+      if (rootRef.current?.contains(target) || tipRef.current?.contains(target)) return;
+      setOpen(false);
+    }
+    function onKeyDown(event: KeyboardEvent) {
+      if (event.key === "Escape") setOpen(false);
+    }
+    document.addEventListener("pointerdown", onPointerDown);
+    document.addEventListener("keydown", onKeyDown);
+    return () => {
+      document.removeEventListener("pointerdown", onPointerDown);
+      document.removeEventListener("keydown", onKeyDown);
+    };
+  }, [open]);
+
+  return (
+    <span ref={rootRef} className="area-info" onMouseEnter={showTip} onMouseLeave={hideTip}>
+      <button
+        type="button"
+        aria-expanded={shown}
+        aria-controls="practice-tip"
+        aria-label="About Practice projects"
+        onClick={(event) => {
+          setOpen((current) => {
+            if (current) event.currentTarget.blur();
+            return !current;
+          });
+        }}
+      >
+        <InfoIcon />
+      </button>
+      {shown &&
+        createPortal(
+          <span
+            id="practice-tip"
+            ref={tipRef}
+            className="area-tip is-fixed"
+            role="tooltip"
+            style={{ top: pos.top, left: pos.left, visibility: pos.hidden ? "hidden" : "visible" }}
+            onMouseEnter={showTip}
+            onMouseLeave={hideTip}
+          >
+            <span className="area-tip-card">
+              <ul>
+                <li>You can take Projects A, B, and C in the same semester. But taking one per semester is recommended.</li>
+                <li>
+                  Projects A and B are mostly group work. Project C can be planned as solo work.
+                  <span>
+                    Project C can be treated as preparation for the master’s thesis. If you have a project you might want
+                    as a thesis topic, taking it as Project C is recommended.
+                  </span>
+                </li>
+              </ul>
+            </span>
+          </span>,
+          document.body,
+        )}
+    </span>
+  );
+}
+
+function InfoIcon() {
+  return (
+    <svg viewBox="0 0 16 16" width="15" height="15" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden="true">
+      <circle cx="8" cy="8" r="6.2" />
+      <path d="M8 7.2V11.2" strokeLinecap="round" />
+      <path d="M8 4.9h.01" strokeLinecap="round" />
+    </svg>
+  );
 }
 
 function ChevronIcon({ open }: { open: boolean }) {
