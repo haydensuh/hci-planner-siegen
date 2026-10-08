@@ -1149,7 +1149,7 @@ function PracticeInfo() {
           >
             <span className="area-tip-card">
               <ul>
-                <li>You can take Projects A, B, and C in the same semester. But taking one per semester is recommended.</li>
+                <li>Taking one projectper semester is recommended.</li>
                 <li>
                   Projects A and B are mostly group work. Project C can be planned as solo work.
                   <span>
