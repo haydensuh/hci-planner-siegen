@@ -88,6 +88,16 @@ export default function App() {
               Planner of studies
               <ExternalIcon />
             </a>
+            <a
+              className="external-link"
+              href="https://hciplanner.robruizr.dev"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Planner of studies, opens in a new tab"
+            >
+              HCI Planner
+              <ExternalIcon />
+            </a>
           </div>
         </div>
         <div className="semester-switch" role="radiogroup" aria-label="Semester">
