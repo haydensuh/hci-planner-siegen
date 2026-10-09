@@ -3536,6 +3536,6 @@ export const courses = [
       12
     ],
     "course": "The Patient as User? – Rethinking Autonomy in Healthcare Interactions",
-    "location": null
+    "location": "US-D 219"
   }
 ];

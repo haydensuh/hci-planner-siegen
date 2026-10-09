@@ -3934,7 +3934,7 @@ export const courses: Course[] = [
         "note": null
       }
     ],
-    "location": null,
+    "location": "US-D 219",
     "lecturers": [
       "Christian Joachim Spengler M.Sc.",
       "Univ.-Prof. Dr. Marc Hassenzahl"
