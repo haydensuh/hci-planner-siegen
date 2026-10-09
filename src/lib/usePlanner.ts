@@ -111,7 +111,7 @@ export function usePlanner() {
     });
   }
 
-  function toggleCourse(courseId: string) {
+  function toggleCourse(courseId: string, track?: "9" | "6") {
     commit((current) => {
       const activeId = current.activeBySemester[current.semesterId];
       return {
@@ -119,11 +119,15 @@ export function usePlanner() {
         versions: current.versions.map((version) => {
           if (version.id !== activeId) return version;
           const selected = version.selectedCourseIds.includes(courseId);
+          const lpTrackByCourseId = { ...(version.lpTrackByCourseId ?? {}) };
+          if (selected) delete lpTrackByCourseId[courseId];
+          else if (track) lpTrackByCourseId[courseId] = track;
           return {
             ...version,
             selectedCourseIds: selected
               ? version.selectedCourseIds.filter((id) => id !== courseId)
               : [...version.selectedCourseIds, courseId],
+            lpTrackByCourseId,
           };
         }),
       };
@@ -174,6 +178,7 @@ export function usePlanner() {
         semesterId: source.semesterId,
         name: duplicateName(source.name, names),
         selectedCourseIds: [...source.selectedCourseIds],
+        lpTrackByCourseId: { ...(source.lpTrackByCourseId ?? {}) },
       };
       const index = current.versions.findIndex((version) => version.id === versionId);
       const versions = [...current.versions];

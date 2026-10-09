@@ -1140,8 +1140,9 @@ export const courses = [
       1,
       3
     ],
-    "offeringFrequency": [],
-    "lectureGroupFrequency": "Summer semester only",
+    "offeringFrequency": [
+      "Every semester"
+    ],
     "irregularOffering": true,
     "schedule": [
       "fortnightly, Wednesday, 10/21/26 - 2/3/27 from 14:00 until 18:00"

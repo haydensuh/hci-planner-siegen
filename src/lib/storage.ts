@@ -40,11 +40,19 @@ function sanitizeVersion(value: unknown, options: LoadOptions, seenIds: Set<stri
           typeof courseId === "string" && options.courseSemesterById.get(courseId) === record.semesterId,
       )
     : [];
+  const lpTrackByCourseId: Record<string, "9" | "6"> = {};
+  if (record.lpTrackByCourseId && typeof record.lpTrackByCourseId === "object") {
+    for (const [courseId, track] of Object.entries(record.lpTrackByCourseId)) {
+      if (!selectedCourseIds.includes(courseId)) continue;
+      if (track === "9" || track === "6") lpTrackByCourseId[courseId] = track;
+    }
+  }
   return {
     id,
     semesterId: record.semesterId,
     name: record.name.trim().slice(0, 48),
     selectedCourseIds,
+    lpTrackByCourseId,
   };
 }
 

@@ -72,6 +72,7 @@ export type Version = {
   semesterId: string;
   name: string;
   selectedCourseIds: string[];
+  lpTrackByCourseId?: Record<string, "9" | "6">;
 };
 
 export type PlannerState = {

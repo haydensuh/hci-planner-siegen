@@ -34,37 +34,56 @@ const NINE_LP_LOCK = "9 LP is already selected in this version, so a 6 LP course
 const SIX_LP_LOCK = "6 LP is already selected in this version, so a 9 LP course can’t be selected.";
 const MIX_LP_LOCK = "6 LP and 9 LP courses can’t be mixed in this version.";
 
-function isSixLpCourse(courseId: string) {
-  return lp6Course(courseId) !== null;
+function listsFor(courseId: string) {
+  return { on9: lp9Placement(courseId) !== null, on6: lp6Course(courseId) !== null };
 }
 
-function isNineLpCourse(courseId: string) {
-  return lp9Placement(courseId) !== null && !isSixLpCourse(courseId);
+function selectionSide(courseId: string, tracks: Record<string, "9" | "6">): "9" | "6" | null {
+  const { on9, on6 } = listsFor(courseId);
+  if (on9 && on6) return tracks[courseId] ?? null;
+  if (on9) return "9";
+  if (on6) return "6";
+  return null;
 }
 
-function interdisciplinaryChoice(selectedIds: string[]): "9" | "6" | "mix" | null {
-  const six = selectedIds.some(isSixLpCourse);
-  const nine = selectedIds.some(isNineLpCourse);
+function interdisciplinaryChoice(
+  selectedIds: string[],
+  tracks: Record<string, "9" | "6">,
+): "9" | "6" | "mix" | null {
+  let six = false;
+  let nine = false;
+  for (const courseId of selectedIds) {
+    const side = selectionSide(courseId, tracks);
+    if (side === "6") six = true;
+    if (side === "9") nine = true;
+  }
   if (six && nine) return "mix";
   if (six) return "6";
   if (nine) return "9";
   return null;
 }
 
-function selectionLock(courseId: string, selectedIds: string[]): string | null {
+function selectionLock(
+  courseId: string,
+  selectedIds: string[],
+  tracks: Record<string, "9" | "6">,
+): string | null {
   if (selectedIds.includes(courseId)) return null;
-  const choice = interdisciplinaryChoice(selectedIds);
-  if ((choice === "9" || choice === "mix") && isSixLpCourse(courseId)) return NINE_LP_LOCK;
-  if ((choice === "6" || choice === "mix") && isNineLpCourse(courseId)) return SIX_LP_LOCK;
+  const { on9, on6 } = listsFor(courseId);
+  if (on9 && on6) return null;
+  const choice = interdisciplinaryChoice(selectedIds, tracks);
+  if ((choice === "9" || choice === "mix") && on6 && !on9) return NINE_LP_LOCK;
+  if ((choice === "6" || choice === "mix") && on9 && !on6) return SIX_LP_LOCK;
   return null;
 }
 
 type CourseExplorerProps = {
   courses: Course[];
   selectedIds: string[];
+  lpTracks: Record<string, "9" | "6">;
   versionName: string;
   openIds: Set<string>;
-  onToggle: (courseId: string) => void;
+  onToggle: (courseId: string, track?: "9" | "6") => void;
   onToggleDetails: (courseId: string) => void;
   onSetDetails: (courseIds: string[], open: boolean) => void;
   onFilteredIdsChange: (ids: string[], browseFiltered: boolean) => void;
@@ -74,6 +93,7 @@ type CourseExplorerProps = {
 export function CourseExplorer({
   courses,
   selectedIds,
+  lpTracks,
   versionName,
   openIds,
   onToggle,
@@ -198,7 +218,7 @@ export function CourseExplorer({
 
   const visible9 = filtered.filter((course) => lp9Placement(course.id)).length;
   const visible6 = filtered.filter((course) => lp6Course(course.id)).length;
-  const trackChoice = interdisciplinaryChoice(selectedIds);
+  const trackChoice = interdisciplinaryChoice(selectedIds, lpTracks);
   const trackLockReason =
     trackChoice === "9" ? NINE_LP_LOCK : trackChoice === "6" ? SIX_LP_LOCK : trackChoice === "mix" ? MIX_LP_LOCK : null;
   const shownTrack: "9" | "6" =
@@ -494,10 +514,11 @@ export function CourseExplorer({
                       query={query}
                       narrowing={moduleName !== "all" || day !== "all" || timeOptions.includes(time) || query.trim().length > 0}
                       selectedIds={selectedIds}
+                      lpTracks={lpTracks}
                       openIds={openIds}
                       collapsed={collapsedModules}
                       onToggleKey={(key) => setCollapsedModules((current) => toggleMember(current, key))}
-                      onToggle={onToggle}
+                      onToggle={(courseId) => onToggle(courseId, shownTrack)}
                       onToggleDetails={onToggleDetails}
                     />
                   ) : (
@@ -665,6 +686,7 @@ function InterdisciplinaryCatalog({
   query,
   narrowing,
   selectedIds,
+  lpTracks,
   openIds,
   collapsed,
   onToggleKey,
@@ -679,6 +701,7 @@ function InterdisciplinaryCatalog({
   query: string;
   narrowing: boolean;
   selectedIds: string[];
+  lpTracks: Record<string, "9" | "6">;
   openIds: Set<string>;
   collapsed: Set<string>;
   onToggleKey: (key: string) => void;
@@ -689,7 +712,7 @@ function InterdisciplinaryCatalog({
   const needle = query.trim().toLowerCase();
 
   function renderCourse(course: Course, extra?: string) {
-    const lockReason = selectionLock(course.id, selectedIds);
+    const lockReason = selectionLock(course.id, selectedIds, lpTracks);
     return (
       <li key={course.id} id={`course-${course.id}`}>
         <CourseArticle

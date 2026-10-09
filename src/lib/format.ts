@@ -176,8 +176,8 @@ export function ectsSummary(selected: Course[]): string | null {
     }
   }
   if (research > 0) {
-    min += research * 6;
-    max += research * 6;
+    min += research * 3;
+    max += research * 3;
   }
   if (known === 0) return null;
   const label = min === max ? `${formatAmount(min)} ECTS` : `${formatAmount(min)}–${formatAmount(max)} ECTS`;

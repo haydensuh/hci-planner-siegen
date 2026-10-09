@@ -74,9 +74,7 @@ AREA_ECTS = {
     "Consolidation": 4.5,
     "Practice": 9,
 }
-CURRENT_RESEARCH_NOTE = (
-    "Each selected seminar counts as 6 ECTS. The seminar exam is 3 ECTS of that module."
-)
+CURRENT_RESEARCH_NOTE = "Each selected seminar counts as 3 ECTS."
 CONTEXT_9LP = {"3HCIMA013", "3HCIMA014", "3HCIMA022", "3HCIMA023"}
 CONTEXT_6LP = {"3HCIMA015", "3HCIMA019", "3HCIMA020", "3HCIMA024", "3HCIMA025"}
 

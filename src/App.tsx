@@ -125,6 +125,7 @@ export default function App() {
           key={planner.semesterId}
           courses={semesterCourses}
           selectedIds={planner.active.selectedCourseIds}
+          lpTracks={planner.active.lpTrackByCourseId ?? {}}
           versionName={planner.active.name}
           openIds={openIds}
           onToggle={planner.toggleCourse}
